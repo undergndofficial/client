@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FC } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   MovieContainer,
   TagDiv,
@@ -68,7 +68,7 @@ function MovieList({ tag }: MovieListProps) {
           {[...Array(15)].map((_, i) => (
             <Movie
               key={i}
-              url="https://m.jungle.co.kr/image/b0eb4c074272a9bf9ddad06f"
+              url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg"
             />
           ))}
         </MovieListWrapper>

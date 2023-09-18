@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from 'layouts/Layout';
 import { MainPosterDiv, DetailButton, MovieListWrapper } from './style';
 import MovieList from './MovieList';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 메인 화면 페이지
@@ -15,11 +16,18 @@ function Home() {
     { label: '경성대', iconUrl: '/assets/tag-kyungsung.svg' },
     { label: '동의대', iconUrl: '/assets/tag-dongui.svg' },
   ];
+  const navigate = useNavigate();
 
   return (
     <Layout>
       <MainPosterDiv url="https://blog.kakaocdn.net/dn/bUzgFU/btqH4sUMSK8/Aas3KFvbzbyr62OPIM9jXk/img.jpg">
-        <DetailButton>자세히 보기</DetailButton>
+        <DetailButton
+          onClick={() => {
+            navigate('/player');
+          }}
+        >
+          자세히 보기
+        </DetailButton>
       </MainPosterDiv>
       <MovieListWrapper>
         {tagList.map((tag) => (

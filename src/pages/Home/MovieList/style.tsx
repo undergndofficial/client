@@ -46,6 +46,7 @@ export const Movie = styled.div<{ url: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  cursor: pointer;
 `;
 
 export const TitleWrapper = styled.div`

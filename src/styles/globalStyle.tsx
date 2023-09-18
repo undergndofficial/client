@@ -8,7 +8,8 @@ const baseStyle = css`
   :root {
     --color-background: black;
     --color-font: white;
-    --color-textgrey: #a6a6a6;
+    --color-textgrey: #a7a7a7;
+    --color-startyellow: #bdff00;
   }
   html {
     @media ${theme.device.phone} {
@@ -30,7 +31,7 @@ const baseStyle = css`
   body {
     margin: 0;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     background-color: var(--color-background);
   }
   textarea,
