@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
+interface VisibleProp {
+  visible: boolean;
+}
+
+export const MovieContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 3.5rem;
@@ -13,7 +17,9 @@ export const Container = styled.div`
   }
 `;
 
-export const Tag = styled.div`
+export const TagDiv = styled.div<VisibleProp>`
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+  width: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,22 +38,45 @@ export const MovieListWrapper = styled.div`
   align-self: stretch;
 `;
 
-export const Movie = styled.div`
+export const Movie = styled.div<{ url: string }>`
   width: 18.125rem;
   height: 10.1875rem;
   border-radius: 1.25rem;
-  background-color: grey;
+  background-image: url(${(props) => props.url});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 4rem;
+  margin-bottom: 10px;
+  position: relative;
+  justify-content: space-between;
+`;
+
+export const TitleDiv = styled.div<VisibleProp>`
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: end;
   align-items: center;
   gap: 1.24rem;
-  margin: 0 4rem 10px 0;
+  margin-right: 0;
 `;
 
-export const ScrollButton = styled.div`
+export const ScrollButton = styled.div<{
+  visible: boolean;
+  nextType: 'prev' | 'next';
+}>`
+  opacity: ${(props) => (props.visible ? 1 : 0.8)};
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
   width: 2.5rem;
@@ -56,4 +85,11 @@ export const ScrollButton = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transform: ${(props) =>
+    props.visible
+      ? ''
+      : `translateX(${props.nextType == 'prev' ? 3.74 : -3.74}rem) rotate(${
+          props.nextType == 'prev' ? 180 : -180
+        }deg)`};
+  transition: all 0.35s ease-out;
 `;

@@ -1,47 +1,27 @@
-import { useState, useRef, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 
 const useScroll = () => {
-  const [leftArrowHovering, setLeftArrowHovering] = useState(false);
-  const [rightArrowHovering, setRightArrowHovering] = useState(false);
   const horizontalScrollRef = useRef<HTMLDivElement | null>(null);
 
-  const setArrowHovering = useCallback(
-    (nextType: string, value: boolean | ((prevState: boolean) => boolean)) => {
-      if (nextType === 'prev') setLeftArrowHovering(value);
-      else setRightArrowHovering(value);
-    },
-    [],
-  );
-
   /**
-   * 스트릭 좌우 스크롤 버튼 클릭 리스너
+   * 좌우 스크롤 버튼 클릭 리스너
    */
-  const handleNextButtonClick = useCallback((nextType: string) => {
+  const handleNextButtonClick = useCallback((nextType: 'prev' | 'next') => {
     if (!horizontalScrollRef.current) return;
     if (nextType === 'prev') {
-      horizontalScrollRef.current.scrollTo({
-        left:
-          horizontalScrollRef.current.scrollLeft -
-          horizontalScrollRef.current.offsetWidth,
+      horizontalScrollRef.current.scrollBy({
+        left: -Math.ceil(horizontalScrollRef.current.offsetWidth * 0.8),
         behavior: 'smooth',
       });
     } else {
-      horizontalScrollRef.current.scrollTo({
-        left:
-          horizontalScrollRef.current.scrollLeft +
-          horizontalScrollRef.current.offsetWidth,
+      horizontalScrollRef.current.scrollBy({
+        left: Math.ceil(horizontalScrollRef.current.offsetWidth * 0.8),
         behavior: 'smooth',
       });
     }
   }, []);
 
-  return [
-    leftArrowHovering,
-    rightArrowHovering,
-    setArrowHovering,
-    horizontalScrollRef,
-    handleNextButtonClick,
-  ];
+  return { horizontalScrollRef, handleNextButtonClick };
 };
 
 export default useScroll;

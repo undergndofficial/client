@@ -35,4 +35,7 @@ export const MovieListWrapper = styled.div`
   box-sizing: border-box;
   margin-top: 5rem;
   width: 100%;
+  gap: 3rem;
+  display: flex;
+  flex-direction: column;
 `;
