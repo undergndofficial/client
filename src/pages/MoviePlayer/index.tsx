@@ -19,8 +19,10 @@ import {
 import ReactPlayer from 'react-player';
 import { FaHeart } from 'react-icons/fa';
 import { PiFlagPennantFill } from 'react-icons/pi';
+import { IoStarSharp } from 'react-icons/io5';
 import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
+import Comment from './Comment';
 
 function MoviePlayer() {
   const [playing, setPlaying] = useState(false); // 재생중
@@ -195,6 +197,7 @@ function MoviePlayer() {
           <div>각본 : 윤성현</div>
           <div>출연진 : 이제훈, 서준영, 박정민, 조성하</div>
         </MovieDetailDiv>
+        <Comment />
       </MovieInfo>
     </Container>
   );

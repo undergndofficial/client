@@ -9,7 +9,12 @@ const baseStyle = css`
     --color-background: black;
     --color-font: white;
     --color-textgrey: #a7a7a7;
-    --color-startyellow: #bdff00;
+    --color-star: #bdff00;
+    --color-star5: #fff500;
+    --color-star4: #61ff00;
+    --color-star3: #d3f7ff;
+    --color-star2: #ff8a00;
+    --color-star1: #ff0000;
   }
   html {
     @media ${theme.device.phone} {

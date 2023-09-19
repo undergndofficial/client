@@ -11,6 +11,7 @@ export const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
+  padding-bottom: 5rem;
 `;
 
 export const MovieInfo = styled.div`
