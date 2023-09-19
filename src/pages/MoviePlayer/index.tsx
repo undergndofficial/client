@@ -66,7 +66,7 @@ function MoviePlayer() {
   // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
   useEffect(() => {
     const keyEvent = (e: any) => {
-      e.preventDefault();
+      console.log(e);
       if (e.keyCode === 32) setPlaying(!playing);
       else if (e.keyCode === 38)
         setVolume(volume + 0.05 >= 1 ? 1 : volume + 0.05);
@@ -75,17 +75,26 @@ function MoviePlayer() {
       else if (e.keyCode === 37) backwardVideo(e);
       else if (e.keyCode === 39) forwardVideo(e);
       else return;
+      e.preventDefault();
       setControlHide(false);
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
         setControlHide(true);
       }, 5000);
     };
+
+    const changeFullScreen = () => {
+      setFullScreen(document.fullscreenElement !== null);
+    };
+
     window.addEventListener('keydown', keyEvent);
+    document.addEventListener('fullscreenchange', changeFullScreen);
+
     return () => {
       window.removeEventListener('keydown', keyEvent);
+      document.removeEventListener('fullscreenchange', changeFullScreen);
     };
-  }, [playing, volume]);
+  }, [playing, volume, fullScreen]);
 
   return (
     <Container>
@@ -101,7 +110,7 @@ function MoviePlayer() {
           ref={playerRef}
           url="/assets/tmp-movie.mp4"
           width="100%"
-          height="85vh"
+          height={fullScreen ? '100vh' : '85vh'}
           playing={playing}
           volume={volume}
           playbackRate={playbackRate}
@@ -113,7 +122,6 @@ function MoviePlayer() {
         />
         {!controlHide && (
           <Controls
-            playerRef={playerRef}
             wrapperRef={wrapperRef}
             playing={playing}
             volume={volume}
@@ -125,7 +133,6 @@ function MoviePlayer() {
             seeking={seeking}
             setSeeking={setSeeking}
             setPlaying={setPlaying}
-            setControlHide={setControlHide}
             fullScreen={fullScreen}
             setFullScreen={setFullScreen}
             backwardVideo={backwardVideo}

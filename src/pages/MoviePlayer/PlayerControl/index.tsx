@@ -4,7 +4,6 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import ReactPlayer from 'react-player';
 import {
   Container,
   CenterButton,
@@ -22,7 +21,6 @@ import {
   BsArrowClockwise,
   BsCardText,
   BsVolumeMuteFill,
-  BsFullscreenExit,
 } from 'react-icons/bs';
 import { GiPauseButton } from 'react-icons/gi';
 import { SiSpeedtest } from 'react-icons/si';
@@ -42,9 +40,7 @@ type ControlsProps = {
   setVolume: React.Dispatch<React.SetStateAction<number>>;
   fullScreen: boolean;
   setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
-  playerRef: MutableRefObject<ReactPlayer>;
   wrapperRef: MutableRefObject<HTMLDivElement>;
-  setControlHide: React.Dispatch<React.SetStateAction<boolean>>;
   backwardVideo: (e: any) => void;
   forwardVideo: (e: any) => void;
 };
@@ -62,9 +58,7 @@ export const Controls = ({
   setVolume,
   fullScreen,
   setFullScreen,
-  playerRef,
   wrapperRef,
-  setControlHide,
   backwardVideo,
   forwardVideo,
 }: ControlsProps) => {
