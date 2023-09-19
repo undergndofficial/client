@@ -33,11 +33,8 @@ function Comment() {
           ))}
         {starRate > 0 && (
           <>
-            <StarRateDiv>
-              <div>{starRate}</div>
-              <StarIcon size="25" rate={starRate} />
-            </StarRateDiv>
-
+            <StarRateDiv>{starRate}</StarRateDiv>
+            <StarIcon size="25" rate={starRate} />
             <BackButton
               onClick={() => {
                 setStarRate(0);

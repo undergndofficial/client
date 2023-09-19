@@ -11,6 +11,7 @@ export const StarWrapper = styled.div`
   gap: 4px;
   cursor: pointer;
   align-items: center;
+  position: relative;
 `;
 
 export const StarIcon = styled(IoStarSharp)<{ rate?: number }>`
@@ -22,23 +23,20 @@ export const BackButton = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   cursor: pointer;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 export const StarRateDiv = styled.div`
-  position: relative;
-  & div {
-    position: absolute;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: black;
-    top: 9px;
-    left: 9.5px;
-  }
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: black;
+  top: 9px;
+  left: 10px;
 `;
 
 export const CommentInput = styled.div`
