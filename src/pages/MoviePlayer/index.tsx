@@ -66,7 +66,6 @@ function MoviePlayer() {
   // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
   useEffect(() => {
     const keyEvent = (e: any) => {
-      console.log(e);
       if (e.keyCode === 32) setPlaying(!playing);
       else if (e.keyCode === 38)
         setVolume(volume + 0.05 >= 1 ? 1 : volume + 0.05);
@@ -83,6 +82,7 @@ function MoviePlayer() {
       }, 5000);
     };
 
+    // 전체 화면 변경 핸들러
     const changeFullScreen = () => {
       setFullScreen(document.fullscreenElement !== null);
     };
@@ -122,6 +122,7 @@ function MoviePlayer() {
         />
         {!controlHide && (
           <Controls
+            playerRef={playerRef}
             wrapperRef={wrapperRef}
             playing={playing}
             volume={volume}

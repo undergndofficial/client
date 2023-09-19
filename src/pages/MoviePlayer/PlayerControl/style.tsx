@@ -74,7 +74,7 @@ export const VolumeControl = styled.div<{ volume: number }>`
       height: 1rem;
       width: 1rem;
       border-radius: 50%;
-      background: ${(props) => (props.volume ? '#d9d9d9' : '#E5E7EB')};
+      background: ${(props) => (props.volume ? 'white' : '#E5E7EB')};
       margin-top: -3px;
       cursor: pointer;
     }
@@ -83,13 +83,47 @@ export const VolumeControl = styled.div<{ volume: number }>`
       height: 0.6rem;
       background: ${(props) =>
         props.volume
-          ? `linear-gradient(to right, #D9D9D9 ${
+          ? `linear-gradient(to right, white ${
               props.volume * 100
             }%, rgba(229, 231, 235, 0.5)
  ${props.volume * 100}% 100%)`
           : '#E5E7EB'};
       opacity: ${(props) => (props.volume == 0 ? '0.5' : '1')};
       border-radius: 3rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+  }
+`;
+
+export const TimeControl = styled.div<{ time: number }>`
+  padding: 0 1rem;
+  box-sizing: border-box;
+  input[type='range'] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    &:focus {
+      outline: none;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 0.8rem;
+      width: 0.8rem;
+      border-radius: 50%;
+      margin-top: -3px;
+      background: white;
+      cursor: pointer;
+    }
+
+    &::-webkit-slider-runnable-track {
+      height: 0.4rem;
+      background: ${(props) =>
+        props.time
+          ? `linear-gradient(to right, white ${props.time}%, rgba(0, 0, 0, 0.4)
+ ${props.time}% 100%)`
+          : '#E5E7EB'};
       transition: all 0.5s;
       cursor: pointer;
     }

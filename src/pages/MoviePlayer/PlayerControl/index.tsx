@@ -11,21 +11,22 @@ import {
   BottomWrapper,
   ControlButton,
   VolumeControl,
+  TimeControl,
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBackOutline, IoVolumeMediumSharp } from 'react-icons/io5';
 import { IoMdPlay } from 'react-icons/io';
-import { PiFlagPennantFill } from 'react-icons/pi';
 import {
-  BsArrowCounterclockwise,
-  BsArrowClockwise,
-  BsCardText,
-  BsVolumeMuteFill,
-} from 'react-icons/bs';
+  PiFlagPennantFill,
+  PiArrowCounterClockwiseBold,
+  PiArrowClockwiseBold,
+} from 'react-icons/pi';
+import { BsCardText, BsVolumeMuteFill } from 'react-icons/bs';
 import { GiPauseButton } from 'react-icons/gi';
 import { SiSpeedtest } from 'react-icons/si';
 import { RiFullscreenLine } from 'react-icons/ri';
 import theme from 'styles/theme';
+import ReactPlayer from 'react-player';
 
 type ControlsProps = {
   playing: boolean;
@@ -41,6 +42,7 @@ type ControlsProps = {
   fullScreen: boolean;
   setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
   wrapperRef: MutableRefObject<HTMLDivElement>;
+  playerRef: MutableRefObject<ReactPlayer>;
   backwardVideo: (e: any) => void;
   forwardVideo: (e: any) => void;
 };
@@ -59,6 +61,7 @@ export const Controls = ({
   fullScreen,
   setFullScreen,
   wrapperRef,
+  playerRef,
   backwardVideo,
   forwardVideo,
 }: ControlsProps) => {
@@ -130,79 +133,101 @@ export const Controls = ({
         {playing ? <GiPauseButton size="70" /> : <IoMdPlay size="70" />}
       </CenterButton>
       {/* 하단 버튼 */}
-      <BottomWrapper>
-        {/* 재생, 일시 정지, 뒤로 가기, 앞으로 가기, 볼륨 버튼 */}
-        <div>
-          <ControlButton onClick={() => setPlaying(!playing)}>
-            {playing ? (
-              <GiPauseButton size={iconSize} />
-            ) : (
-              <IoMdPlay size={iconSize} />
-            )}
-          </ControlButton>
-          <ControlButton onClick={backwardVideo}>
-            <BsArrowClockwise size={iconSize} />
-          </ControlButton>
-          <ControlButton onClick={forwardVideo}>
-            <BsArrowCounterclockwise size={iconSize} />
-          </ControlButton>
-          <div
-            onMouseEnter={() => {
-              setShowVolume(true);
+      <div>
+        <TimeControl time={70}>
+          <input
+            type={'range'}
+            min={0}
+            max={100}
+            value={70}
+            onChange={(e) => {
+              playerRef.current.seekTo(
+                parseInt(e.target.value) / 100,
+                'fraction',
+              );
             }}
-            onMouseLeave={() => {
-              setShowVolume(false);
+            onMouseDown={() => {
+              setSeeking(true);
             }}
-            onClick={(e: any) => {
+            onClick={(e) => {
               e.stopPropagation();
             }}
-          >
-            <ControlButton>
-              {volume == 0 ? (
-                <BsVolumeMuteFill
-                  size={iconSize}
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    setVolume(1);
-                  }}
-                />
+          />
+        </TimeControl>
+        <BottomWrapper>
+          {/* 재생, 일시 정지, 뒤로 가기, 앞으로 가기, 볼륨 버튼 */}
+          <div>
+            <ControlButton onClick={() => setPlaying(!playing)}>
+              {playing ? (
+                <GiPauseButton size={iconSize} />
               ) : (
-                <IoVolumeMediumSharp
-                  size={iconSize}
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    setVolume(0);
-                  }}
-                />
+                <IoMdPlay size={iconSize} />
               )}
             </ControlButton>
-            {showVolume && (
-              <VolumeControl volume={volume}>
-                <input
-                  type="range"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={volume}
-                  onChange={volumeChange}
-                />
-              </VolumeControl>
-            )}
+            <ControlButton onClick={backwardVideo}>
+              <PiArrowCounterClockwiseBold size={iconSize} />
+            </ControlButton>
+            <ControlButton onClick={forwardVideo}>
+              <PiArrowClockwiseBold size={iconSize} />
+            </ControlButton>
+            <div
+              onMouseEnter={() => {
+                setShowVolume(true);
+              }}
+              onMouseLeave={() => {
+                setShowVolume(false);
+              }}
+              onClick={(e: any) => {
+                e.stopPropagation();
+              }}
+            >
+              <ControlButton>
+                {volume == 0 ? (
+                  <BsVolumeMuteFill
+                    size={iconSize}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      setVolume(1);
+                    }}
+                  />
+                ) : (
+                  <IoVolumeMediumSharp
+                    size={iconSize}
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      setVolume(0);
+                    }}
+                  />
+                )}
+              </ControlButton>
+              {showVolume && (
+                <VolumeControl volume={volume}>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={volume}
+                    onChange={volumeChange}
+                  />
+                </VolumeControl>
+              )}
+            </div>
           </div>
-        </div>
-        {/* 배속, 자막, 전체화면 버튼 */}
-        <div>
-          <ControlButton>
-            <SiSpeedtest size={iconSize} />
-          </ControlButton>
-          <ControlButton>
-            <BsCardText size={iconSize} />
-          </ControlButton>
-          <ControlButton onClick={openFullscreen}>
-            <RiFullscreenLine size={iconSize} />
-          </ControlButton>
-        </div>
-      </BottomWrapper>
+          {/* 배속, 자막, 전체화면 버튼 */}
+          <div>
+            <ControlButton>
+              <SiSpeedtest size={iconSize} />
+            </ControlButton>
+            <ControlButton>
+              <BsCardText size={iconSize} />
+            </ControlButton>
+            <ControlButton onClick={openFullscreen}>
+              <RiFullscreenLine size={iconSize} />
+            </ControlButton>
+          </div>
+        </BottomWrapper>
+      </div>
     </Container>
   );
 };
