@@ -7,10 +7,11 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: absolute;
-  bottom: 5px;
+  bottom: 0;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 `;
 
 export const CenterButton = styled.div`
