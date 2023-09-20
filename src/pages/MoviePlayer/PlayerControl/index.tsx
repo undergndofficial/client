@@ -27,6 +27,9 @@ import { SiSpeedtest } from 'react-icons/si';
 import { RiFullscreenLine } from 'react-icons/ri';
 import theme from 'styles/theme';
 import ReactPlayer from 'react-player';
+import PlaybackRateControl from './PlaybackRateControl';
+import SubtitleControl from './SubtitlesControl';
+import ReportPopup from './ReportPopup';
 
 type ControlsProps = {
   playing: boolean;
@@ -34,9 +37,6 @@ type ControlsProps = {
   playbackRate: number;
   setPlaybackRate: React.Dispatch<React.SetStateAction<number>>;
   duration: number;
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
-  seeking: boolean;
-  setSeeking: React.Dispatch<React.SetStateAction<boolean>>;
   volume: number;
   setVolume: React.Dispatch<React.SetStateAction<number>>;
   fullScreen: boolean;
@@ -44,31 +44,35 @@ type ControlsProps = {
   currentTime: number;
   wrapperRef: MutableRefObject<HTMLDivElement>;
   playerRef: MutableRefObject<ReactPlayer>;
-  backwardVideo: (e: any) => void;
-  forwardVideo: (e: any) => void;
+  backwardVideo: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  forwardVideo: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 export const Controls = ({
-  playing,
+  playing, // 재생 여부
   setPlaying,
-  playbackRate,
+  playbackRate, // 배속
   setPlaybackRate,
-  duration,
-  setDuration,
-  seeking,
-  setSeeking,
-  volume,
+  duration, // 전체 시간
+  volume, // 볼륨
   setVolume,
-  fullScreen,
+  fullScreen, // 전체 화면 여부
   setFullScreen,
-  currentTime,
-  wrapperRef,
-  playerRef,
-  backwardVideo,
-  forwardVideo,
+  currentTime, // 현재 진행 시간
+  wrapperRef, // 플레이어 Wrapper 요소
+  playerRef, // 플레이어 요소
+  backwardVideo, // 뒤로 감기 함수
+  forwardVideo, // 앞으로 감기 함수
 }: ControlsProps) => {
   const navigate = useNavigate();
+
+  // 음량, 속도, 자막 설정 컨트롤 보여줄 지 여부
   const [showVolume, setShowVolume] = useState(false);
+  const [showSpeed, setShowSpeed] = useState(false);
+  const [showSubtitleControl, setShowSubtitleControl] = useState(false);
+
+  // 신고 팝업 보여줄 지 여부
+  const [showReportPopup, setShowReportPopup] = useState(false);
 
   // 미디어 크기에 따라 아이콘 사이즈 다르게 제공
   const [iconSize, setIconSize] = useState(30);
@@ -84,7 +88,7 @@ export const Controls = ({
       `${theme.device.phone}, ${theme.device.tablet}`,
     );
     setIsMobile(mediaQuery.matches);
-    const handleMediaQueryChange = (e: any) => {
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
       setIsMobile(e.matches);
     };
     mediaQuery.addEventListener('change', handleMediaQueryChange);
@@ -93,7 +97,7 @@ export const Controls = ({
     };
   }, []);
 
-  // 재생 시간 계산
+  // 재생 중인 시간 계산
   const [timeRate, setTimeRate] = useState(0);
   useEffect(() => {
     if (duration == 0) {
@@ -105,7 +109,7 @@ export const Controls = ({
 
   // 전체 화면 버튼
   const openFullscreen = useCallback(
-    (e: any) => {
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation();
       if (!fullScreen && wrapperRef.current.requestFullscreen) {
         wrapperRef.current.requestFullscreen();
@@ -119,7 +123,7 @@ export const Controls = ({
   );
 
   // 볼륨 변경
-  const volumeChange = useCallback((e: any) => {
+  const volumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = parseFloat(e.target.value);
     setVolume(value);
@@ -136,7 +140,12 @@ export const Controls = ({
         >
           <IoArrowBackOutline size={iconSize} />
         </ControlButton>
-        <ControlButton>
+        <ControlButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowReportPopup(!showReportPopup);
+          }}
+        >
           <PiFlagPennantFill size={iconSize} />
         </ControlButton>
       </TopWrapper>
@@ -163,9 +172,6 @@ export const Controls = ({
                 'fraction',
               );
             }}
-            onMouseDown={() => {
-              setSeeking(true);
-            }}
           />
         </TimeControl>
         <BottomWrapper>
@@ -191,7 +197,7 @@ export const Controls = ({
               onMouseLeave={() => {
                 setShowVolume(false);
               }}
-              onClick={(e: any) => {
+              onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
                 e.stopPropagation();
               }}
             >
@@ -199,7 +205,7 @@ export const Controls = ({
                 {volume == 0 ? (
                   <BsVolumeMuteFill
                     size={iconSize}
-                    onClick={(e: any) => {
+                    onClick={(e: React.MouseEvent<SVGElement, MouseEvent>) => {
                       e.stopPropagation();
                       setVolume(1);
                     }}
@@ -207,7 +213,7 @@ export const Controls = ({
                 ) : (
                   <IoVolumeMediumSharp
                     size={iconSize}
-                    onClick={(e: any) => {
+                    onClick={(e: React.MouseEvent<SVGElement, MouseEvent>) => {
                       e.stopPropagation();
                       setVolume(0);
                     }}
@@ -230,10 +236,22 @@ export const Controls = ({
           </div>
           {/* 배속, 자막, 전체화면 버튼 */}
           <div>
-            <ControlButton>
+            <ControlButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSpeed(!showSpeed);
+                setShowSubtitleControl(false);
+              }}
+            >
               <SiSpeedtest size={iconSize} />
             </ControlButton>
-            <ControlButton>
+            <ControlButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSpeed(false);
+                setShowSubtitleControl(!showSubtitleControl);
+              }}
+            >
               <BsCardText size={iconSize} />
             </ControlButton>
             <ControlButton onClick={openFullscreen}>
@@ -242,6 +260,21 @@ export const Controls = ({
           </div>
         </BottomWrapper>
       </div>
+      {/* 배속, 자막 컨트롤 */}
+      {showSpeed && (
+        <PlaybackRateControl
+          playbackRate={playbackRate}
+          setPlaybackRate={setPlaybackRate}
+        />
+      )}
+      {showSubtitleControl && <SubtitleControl />}
+      {/* 신고 팝업 */}
+      <ReportPopup
+        setShowReportPopup={showReportPopup}
+        closePopup={() => {
+          setShowReportPopup(false);
+        }}
+      />
     </Container>
   );
 };

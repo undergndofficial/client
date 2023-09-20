@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import theme from 'styles/theme';
 
 export const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -75,12 +76,12 @@ export const VolumeControl = styled.div<{ volume: number }>`
       width: 1rem;
       border-radius: 50%;
       background: ${(props) => (props.volume ? 'white' : '#E5E7EB')};
-      margin-top: -3px;
+      margin-top: -4px;
       cursor: pointer;
     }
 
     &::-webkit-slider-runnable-track {
-      height: 0.6rem;
+      height: 0.5rem;
       background: ${(props) =>
         props.volume
           ? `linear-gradient(to right, white ${

@@ -19,7 +19,6 @@ import {
 import ReactPlayer from 'react-player';
 import { FaHeart } from 'react-icons/fa';
 import { PiFlagPennantFill } from 'react-icons/pi';
-import { IoStarSharp } from 'react-icons/io5';
 import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
 import Comment from './Comment';
@@ -28,7 +27,6 @@ function MoviePlayer() {
   const [playing, setPlaying] = useState(false); // 재생중
   const [volume, setVolume] = useState(0.5); // 볼륨 크기
   const [playbackRate, setPlaybackRate] = useState(1); // 배속
-  const [seeking, setSeeking] = useState(false); // 재생바 탐색
   const [duration, setDuration] = useState(0); // 전체 시간
   const [controlHide, setControlHide] = useState(true); // 컨트롤 노출 여부
   const [fullScreen, setFullScreen] = useState(false); // 전체 화면 여부
@@ -53,8 +51,8 @@ function MoviePlayer() {
 
   // 뒤로 감기
   const backwardVideo = useCallback(
-    (e: any) => {
-      e.stopPropagation();
+    (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      if (e) e.stopPropagation();
       const time = playerRef.current.getCurrentTime() - 5;
       playerRef.current.seekTo(time);
     },
@@ -63,8 +61,8 @@ function MoviePlayer() {
 
   // 앞으로 감기
   const forwardVideo = useCallback(
-    (e: any) => {
-      e.stopPropagation();
+    (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      if (e) e.stopPropagation();
       const time = playerRef.current.getCurrentTime() + 5;
       playerRef.current.seekTo(time);
     },
@@ -73,14 +71,15 @@ function MoviePlayer() {
 
   useEffect(() => {
     // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
-    const keyEvent = (e: any) => {
-      if (e.keyCode === 32) setPlaying(!playing);
-      else if (e.keyCode === 38)
+    // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
+    const keyEvent = (e: KeyboardEvent) => {
+      if (e.key === ' ') setPlaying(!playing);
+      else if (e.key === 'ArrowUp')
         setVolume(volume + 0.05 >= 1 ? 1 : volume + 0.05);
-      else if (e.keyCode === 40)
+      else if (e.key === 'ArrowDown')
         setVolume(volume - 0.05 <= 0 ? 0 : volume - 0.05);
-      else if (e.keyCode === 37) backwardVideo(e);
-      else if (e.keyCode === 39) forwardVideo(e);
+      else if (e.key === 'ArrowLeft') backwardVideo();
+      else if (e.key === 'ArrowRight') forwardVideo();
       else return;
       e.preventDefault();
       setControlHide(false);
@@ -142,9 +141,6 @@ function MoviePlayer() {
             playbackRate={playbackRate}
             setPlaybackRate={setPlaybackRate}
             duration={duration}
-            setDuration={setDuration}
-            seeking={seeking}
-            setSeeking={setSeeking}
             setPlaying={setPlaying}
             fullScreen={fullScreen}
             setFullScreen={setFullScreen}
