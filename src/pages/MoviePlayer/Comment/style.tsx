@@ -23,20 +23,25 @@ export const BackButton = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   cursor: pointer;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.4rem;
+  height: 1.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 export const StarRateDiv = styled.div`
-  position: absolute;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: black;
-  top: 9px;
-  left: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & div {
+    position: absolute;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: black;
+    padding-top: 4px;
+  }
 `;
 
 export const CommentInput = styled.div`
