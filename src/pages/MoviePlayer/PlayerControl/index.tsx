@@ -41,6 +41,7 @@ type ControlsProps = {
   setVolume: React.Dispatch<React.SetStateAction<number>>;
   fullScreen: boolean;
   setFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentTime: number;
   wrapperRef: MutableRefObject<HTMLDivElement>;
   playerRef: MutableRefObject<ReactPlayer>;
   backwardVideo: (e: any) => void;
@@ -60,6 +61,7 @@ export const Controls = ({
   setVolume,
   fullScreen,
   setFullScreen,
+  currentTime,
   wrapperRef,
   playerRef,
   backwardVideo,
@@ -90,6 +92,16 @@ export const Controls = ({
       mediaQuery.removeEventListener('change', handleMediaQueryChange);
     };
   }, []);
+
+  // 재생 시간 계산
+  const [timeRate, setTimeRate] = useState(0);
+  useEffect(() => {
+    if (duration == 0) {
+      setTimeRate(0);
+      return;
+    }
+    setTimeRate((currentTime / duration) * 100);
+  }, [currentTime]);
 
   // 전체 화면 버튼
   const openFullscreen = useCallback(
@@ -134,12 +146,17 @@ export const Controls = ({
       </CenterButton>
       {/* 하단 버튼 */}
       <div>
-        <TimeControl time={70}>
+        <TimeControl
+          time={timeRate}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <input
             type={'range'}
             min={0}
             max={100}
-            value={70}
+            value={timeRate}
             onChange={(e) => {
               playerRef.current.seekTo(
                 parseInt(e.target.value) / 100,
@@ -148,9 +165,6 @@ export const Controls = ({
             }}
             onMouseDown={() => {
               setSeeking(true);
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
             }}
           />
         </TimeControl>

@@ -32,9 +32,15 @@ function MoviePlayer() {
   const [duration, setDuration] = useState(0); // 전체 시간
   const [controlHide, setControlHide] = useState(true); // 컨트롤 노출 여부
   const [fullScreen, setFullScreen] = useState(false); // 전체 화면 여부
+  const [currentTime, setCurrentTime] = useState(0); // 현재 재생 시간
   const playerRef = useRef() as MutableRefObject<ReactPlayer>;
   const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
   let timer: NodeJS.Timeout | null = null;
+
+  // 비디오 진행에 따라 호출되는 핸들러
+  const handleProgress = useCallback(() => {
+    setCurrentTime(playerRef.current.getCurrentTime());
+  }, []);
 
   // 5초간 마우스 움직임이 없으면 컨트롤 가리기
   const mouseMoveHandle = useCallback(() => {
@@ -65,8 +71,8 @@ function MoviePlayer() {
     [playerRef, duration],
   );
 
-  // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
   useEffect(() => {
+    // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
     const keyEvent = (e: any) => {
       if (e.keyCode === 32) setPlaying(!playing);
       else if (e.keyCode === 38)
@@ -91,6 +97,9 @@ function MoviePlayer() {
 
     window.addEventListener('keydown', keyEvent);
     document.addEventListener('fullscreenchange', changeFullScreen);
+
+    // 비디오 전체 시간 설정
+    setDuration(playerRef.current.getDuration() || 0);
 
     return () => {
       window.removeEventListener('keydown', keyEvent);
@@ -121,6 +130,7 @@ function MoviePlayer() {
             setControlHide(false);
           }}
           loop={false}
+          onProgress={handleProgress}
         />
         {!controlHide && (
           <Controls
@@ -140,6 +150,7 @@ function MoviePlayer() {
             setFullScreen={setFullScreen}
             backwardVideo={backwardVideo}
             forwardVideo={forwardVideo}
+            currentTime={currentTime}
           />
         )}
       </PlayerWrapper>
