@@ -7,6 +7,7 @@ export const Container = styled.div`
   height: 100vh;
   width: 100vw;
   overflow: auto;
+  position: relative;
 `;
 
 export const Content = styled.div`
