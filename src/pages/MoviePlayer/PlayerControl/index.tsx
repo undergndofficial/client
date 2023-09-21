@@ -25,7 +25,6 @@ import { BsCardText, BsVolumeMuteFill } from 'react-icons/bs';
 import { GiPauseButton } from 'react-icons/gi';
 import { SiSpeedtest } from 'react-icons/si';
 import { RiFullscreenLine } from 'react-icons/ri';
-import theme from 'styles/theme';
 import ReactPlayer from 'react-player';
 import PlaybackRateControl from './PlaybackRateControl';
 import SubtitleControl from './SubtitlesControl';
@@ -46,6 +45,7 @@ type ControlsProps = {
   playerRef: MutableRefObject<ReactPlayer>;
   backwardVideo: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   forwardVideo: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isMobile: boolean;
 };
 
 export const Controls = ({
@@ -63,6 +63,7 @@ export const Controls = ({
   playerRef, // 플레이어 요소
   backwardVideo, // 뒤로 감기 함수
   forwardVideo, // 앞으로 감기 함수
+  isMobile, // 모바일 화면인지 여부
 }: ControlsProps) => {
   const navigate = useNavigate();
 
@@ -76,26 +77,11 @@ export const Controls = ({
 
   // 미디어 크기에 따라 아이콘 사이즈 다르게 제공
   const [iconSize, setIconSize] = useState(30);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (isMobile) setIconSize(18);
     else setIconSize(30);
   }, [isMobile]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(
-      `${theme.device.phone}, ${theme.device.tablet}`,
-    );
-    setIsMobile(mediaQuery.matches);
-    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
-      setIsMobile(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleMediaQueryChange);
-    return () => {
-      mediaQuery.removeEventListener('change', handleMediaQueryChange);
-    };
-  }, []);
 
   // 재생 중인 시간 계산
   const [timeRate, setTimeRate] = useState(0);

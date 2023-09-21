@@ -21,6 +21,7 @@ import { FaHeart } from 'react-icons/fa';
 import { PiFlagPennantFill } from 'react-icons/pi';
 import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
+import theme from 'styles/theme';
 import Comment from './Comment';
 
 function MoviePlayer() {
@@ -31,9 +32,24 @@ function MoviePlayer() {
   const [controlHide, setControlHide] = useState(true); // 컨트롤 노출 여부
   const [fullScreen, setFullScreen] = useState(false); // 전체 화면 여부
   const [currentTime, setCurrentTime] = useState(0); // 현재 재생 시간
+  const [isMobile, setIsMobile] = useState(false); // 모바일 화면인지 여부
   const playerRef = useRef() as MutableRefObject<ReactPlayer>;
   const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
   let timer: NodeJS.Timeout | null = null;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      `${theme.device.phone}, ${theme.device.tablet}`,
+    );
+    setIsMobile(mediaQuery.matches);
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
+    return () => {
+      mediaQuery.removeEventListener('change', handleMediaQueryChange);
+    };
+  }, []);
 
   // 비디오 진행에 따라 호출되는 핸들러
   const handleProgress = useCallback(() => {
@@ -120,7 +136,7 @@ function MoviePlayer() {
           ref={playerRef}
           url="/assets/tmp-movie.mp4"
           width="100%"
-          height={fullScreen ? '100vh' : '85vh'}
+          height={isMobile || fullScreen ? '100%' : '77vh'}
           playing={playing}
           volume={volume}
           playbackRate={playbackRate}
@@ -147,6 +163,7 @@ function MoviePlayer() {
             backwardVideo={backwardVideo}
             forwardVideo={forwardVideo}
             currentTime={currentTime}
+            isMobile={isMobile}
           />
         )}
       </PlayerWrapper>
