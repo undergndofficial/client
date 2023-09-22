@@ -2,16 +2,14 @@ import React, { useCallback } from 'react';
 import {
   RecentKeywordWrapper,
   RecentKeywordDiv,
-  DeleteButton,
-  AllDeleteButton,
   EmptyResultDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * 최근 검색어 결과 컴포넌트
+ * 인기 검색어 결과 컴포넌트
  */
-function RecentKeywordResult() {
+function TopKeywordResult() {
   // 임시 데이터
   const keywords: string[] = [
     '파수꾼',
@@ -49,7 +47,7 @@ function RecentKeywordResult() {
     <div>
       {keywords.length === 0 ? (
         <EmptyResultDiv>
-          <div>최근 검색기록이 없습니다</div>
+          <div>인기 검색어가 없습니다</div>
         </EmptyResultDiv>
       ) : (
         <>
@@ -61,18 +59,23 @@ function RecentKeywordResult() {
                   onClickKeyword(keyword);
                 }}
               >
-                <div>{keyword}</div>
-                <DeleteButton>&times;</DeleteButton>
+                <div>
+                  {i < 3 && (
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/top${
+                        i + 1
+                      }-icon.svg`}
+                    />
+                  )}
+                  {keyword}
+                </div>
               </RecentKeywordDiv>
             ))}
           </RecentKeywordWrapper>
-          <AllDeleteButton>
-            <div>검색기록 모두 삭제</div>
-          </AllDeleteButton>
         </>
       )}
     </div>
   );
 }
 
-export default RecentKeywordResult;
+export default TopKeywordResult;

@@ -3,6 +3,7 @@ import { Container, Logo, Toolbar } from './style';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import { IoLogIn } from 'react-icons/io5';
 import SearchPopup from './SearchPopup';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -19,10 +20,15 @@ function Header({
 }: HeaderPropsType) {
   // 임시 데이터
   const isLogin = false;
+  const navigate = useNavigate();
 
   return (
     <Container scrollTop={scrollTop}>
-      <Logo src={`${process.env.PUBLIC_URL}assets/logoicon.svg`} alt="logo" />
+      <Logo
+        src={`${process.env.PUBLIC_URL}/assets/logoicon.svg`}
+        alt="logo"
+        onClick={() => navigate('/')}
+      />
       <Toolbar>
         <FaSearch
           size="21"
@@ -35,7 +41,9 @@ function Header({
         {isLogin && <FaUser size="21" />}
         {!isLogin && <IoLogIn size="31" />}
       </Toolbar>
-      {showSearchPopup && <SearchPopup />}
+      {showSearchPopup && (
+        <SearchPopup setShowSearchPopup={setShowSearchPopup} />
+      )}
     </Container>
   );
 }

@@ -125,7 +125,7 @@ function MoviePlayer() {
   const [isLike, setIsLike] = useState(false);
   // 하트 버튼 클릭 핸들러
   const onClickLikeButton = useCallback(() => {
-    setIsLike((prev) => !prev);
+    setIsLike((prev: boolean) => !prev);
   }, []);
 
   return (
@@ -179,7 +179,7 @@ function MoviePlayer() {
           <div>
             파수꾼{' '}
             <img
-              src={`${process.env.PUBLIC_URL}assets/baytree.svg`}
+              src={`${process.env.PUBLIC_URL}/assets/baytree.svg`}
               alt="icon"
             />
           </div>

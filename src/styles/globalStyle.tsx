@@ -39,6 +39,7 @@ const baseStyle = css`
     height: 100%;
     overflow: auto;
     background-color: var(--color-background);
+    line-height: normal;
   }
   textarea,
   input:focus {

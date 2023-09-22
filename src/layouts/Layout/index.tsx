@@ -6,7 +6,13 @@ import { Container, Content } from './style';
 /**
  * 레이아웃 컴포넌트
  */
-function Layout({ children }: { children: ReactNode }) {
+function Layout({
+  showFooter = true,
+  children,
+}: {
+  showFooter?: boolean; //footer 보여줄지 여부 . 기본값은 true고 안보여주고 싶으면 false로 전달
+  children: ReactNode;
+}) {
   // 스크롤이 맨 위에 있지 않은 경우 감지
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [isScrollTop, setIsScrollTop] = useState(true);
@@ -37,7 +43,7 @@ function Layout({ children }: { children: ReactNode }) {
         setShowSearchPopup={setShowSearchPopup}
       />
       <Content>{children}</Content>
-      <Footer />
+      {showFooter && <Footer />}
     </Container>
   );
 }

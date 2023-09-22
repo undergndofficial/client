@@ -1,11 +1,17 @@
 import React, { useCallback, useState } from 'react';
-import { Container, SearchInputDiv, TabWrapper, TabDiv } from './style';
+import { useNavigate } from 'react-router-dom';
+import { Container, SearchInputForm, TabWrapper, TabDiv } from './style';
 import RecentKeywordResult from './RecentKeywordResult';
+import TopKeywordResult from './TopKeywordResult';
 
 /**
  * 검색 팝업 컴포넌트
  */
-function SearchPopup() {
+function SearchPopup({
+  setShowSearchPopup,
+}: {
+  setShowSearchPopup: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   // 탭 목록
   const RECENT = 'recent';
   const TOP = 'top';
@@ -15,12 +21,23 @@ function SearchPopup() {
   ];
 
   const [curTab, setCurTab] = useState(tabList[0]);
-  const [keyowrd, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState('');
   const onChangeKeyword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setKeyword(e.target.value);
     },
     [],
+  );
+
+  // 검색 결과 페이지로 이동
+  const navigate = useNavigate();
+  const onSubmitSearchForm = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      setShowSearchPopup(false);
+      navigate(`/search/${keyword}`);
+    },
+    [keyword],
   );
 
   return (
@@ -29,13 +46,14 @@ function SearchPopup() {
         e.stopPropagation();
       }}
     >
-      <SearchInputDiv>
+      <SearchInputForm onSubmit={onSubmitSearchForm}>
         <input
           placeholder="검색어"
-          value={keyowrd}
+          value={keyword}
           onChange={onChangeKeyword}
         />
-      </SearchInputDiv>
+        <button />
+      </SearchInputForm>
       <TabWrapper>
         {tabList.map((tab) => (
           <TabDiv
@@ -50,6 +68,7 @@ function SearchPopup() {
         ))}
       </TabWrapper>
       {curTab.id === RECENT && <RecentKeywordResult />}
+      {curTab.id === TOP && <TopKeywordResult />}
     </Container>
   );
 }

@@ -11,7 +11,7 @@ export const EmptyResultDiv = styled.div`
 export const RecentKeywordWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.2rem;
   padding: 0 3rem;
   max-height: 14rem;
   overflow: auto;
@@ -20,29 +20,16 @@ export const RecentKeywordWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  & img {
+    margin-right: 7px;
+  }
 `;
 
 export const RecentKeywordDiv = styled.div`
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: center;
   align-items: center;
   font-weight: 700;
   cursor: pointer;
-`;
-
-export const DeleteButton = styled.div`
-  color: #666;
-  font-size: 1.4rem;
-  font-weight: normal;
-  cursor: pointer;
-`;
-
-export const AllDeleteButton = styled.div`
-  display: flex;
-  justify-content: end;
-  cursor: pointer;
-  color: #a7a7a7;
-  font-size: 0.625rem;
-  font-weight: 700;
-  margin-top: 0.8rem;
 `;

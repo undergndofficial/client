@@ -13,7 +13,7 @@ export const Container = styled.div`
   max-height: 25rem;
 `;
 
-export const SearchInputDiv = styled.div`
+export const SearchInputForm = styled.form`
   display: flex;
   align-items: center;
   & input {
@@ -23,7 +23,15 @@ export const SearchInputDiv = styled.div`
     font-weight: 700;
     background: #0c0c0f;
     border: none;
-    padding: 0.5rem 2rem 0.5rem 0.5rem;
+    padding: 0.5rem;
+  }
+  & button {
+    width: 2rem;
+    height: 2rem;
+    background-color: transparent;
+    border: none;
+    z-index: 999;
+    cursor: pointer;
   }
 `;
 
