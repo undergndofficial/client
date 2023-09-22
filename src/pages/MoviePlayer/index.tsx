@@ -13,11 +13,10 @@ import {
   MovieDetailDiv,
   IconWrapper,
   RunningTimeDiv,
-  RatingWrapper,
   PlayerWrapper,
+  HeartIcon,
 } from './style';
 import ReactPlayer from 'react-player';
-import { FaHeart } from 'react-icons/fa';
 import { PiFlagPennantFill } from 'react-icons/pi';
 import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
@@ -122,6 +121,13 @@ function MoviePlayer() {
     };
   }, [playing, volume, fullScreen]);
 
+  // 임시 데이터
+  const [isLike, setIsLike] = useState(false);
+  // 하트 버튼 클릭 핸들러
+  const onClickLikeButton = useCallback(() => {
+    setIsLike((prev) => !prev);
+  }, []);
+
   return (
     <Container>
       <PlayerWrapper
@@ -178,7 +184,11 @@ function MoviePlayer() {
             />
           </div>
           <IconWrapper>
-            <FaHeart size="23" />
+            <HeartIcon
+              size="23"
+              onClick={onClickLikeButton}
+              selected={isLike}
+            />
             <PiFlagPennantFill size="25" />
           </IconWrapper>
         </TitleDiv>
@@ -199,15 +209,13 @@ function MoviePlayer() {
             일이 벌어진 걸까?
           </div>
           <div>
-            <RatingWrapper>
-              <Rating
-                rating={4.5}
-                starEmptyColor="transparent"
-                starRatedColor="#bdff00"
-                starDimension="1.5rem"
-                starSpacing="2px"
-              />
-            </RatingWrapper>
+            <Rating
+              rating={1.5}
+              starEmptyColor="grey"
+              starRatedColor="#bdff00"
+              starDimension="1.5rem"
+              starSpacing="2px"
+            />
             <RunningTimeDiv>
               총 1시간 56분
               <br />

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
+import { FaHeart } from 'react-icons/fa';
 
 export const Container = styled.div`
   display: flex;
@@ -10,7 +11,6 @@ export const Container = styled.div`
   color: var(--color-font);
   width: 100%;
   box-sizing: border-box;
-  cursor: pointer;
   padding-bottom: 5rem;
 `;
 
@@ -35,6 +35,7 @@ export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+  cursor: pointer;
 `;
 
 export const DescriptionDiv = styled.div`
@@ -67,13 +68,6 @@ export const RunningTimeDiv = styled.div`
   }
 `;
 
-export const RatingWrapper = styled.div`
-  direction: rtl;
-  @media ${theme.device.tablet}, ${theme.device.phone} {
-    direction: ltr;
-  }
-`;
-
 export const MovieDetailDiv = styled.div`
   color: var(--color-textgrey);
   display: flex;
@@ -86,4 +80,9 @@ export const MovieDetailDiv = styled.div`
 export const PlayerWrapper = styled.div`
   position: relative;
   width: 100%;
+`;
+
+export const HeartIcon = styled(FaHeart)<{ selected?: boolean }>`
+  color: ${(props) =>
+    props.selected ? 'var(--color-heartlike)' : 'var(--color-font)'};
 `;

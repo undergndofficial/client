@@ -15,6 +15,7 @@ const baseStyle = css`
     --color-star3: #d3f7ff;
     --color-star2: #ff8a00;
     --color-star1: #ff0000;
+    --color-heartlike: #ff0000;
   }
   html {
     @media ${theme.device.phone} {
