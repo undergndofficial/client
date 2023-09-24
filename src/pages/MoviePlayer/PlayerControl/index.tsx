@@ -129,7 +129,7 @@ export const Controls = ({
         <ControlButton
           onClick={(e) => {
             e.stopPropagation();
-            setShowReportPopup(!showReportPopup);
+            setShowReportPopup((prev) => !prev);
           }}
         >
           <PiFlagPennantFill size={iconSize} />
@@ -225,7 +225,7 @@ export const Controls = ({
             <ControlButton
               onClick={(e) => {
                 e.stopPropagation();
-                setShowSpeed(!showSpeed);
+                setShowSpeed((prev) => !prev);
                 setShowSubtitleControl(false);
               }}
             >
@@ -235,7 +235,7 @@ export const Controls = ({
               onClick={(e) => {
                 e.stopPropagation();
                 setShowSpeed(false);
-                setShowSubtitleControl(!showSubtitleControl);
+                setShowSubtitleControl((prev) => !prev);
               }}
             >
               <BsCardText size={iconSize} />
@@ -256,7 +256,7 @@ export const Controls = ({
       {showSubtitleControl && <SubtitleControl />}
       {/* 신고 팝업 */}
       <ReportPopup
-        setShowReportPopup={showReportPopup}
+        showReportPopup={showReportPopup}
         closePopup={() => {
           setShowReportPopup(false);
         }}

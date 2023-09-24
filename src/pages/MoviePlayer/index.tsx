@@ -88,7 +88,7 @@ function MoviePlayer() {
     // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
     // 키보드로 조작할 수 있도록 키 다운 이벤트 리스너 설정
     const keyEvent = (e: KeyboardEvent) => {
-      if (e.key === ' ') setPlaying(!playing);
+      if (e.key === ' ') setPlaying((prev) => !prev);
       else if (e.key === 'ArrowUp')
         setVolume(volume + 0.05 >= 1 ? 1 : volume + 0.05);
       else if (e.key === 'ArrowDown')
@@ -135,7 +135,7 @@ function MoviePlayer() {
         onMouseLeave={() => {
           setControlHide(true);
         }}
-        onClick={() => setPlaying(!playing)}
+        onClick={() => setPlaying((prev) => !prev)}
         ref={wrapperRef}
       >
         <ReactPlayer

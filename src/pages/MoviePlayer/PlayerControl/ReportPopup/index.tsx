@@ -21,10 +21,10 @@ interface ReportType {
  * 신고 팝업 컴포넌트
  */
 function ReportPopup({
-  setShowReportPopup,
+  showReportPopup,
   closePopup,
 }: {
-  setShowReportPopup: boolean;
+  showReportPopup: boolean;
   closePopup: () => void;
 }) {
   const reportList: ReportType[] = [
@@ -53,7 +53,7 @@ function ReportPopup({
   ];
 
   return (
-    <Container visible={setShowReportPopup}>
+    <Container visible={showReportPopup}>
       <ReportTitleDiv>
         <div>어떤 문제를 겪고 계신가요? </div>
         <AiOutlineClose
