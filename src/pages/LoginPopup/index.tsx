@@ -9,7 +9,6 @@ import {
   LoginButton,
   FindPasswordButton,
   JoinButton,
-  CheckBoxDiv,
   InputWrapper,
   BackButton,
 } from './style';
@@ -18,6 +17,7 @@ import { IoMdMail, IoMdLock } from 'react-icons/io';
 import useInput from 'hooks/useInput';
 import FindPassword from './FindPassword';
 import { useNavigate } from 'react-router-dom';
+import Checkbox from 'components/Checkbox';
 
 /**
  * 로그인 팝업 컴포넌트
@@ -81,7 +81,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 setCheckedRemember((prev) => !prev);
               }}
             >
-              <CheckBoxDiv>{checkedRemember && '✓'}</CheckBoxDiv>
+              <Checkbox checked={checkedRemember} />
               <div>&nbsp; 아이디 저장</div>
             </RememberIdDiv>
           </LoginForm>

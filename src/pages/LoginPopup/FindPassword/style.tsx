@@ -24,6 +24,7 @@ export const ContentDiv = styled.div`
 export const FindIconWrapper = styled.div`
   display: flex;
   width: 8.75rem;
+  max-width: 100%;
   height: 8.75rem;
   justify-content: center;
   align-items: center;
@@ -35,6 +36,7 @@ export const FindIconWrapper = styled.div`
 
 export const FindWayDiv = styled.div`
   display: flex;
+  max-width: calc(50% - 0.5rem);
   flex-direction: column;
   gap: 0.5rem;
   justify-content: center;

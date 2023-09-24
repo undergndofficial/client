@@ -58,9 +58,6 @@ export const LoginForm = styled.form`
   @media ${theme.device.phone} {
     width: 80%;
   }
-  & input[type='checkbox'] {
-    cursor: pointer;
-  }
 `;
 
 export const InputWrapper = styled.div`
@@ -80,16 +77,6 @@ export const InputWrapper = styled.div`
     border: none;
     border-bottom: 1px solid #666;
   }
-`;
-
-export const CheckBoxDiv = styled.div`
-  width: 0.8rem;
-  height: 0.8rem;
-  background-color: #4a4a4a;
-  border-radius: 2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const ButtonWrapper = styled.div`

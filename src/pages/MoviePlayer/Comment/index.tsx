@@ -13,7 +13,8 @@ import {
   WriterDiv,
 } from './style';
 import { BsChevronRight } from 'react-icons/bs';
-import { CommonButton, CommonInput } from 'styles/commonStyle';
+import Input from 'components/Input';
+import Button from 'components/Button';
 
 function Comment() {
   const [starRate, setStarRate] = useState(0);
@@ -48,8 +49,8 @@ function Comment() {
         )}
       </StarWrapper>
       <CommentInput>
-        <CommonInput placeholder="댓글 내용을 작성해주세요." />
-        <CommonButton width="6.5rem">게시</CommonButton>
+        <Input placeholder="댓글 내용을 작성해주세요." width="100%" />
+        <Button width="6.5rem">게시</Button>
       </CommentInput>
       <CommentListDiv>
         <div>

@@ -5,11 +5,10 @@ interface SizeProp {
   height?: string;
 }
 
-export const CommonButton = styled.button<SizeProp>`
+const Button = styled.button<SizeProp>`
   display: flex;
   ${(props) => (props.width ? `width:${props.width};` : '')}
   ${(props) => (props.height ? `height:${props.height};` : '')}
-  width: 6.5rem;
   padding: 0.4375rem 1.25rem;
   justify-content: center;
   align-items: center;
@@ -24,12 +23,4 @@ export const CommonButton = styled.button<SizeProp>`
   cursor: pointer;
 `;
 
-export const CommonInput = styled.input<SizeProp>`
-  width: 100%;
-  padding: 0 1.25rem;
-  border: 2px solid #666;
-  background: #4a4a4a;
-  color: var(--color-font);
-  ${(props) => (props.width ? `width:${props.width};` : '')}
-  ${(props) => (props.height ? `height:${props.height};` : '')}
-`;
+export default Button;

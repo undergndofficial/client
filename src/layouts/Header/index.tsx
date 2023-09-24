@@ -2,10 +2,10 @@ import React, { useState, useCallback } from 'react';
 import { Container, Logo, Toolbar } from './style';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import { IoLogIn } from 'react-icons/io5';
-import SearchPopup from 'components/SearchPopup';
+import SearchPopup from 'pages/SearchPopup';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'layouts/Modal';
-import LoginPopup from 'components/LoginPopup';
+import LoginPopup from 'pages/LoginPopup';
 
 interface HeaderPropsType {
   scrollTop: boolean;

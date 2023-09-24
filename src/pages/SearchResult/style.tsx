@@ -1,14 +1,9 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
-  padding-top: 10rem;
-  width: 100%;
-`;
-
 export const KeywordWrapper = styled.div`
   color: #fff;
   text-align: center;
-  font-size: 2.3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   padding: 1.5rem;
   display: flex;
