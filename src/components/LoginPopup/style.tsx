@@ -8,6 +8,7 @@ export const Container = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   width: 43.75rem;
+  height: 33rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -21,8 +22,16 @@ export const Container = styled.div`
 
 export const CloseButton = styled.div`
   position: absolute;
-  top: 15px;
+  top: 20px;
   right: 25px;
+  font-size: 2rem;
+  cursor: pointer;
+`;
+
+export const BackButton = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 25px;
   font-size: 2rem;
   cursor: pointer;
 `;
