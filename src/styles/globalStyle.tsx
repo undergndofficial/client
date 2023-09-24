@@ -40,6 +40,16 @@ const baseStyle = css`
     overflow: auto;
     background-color: var(--color-background);
     line-height: normal;
+    & ::-webkit-scrollbar {
+      width: 0.6rem;
+    }
+    & ::-webkit-scrollbar-thumb {
+      border-radius: 0.25rem;
+      background: #c1c1c1;
+    }
+    & ::-webkit-scrollbar-track {
+      background-color: #0c0c0f;
+    }
   }
   textarea,
   input:focus {
