@@ -25,23 +25,9 @@ function Layout({
     }
   }, []);
 
-  // 검색 팝업 열고 닫기 (여는건 헤더에서 여는데 닫는건 밖에서 닫아야 해서 ... )
-  const [showSearchPopup, setShowSearchPopup] = useState(false);
-  const closeSearchPopup = useCallback(() => {
-    setShowSearchPopup(false);
-  }, []);
-
   return (
-    <Container
-      onScroll={onScrollContent}
-      ref={contentRef}
-      onClick={closeSearchPopup}
-    >
-      <Header
-        scrollTop={isScrollTop}
-        showSearchPopup={showSearchPopup}
-        setShowSearchPopup={setShowSearchPopup}
-      />
+    <Container onScroll={onScrollContent} ref={contentRef}>
+      <Header scrollTop={isScrollTop} />
       <Content>{children}</Content>
       {showFooter && <Footer />}
     </Container>

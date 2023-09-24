@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
   position: absolute;
+  width: 37.5rem;
   top: 0.6rem;
   right: 8rem;
   display: inline-flex;
@@ -33,25 +34,4 @@ export const SearchInputForm = styled.form`
     z-index: 999;
     cursor: pointer;
   }
-`;
-
-export const TabWrapper = styled.div`
-  display: flex;
-  gap: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem 1rem 1rem;
-`;
-
-export const TabDiv = styled.div<{ selected: boolean }>`
-  border-radius: 3.0625rem;
-  color: #666;
-  font-weight: 700;
-  text-align: center;
-  padding: 1rem 2rem;
-  cursor: pointer;
-  ${(props) => props.selected && 'color: var(--color-font)'};
-  ${(props) => props.selected && 'font-size: 1.1rem'};
-  ${(props) => props.selected && 'background-color: #2F2F2F'};
 `;

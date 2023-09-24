@@ -1,26 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, SearchInputForm, TabWrapper, TabDiv } from './style';
+import { Container, SearchInputForm } from './style';
 import RecentKeywordResult from './RecentKeywordResult';
-import TopKeywordResult from './TopKeywordResult';
-
 /**
  * 검색 팝업 컴포넌트
  */
-function SearchPopup({
-  setShowSearchPopup,
-}: {
-  setShowSearchPopup: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  // 탭 목록
-  const RECENT = 'recent';
-  const TOP = 'top';
-  const tabList = [
-    { id: RECENT, label: '최근 검색어' },
-    { id: TOP, label: '인기 검색어' },
-  ];
-
-  const [curTab, setCurTab] = useState(tabList[0]);
+function SearchPopup({ closeSearchPopup }: { closeSearchPopup: () => void }) {
   const [keyword, setKeyword] = useState('');
   const onChangeKeyword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +19,7 @@ function SearchPopup({
   const onSubmitSearchForm = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      setShowSearchPopup(false);
+      closeSearchPopup();
       navigate(`/search/${keyword}`);
     },
     [keyword],
@@ -54,21 +39,7 @@ function SearchPopup({
         />
         <button />
       </SearchInputForm>
-      <TabWrapper>
-        {tabList.map((tab) => (
-          <TabDiv
-            key={tab.id}
-            onClick={() => {
-              setCurTab(tab);
-            }}
-            selected={tab.id === curTab.id}
-          >
-            {tab.label}
-          </TabDiv>
-        ))}
-      </TabWrapper>
-      {curTab.id === RECENT && <RecentKeywordResult />}
-      {curTab.id === TOP && <TopKeywordResult />}
+      <RecentKeywordResult />
     </Container>
   );
 }
