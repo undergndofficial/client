@@ -121,7 +121,7 @@ export const Controls = ({
       <TopWrapper>
         <ControlButton
           onClick={() => {
-            navigate('/');
+            navigate(-1);
           }}
         >
           <IoArrowBackOutline size={iconSize} />

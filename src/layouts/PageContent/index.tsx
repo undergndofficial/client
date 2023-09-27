@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function PageContent({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const onClickBackButton = useCallback(() => {
-    navigate('/');
+    navigate(-1);
   }, []);
   return (
     <Container>
