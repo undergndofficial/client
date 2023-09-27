@@ -12,6 +12,7 @@ export const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  padding-bottom: 0.8rem;
 `;
 
 export const CenterButton = styled.div`

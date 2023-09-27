@@ -79,7 +79,7 @@ export const Controls = ({
   const [iconSize, setIconSize] = useState(30);
 
   useEffect(() => {
-    if (isMobile) setIconSize(18);
+    if (isMobile) setIconSize(21);
     else setIconSize(30);
   }, [isMobile]);
 
@@ -137,7 +137,11 @@ export const Controls = ({
       </TopWrapper>
       {/* 가운데 일시정지/재생 버튼 */}
       <CenterButton>
-        {playing ? <GiPauseButton size="70" /> : <IoMdPlay size="70" />}
+        {playing ? (
+          <GiPauseButton size={iconSize * 2} />
+        ) : (
+          <IoMdPlay size={iconSize * 2} />
+        )}
       </CenterButton>
       {/* 하단 버튼 */}
       <div>
