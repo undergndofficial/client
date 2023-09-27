@@ -24,11 +24,13 @@ function SearchResultItem() {
   }, []);
 
   const navigate = useNavigate();
+  // 임시
+  const id = 1;
 
   return (
     <Container
       onClick={() => {
-        navigate('/player');
+        navigate(`/player/${id}`);
       }}
     >
       <PosterDiv url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg">

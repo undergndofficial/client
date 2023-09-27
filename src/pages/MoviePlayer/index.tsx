@@ -22,6 +22,7 @@ import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
 import theme from 'styles/theme';
 import Comment from './Comment';
+import { useParams } from 'react-router-dom';
 
 function MoviePlayer() {
   const [playing, setPlaying] = useState(false); // 재생중
@@ -34,6 +35,8 @@ function MoviePlayer() {
   const [isMobile, setIsMobile] = useState(false); // 모바일 화면인지 여부
   const playerRef = useRef() as MutableRefObject<ReactPlayer>;
   const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const { id } = useParams();
+  console.log(id);
   let timer: NodeJS.Timeout | null = null;
 
   useEffect(() => {

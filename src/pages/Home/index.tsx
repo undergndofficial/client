@@ -17,13 +17,15 @@ function Home() {
     { label: '동의대', iconUrl: '/assets/tag-dongui.svg' },
   ];
   const navigate = useNavigate();
+  // 임시
+  const id = 1;
 
   return (
     <Layout>
       <MainPosterDiv url="https://blog.kakaocdn.net/dn/bUzgFU/btqH4sUMSK8/Aas3KFvbzbyr62OPIM9jXk/img.jpg">
         <DetailButton
           onClick={() => {
-            navigate('/player');
+            navigate(`/player/${id}`);
           }}
         >
           자세히 보기

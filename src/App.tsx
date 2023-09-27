@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<Join />} />
-          <Route path="/player" element={<MoviePlayer />} />
+          <Route path="/player/:id" element={<MoviePlayer />} />
           <Route path="/search/:keyword" element={<SearchResult />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
