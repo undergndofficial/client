@@ -44,7 +44,7 @@ function Header({ scrollTop }: HeaderPropsType) {
             e.stopPropagation();
             setShowSearchPopup(true);
           }}
-          style={{ zIndex: 999 }}
+          className="search-icon"
         />
         {isLogin && <FaUser size="21" />}
         {!isLogin && (

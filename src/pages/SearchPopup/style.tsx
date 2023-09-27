@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from 'styles/theme';
 
 export const Container = styled.div`
   position: absolute;
@@ -12,11 +13,32 @@ export const Container = styled.div`
   padding: 1rem;
   gap: 0.8rem;
   max-height: 25rem;
+  box-sizing: border-box;
+  @media ${theme.device.phone}, ${theme.device.tablet} {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    cursor: pointer;
+  }
 `;
 
 export const SearchInputForm = styled.form`
   display: flex;
   align-items: center;
+  .mobile-button {
+    display: none;
+    @media ${theme.device.phone}, ${theme.device.tablet} {
+      display: block;
+    }
+  }
+  @media ${theme.device.phone}, ${theme.device.tablet} {
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
   & input {
     width: 100%;
     color: var(--color-font);
@@ -25,6 +47,12 @@ export const SearchInputForm = styled.form`
     background: #0c0c0f;
     border: none;
     padding: 0.5rem;
+    @media ${theme.device.phone}, ${theme.device.tablet} {
+      border-radius: 1.25rem;
+      background: #272727;
+      height: 2.8rem;
+      padding: 0 2rem;
+    }
   }
   & button {
     width: 2rem;
@@ -33,5 +61,8 @@ export const SearchInputForm = styled.form`
     border: none;
     z-index: 999;
     cursor: pointer;
+    @media ${theme.device.phone}, ${theme.device.tablet} {
+      display: none;
+    }
   }
 `;

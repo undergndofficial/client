@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from 'styles/theme';
 
 export const Container = styled.div<{ scrollTop: boolean }>`
   color: var(--color-font);
@@ -33,4 +34,10 @@ export const Toolbar = styled.div`
   align-items: center;
   gap: 4rem;
   cursor: pointer;
+  .search-icon {
+    z-index: 999;
+    @media ${theme.device.tablet}, ${theme.device.phone} {
+      z-index: 998;
+    }
+  }
 `;

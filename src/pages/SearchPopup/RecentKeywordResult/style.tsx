@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from 'styles/theme';
 
 export const EmptyResultDiv = styled.div`
   display: flex;
@@ -20,6 +21,10 @@ export const RecentKeywordWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  @media ${theme.device.phone}, ${theme.device.tablet} {
+    max-height: 50vh;
+    gap: 1.25rem;
+  }
 `;
 
 export const RecentKeywordDiv = styled.div`
@@ -29,6 +34,9 @@ export const RecentKeywordDiv = styled.div`
   align-items: center;
   font-weight: 700;
   cursor: pointer;
+  @media ${theme.device.phone}, ${theme.device.tablet} {
+    font-weight: 500;
+  }
 `;
 
 export const DeleteButton = styled.div`

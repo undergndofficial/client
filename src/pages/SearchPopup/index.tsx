@@ -2,6 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, SearchInputForm } from './style';
 import RecentKeywordResult from './RecentKeywordResult';
+import { IoChevronBack } from 'react-icons/io5';
+import { FaSearch } from 'react-icons/fa';
+
 /**
  * 검색 팝업 컴포넌트
  */
@@ -32,10 +35,20 @@ function SearchPopup({ closeSearchPopup }: { closeSearchPopup: () => void }) {
       }}
     >
       <SearchInputForm onSubmit={onSubmitSearchForm}>
+        <IoChevronBack
+          size="30"
+          className="mobile-button"
+          onClick={closeSearchPopup}
+        />
         <input
           placeholder="검색어"
           value={keyword}
           onChange={onChangeKeyword}
+        />
+        <FaSearch
+          size="30"
+          className="mobile-button"
+          onClick={onSubmitSearchForm}
         />
         <button />
       </SearchInputForm>
