@@ -7,7 +7,7 @@ export const Container = styled.div`
   gap: 3.75rem;
   justify-content: center;
   align-items: center;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   align-items: center;
 `;
 

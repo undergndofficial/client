@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MoviePlayer from 'pages/MoviePlayer';
 import SearchResult from 'pages/SearchResult';
 import Join from 'pages/Join';
+import UserInfo from 'pages/UserInfo';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/join" element={<Join />} />
           <Route path="/player/:id" element={<MoviePlayer />} />
           <Route path="/search/:keyword" element={<SearchResult />} />
+          <Route path="/mypage" element={<UserInfo />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

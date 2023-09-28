@@ -15,7 +15,7 @@ interface HeaderPropsType {
  */
 function Header({ scrollTop }: HeaderPropsType) {
   // 임시 데이터
-  const isLogin = false;
+  const isLogin = true;
   const navigate = useNavigate();
 
   // 검색 팝업 열고 닫기
@@ -46,7 +46,15 @@ function Header({ scrollTop }: HeaderPropsType) {
           }}
           className="search-icon"
         />
-        {isLogin && <FaUser size="21" />}
+        {isLogin && (
+          <FaUser
+            size="21"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/mypage');
+            }}
+          />
+        )}
         {!isLogin && (
           <IoLogIn
             size="31"

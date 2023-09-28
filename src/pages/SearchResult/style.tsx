@@ -5,7 +5,7 @@ export const KeywordWrapper = styled.div`
   text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: center;
   flex-wrap: nowrap;
