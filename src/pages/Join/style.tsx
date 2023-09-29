@@ -7,8 +7,11 @@ export const Container = styled.div`
   gap: 3.75rem;
   justify-content: center;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 3rem;
   align-items: center;
+  @media ${theme.device.phone} {
+    padding: 0;
+  }
 `;
 
 export const TitleDiv = styled.div`
@@ -22,8 +25,7 @@ export const JoinForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  width: 45rem;
-  max-width: 90%;
+  width: 100%;
 `;
 
 export const FormItemDiv = styled.div`
@@ -37,6 +39,9 @@ export const Label = styled.div`
   width: 8rem;
   font-size: 1.3rem;
   font-weight: 700;
+  @media ${theme.device.tablet} {
+    width: 100%;
+  }
   @media ${theme.device.phone} {
     font-size: 1.1rem;
     width: 100%;
