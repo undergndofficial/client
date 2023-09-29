@@ -1,20 +1,11 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
-import { FaHeart } from 'react-icons/fa';
 
 export const Container = styled.div`
   display: flex;
   gap: 1.5rem;
   width: 100%;
   cursor: pointer;
-`;
-
-export const HeartIcon = styled(FaHeart)<{ selected?: boolean }>`
-  color: ${(props) =>
-    props.selected ? 'var(--color-heartlike)' : 'var(--color-font)'};
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
 `;
 
 export const PosterDiv = styled.div<{ url: string }>`

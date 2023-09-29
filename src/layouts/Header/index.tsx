@@ -15,7 +15,7 @@ interface HeaderPropsType {
  */
 function Header({ scrollTop }: HeaderPropsType) {
   // 임시 데이터
-  const isLogin = true;
+  const isLogin = false;
   const navigate = useNavigate();
 
   // 검색 팝업 열고 닫기
@@ -33,7 +33,7 @@ function Header({ scrollTop }: HeaderPropsType) {
   return (
     <Container scrollTop={scrollTop}>
       <Logo
-        src={`${process.env.PUBLIC_URL}/assets/logoicon.svg`}
+        src={`${process.env.PUBLIC_URL}/assets/logoIcon.svg`}
         alt="logo"
         onClick={() => navigate('/')}
       />

@@ -21,11 +21,15 @@ export const Container = styled.div<{ scrollTop: boolean }>`
   transition: background-color 0.4s;
   ${(props) =>
     props.scrollTop ? '' : 'background-color: var(--color-background)'};
+  @media ${theme.device.phone} {
+    padding: 0.5rem 1.5rem;
+  }
 `;
 
 export const Logo = styled.img`
   cursor: pointer;
-  width: 70px;
+  width: 12rem;
+  height: 4rem;
 `;
 
 export const Toolbar = styled.div`
@@ -39,5 +43,8 @@ export const Toolbar = styled.div`
     @media ${theme.device.tablet}, ${theme.device.phone} {
       z-index: 998;
     }
+  }
+  @media ${theme.device.phone} {
+    gap: 2rem;
   }
 `;

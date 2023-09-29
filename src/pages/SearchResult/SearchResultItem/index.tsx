@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import {
   Container,
   PosterDiv,
@@ -7,7 +7,6 @@ import {
   TitleDiv,
   AdditionalInfoDiv,
   WhiteFontDiv,
-  HeartIcon,
 } from './style';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,14 +14,6 @@ import { useNavigate } from 'react-router-dom';
  * 검색 결과로 보여질 영화 아이템
  */
 function SearchResultItem() {
-  // 임시 데이터
-  const [isLike, setIsLike] = useState(false);
-  // 하트 버튼 클릭 핸들러
-  const onClickLikeButton = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLike((prev: boolean) => !prev);
-  }, []);
-
   const navigate = useNavigate();
   // 임시
   const id = 1;
@@ -33,9 +24,7 @@ function SearchResultItem() {
         navigate(`/player/${id}`);
       }}
     >
-      <PosterDiv url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg">
-        <HeartIcon onClick={onClickLikeButton} size="21" selected={isLike} />
-      </PosterDiv>
+      <PosterDiv url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg" />
       <MovieInfoDiv>
         <TitleDiv>들개</TitleDiv>
         <DescriptionDiv>
