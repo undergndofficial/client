@@ -3,14 +3,18 @@ import {
   MovieContainer,
   TagDiv,
   MovieListWrapper,
-  Movie,
+  MoviePosterDiv,
   ButtonWrapper,
   ScrollButton,
   TitleWrapper,
   TitleDiv,
+  MovieTitleDiv,
+  MovieWrapper,
+  MovieInfoDiv,
 } from './style';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import useScroll from 'hooks/useScroll';
+import Rating from 'react-star-ratings';
 
 // 임시 데이터 타입
 interface MovieListProps {
@@ -66,10 +70,26 @@ function MovieList({ tag }: MovieListProps) {
         </TagDiv>
         <MovieListWrapper>
           {[...Array(15)].map((_, i) => (
-            <Movie
-              key={i}
-              url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg"
-            />
+            <MovieWrapper>
+              <MoviePosterDiv
+                key={i}
+                url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg"
+              />
+              <MovieTitleDiv>영화 제목</MovieTitleDiv>
+              <MovieInfoDiv>
+                <div>
+                  <span>감독</span>
+                  #카테고리 #장르 #장르
+                </div>
+                <Rating
+                  rating={4.5}
+                  starEmptyColor="grey"
+                  starRatedColor={`var(--color-star${Math.floor(4.5)})`}
+                  starDimension="1rem"
+                  starSpacing="2px"
+                />
+              </MovieInfoDiv>
+            </MovieWrapper>
           ))}
         </MovieListWrapper>
       </MovieContainer>

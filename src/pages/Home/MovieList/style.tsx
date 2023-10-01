@@ -33,12 +33,12 @@ export const MovieListWrapper = styled.div`
   display: flex;
   padding-right: 0px;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: 1rem;
   flex: 1 0 0;
   align-self: stretch;
 `;
 
-export const Movie = styled.div<{ url: string }>`
+export const MoviePosterDiv = styled.div<{ url: string }>`
   width: 18.125rem;
   height: 10.1875rem;
   border-radius: 1.25rem;
@@ -93,4 +93,31 @@ export const ScrollButton = styled.div<{
           props.nextType == 'prev' ? 180 : -180
         }deg)`};
   transition: all 0.35s ease-out;
+`;
+
+export const MovieWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+export const MovieInfoDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: space-between;
+  font-size: 0.625rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  & span {
+    font-size: 0.75rem;
+    margin-right: 0.75rem;
+  }
+`;
+
+export const MovieTitleDiv = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
 `;

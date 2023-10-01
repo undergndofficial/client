@@ -16,8 +16,10 @@ export const Container = styled.div`
 `;
 
 export const CenterButton = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
   color: var(--color-textgrey);
 `;
@@ -34,6 +36,11 @@ export const TopWrapper = styled.div`
 `;
 
 export const BottomWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   background: linear-gradient(
@@ -41,12 +48,15 @@ export const BottomWrapper = styled.div`
     rgba(0, 0, 0, 0.6) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  padding: 1rem;
-  margin-bottom: -1rem;
-  & div {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  align-items: center;
+`;
+
+export const ControlItemDiv = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  @media ${theme.device.phone} {
+    gap: 0.2rem;
   }
 `;
 
@@ -55,17 +65,21 @@ export const ControlButton = styled.button`
   border: none;
   background: none;
   color: var(--color-textgrey);
+  display: flex;
 `;
 
-export const VolumeControl = styled.div<{ volume: number }>`
+export const VolumeControl = styled.div<{
+  volume: number;
+  showVolume: boolean;
+}>`
   input[type='range'] {
     -webkit-appearance: none;
     height: 100%;
     background: transparent;
-    width: 5rem;
-    margin-left: -0.7rem;
+    width: ${(props) => (props.showVolume ? '5rem' : '0rem')};
+    transition: all 0.3s;
     @media ${theme.device.phone}, ${theme.device.tablet} {
-      width: 3rem;
+      width: ${(props) => (props.showVolume ? '3rem' : '0rem')};
     }
 
     &:focus {
@@ -73,12 +87,14 @@ export const VolumeControl = styled.div<{ volume: number }>`
     }
 
     &::-webkit-slider-thumb {
+      display: ${(props) => (props.showVolume ? 'block' : 'none')};
       -webkit-appearance: none;
       height: 1rem;
       width: 1rem;
       border-radius: 50%;
       background: ${(props) => (props.volume ? 'white' : '#E5E7EB')};
       margin-top: -4px;
+      margin-left: -0.4px;
       cursor: pointer;
     }
 
@@ -88,10 +104,9 @@ export const VolumeControl = styled.div<{ volume: number }>`
         props.volume
           ? `linear-gradient(to right, white ${
               props.volume * 100
-            }%, rgba(229, 231, 235, 0.5)
+            }%, rgb(163, 163, 163)
  ${props.volume * 100}% 100%)`
-          : '#E5E7EB'};
-      opacity: ${(props) => (props.volume == 0 ? '0.5' : '1')};
+          : 'var(--color-textgrey)'};
       border-radius: 3rem;
       transition: all 0.3s;
       cursor: pointer;
@@ -99,36 +114,53 @@ export const VolumeControl = styled.div<{ volume: number }>`
   }
 `;
 
-export const TimeControl = styled.div<{ time: number }>`
+export const TimeControl = styled.div<{ time: number; mouseOver: boolean }>`
+  position: absolute;
+  bottom: 3.5rem;
+  width: 100%;
   padding: 0 1rem;
   box-sizing: border-box;
+  display: flex;
+  gap: 1rem;
+  & div {
+    font-size: 0.8rem;
+    text-align: center;
+    color: ${(props) =>
+      props.mouseOver ? 'var(--color-font)' : 'var(--color-textgrey)'};
+  }
   input[type='range'] {
     -webkit-appearance: none;
-    width: 100%;
-    height: 100%;
+    background-color: transparent;
+    flex-grow: 1;
     &:focus {
       outline: none;
     }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 0.8rem;
-      width: 0.8rem;
+      height: 1.2rem;
+      width: 1.2rem;
       border-radius: 50%;
-      margin-top: -3px;
+      margin-top: -5px;
       background: white;
       cursor: pointer;
+      opacity: ${(props) => (props.mouseOver ? '1' : '0')};
     }
 
     &::-webkit-slider-runnable-track {
-      height: 0.4rem;
+      height: ${(props) => (props.mouseOver ? '0.6rem' : '0.4rem')};
+      border-radius: 1rem;
       background: ${(props) =>
         props.time
-          ? `linear-gradient(to right, white ${props.time}%, rgba(0, 0, 0, 0.4)
+          ? `linear-gradient(to right, ${
+              props.mouseOver ? 'white' : 'var(--color-textgrey)'
+            } ${props.time}%, ${
+              props.mouseOver ? 'rgb(163, 163, 163)' : 'rgb(93, 93, 93)'
+            }
  ${props.time}% 100%)`
-          : '#E5E7EB'};
-      transition: all 0.5s;
+          : 'var(--color-textgrey)'};
       cursor: pointer;
+      transition: all 0.3s;
     }
   }
 `;

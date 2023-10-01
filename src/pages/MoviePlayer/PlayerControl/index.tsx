@@ -12,6 +12,7 @@ import {
   ControlButton,
   VolumeControl,
   TimeControl,
+  ControlItemDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBackOutline, IoVolumeMediumSharp } from 'react-icons/io5';
@@ -29,6 +30,7 @@ import ReactPlayer from 'react-player';
 import PlaybackRateControl from './PlaybackRateControl';
 import SubtitleControl from './SubtitlesControl';
 import ReportPopup from './ReportPopup';
+import dayjs from 'dayjs';
 
 type ControlsProps = {
   playing: boolean;
@@ -78,6 +80,9 @@ export const Controls = ({
   // 미디어 크기에 따라 아이콘 사이즈 다르게 제공
   const [iconSize, setIconSize] = useState(30);
 
+  // 재생바 마우스 오버 여부
+  const [hoverTimeControl, setHoverTimeControl] = useState(false);
+
   useEffect(() => {
     if (isMobile) setIconSize(21);
     else setIconSize(30);
@@ -115,6 +120,18 @@ export const Controls = ({
     setVolume(value);
   }, []);
 
+  // 시간 정보 formatter
+  const timeFormatter = useCallback((seconds: number) => {
+    const duration = dayjs().startOf('day').add(seconds, 'second');
+    let formattedTime = '';
+    if (duration.hour() > 0) {
+      formattedTime = duration.format('HH:mm:ss');
+    } else {
+      formattedTime = duration.format('mm:ss');
+    }
+    return formattedTime;
+  }, []);
+
   return (
     <Container>
       {/* 상단 뒤로가기, 신고 버튼 */}
@@ -150,6 +167,13 @@ export const Controls = ({
           onClick={(e) => {
             e.stopPropagation();
           }}
+          onMouseEnter={() => {
+            setHoverTimeControl(true);
+          }}
+          onMouseLeave={() => {
+            setHoverTimeControl(false);
+          }}
+          mouseOver={hoverTimeControl}
         >
           <input
             type={'range'}
@@ -163,10 +187,13 @@ export const Controls = ({
               );
             }}
           />
+          <div>
+            {timeFormatter(currentTime)} / {timeFormatter(duration)}
+          </div>
         </TimeControl>
         <BottomWrapper>
           {/* 재생, 일시 정지, 뒤로 가기, 앞으로 가기, 볼륨 버튼 */}
-          <div>
+          <ControlItemDiv>
             <ControlButton onClick={() => setPlaying(!playing)}>
               {playing ? (
                 <GiPauseButton size={iconSize} />
@@ -180,7 +207,7 @@ export const Controls = ({
             <ControlButton onClick={forwardVideo}>
               <PiArrowClockwiseBold size={iconSize} />
             </ControlButton>
-            <div
+            <ControlItemDiv
               onMouseEnter={() => {
                 setShowVolume(true);
               }}
@@ -210,22 +237,20 @@ export const Controls = ({
                   />
                 )}
               </ControlButton>
-              {showVolume && (
-                <VolumeControl volume={volume}>
-                  <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    onChange={volumeChange}
-                  />
-                </VolumeControl>
-              )}
-            </div>
-          </div>
+              <VolumeControl volume={volume} showVolume={showVolume}>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  value={volume}
+                  onChange={volumeChange}
+                />
+              </VolumeControl>
+            </ControlItemDiv>
+          </ControlItemDiv>
           {/* 배속, 자막, 전체화면 버튼 */}
-          <div>
+          <ControlItemDiv>
             <ControlButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -247,7 +272,7 @@ export const Controls = ({
             <ControlButton onClick={openFullscreen}>
               <RiFullscreenLine size={iconSize} />
             </ControlButton>
-          </div>
+          </ControlItemDiv>
         </BottomWrapper>
       </div>
       {/* 배속, 자막 컨트롤 */}
