@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { Container, Logo, Toolbar } from './style';
+import { Container, Logo, Toolbar, UserPopupDiv } from './style';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import { IoLogIn } from 'react-icons/io5';
-import SearchPopup from 'pages/SearchPopup';
+import SearchPopup from 'components/Popup/SearchPopup';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'layouts/Modal';
-import LoginPopup from 'pages/LoginPopup';
+import LoginPopup from 'components/Popup/LoginPopup';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -15,8 +15,14 @@ interface HeaderPropsType {
  */
 function Header({ scrollTop }: HeaderPropsType) {
   // 임시 데이터
-  const isLogin = false;
+  const isLogin = true;
   const navigate = useNavigate();
+
+  // 사용자 설정 팝업 열고 닫기
+  const [showUserPopup, setShowUserPopup] = useState(false);
+  const closeUserPopup = useCallback(() => {
+    setShowUserPopup(false);
+  }, []);
 
   // 검색 팝업 열고 닫기
   const [showSearchPopup, setShowSearchPopup] = useState(false);
@@ -33,7 +39,7 @@ function Header({ scrollTop }: HeaderPropsType) {
   return (
     <Container scrollTop={scrollTop}>
       <Logo
-        src={`${process.env.PUBLIC_URL}/assets/logoIcon.svg`}
+        src={`${process.env.PUBLIC_URL}/assets/icon/logo-icon.svg`}
         alt="logo"
         onClick={() => navigate('/')}
       />
@@ -51,7 +57,7 @@ function Header({ scrollTop }: HeaderPropsType) {
             size="21"
             onClick={(e) => {
               e.stopPropagation();
-              navigate('/mypage');
+              setShowUserPopup((prev) => !prev);
             }}
           />
         )}
@@ -74,6 +80,28 @@ function Header({ scrollTop }: HeaderPropsType) {
         onCloseModal={closeLoginPopup}
       >
         <LoginPopup closeLoginPopup={closeLoginPopup} />
+      </Modal>
+      <Modal show={showUserPopup} onCloseModal={closeUserPopup}>
+        <UserPopupDiv>
+          <div
+            onClick={() => {
+              navigate('/mypage');
+              closeUserPopup();
+            }}
+          >
+            계정 및 설정
+          </div>
+          <div>찜목록</div>
+          <div>고객센터</div>
+          <div
+            onClick={() => {
+              navigate('/request-movie');
+            }}
+          >
+            영화 신청
+          </div>
+          <div>로그아웃</div>
+        </UserPopupDiv>
       </Modal>
     </Container>
   );

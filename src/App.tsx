@@ -6,6 +6,9 @@ import MoviePlayer from 'pages/MoviePlayer';
 import SearchResult from 'pages/SearchResult';
 import Join from 'pages/Join';
 import UserInfo from 'pages/UserInfo';
+import RequestMovie from 'pages/RequestMovie';
+import Request from 'pages/RequestMovie/Request';
+import Register from 'pages/RequestMovie/Register';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
           <Route path="/player/:id" element={<MoviePlayer />} />
           <Route path="/search/:keyword" element={<SearchResult />} />
           <Route path="/mypage" element={<UserInfo />} />
+          <Route path="/request-movie" element={<RequestMovie />} />
+          <Route path="/request-movie/requset" element={<Request />} />
+          <Route path="/request-movie/register" element={<Register />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

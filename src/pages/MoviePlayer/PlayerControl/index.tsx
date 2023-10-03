@@ -28,7 +28,7 @@ import { SiSpeedtest } from 'react-icons/si';
 import { RiFullscreenLine } from 'react-icons/ri';
 import ReactPlayer from 'react-player';
 import PlaybackRateControl from './PlaybackRateControl';
-import SubtitleControl from './SubtitlesControl';
+import SubtitlesControl from './SubtitlesControl';
 import ReportPopup from './ReportPopup';
 import dayjs from 'dayjs';
 
@@ -282,7 +282,7 @@ export const Controls = ({
           setPlaybackRate={setPlaybackRate}
         />
       )}
-      {showSubtitleControl && <SubtitleControl />}
+      {showSubtitleControl && <SubtitlesControl />}
       {/* 신고 팝업 */}
       <ReportPopup
         showReportPopup={showReportPopup}

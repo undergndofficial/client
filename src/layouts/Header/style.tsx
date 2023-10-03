@@ -48,3 +48,38 @@ export const Toolbar = styled.div`
     gap: 2rem;
   }
 `;
+
+export const UserPopupDiv = styled.div`
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -50%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+  animation: fadeInDown 0.3s;
+  position: absolute;
+  top: 3.7rem;
+  right: 2.5rem;
+  display: inline-flex;
+  padding: 1rem 1.2rem;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 1rem;
+  background: #2f2f2f;
+  text-align: center;
+  gap: 1rem;
+  & div {
+    color: #fff;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 400;
+    width: 100%;
+    cursor: pointer;
+  }
+`;

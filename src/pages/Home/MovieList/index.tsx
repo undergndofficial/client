@@ -70,7 +70,7 @@ function MovieList({ tag }: MovieListProps) {
         </TagDiv>
         <MovieListWrapper>
           {[...Array(15)].map((_, i) => (
-            <MovieWrapper>
+            <MovieWrapper key={i}>
               <MoviePosterDiv
                 key={i}
                 url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg"
