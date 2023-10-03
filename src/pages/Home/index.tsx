@@ -10,11 +10,11 @@ import { useNavigate } from 'react-router-dom';
 function Home() {
   // 임시 데이터
   const tagList = [
-    { label: '인기 영화', iconUrl: '/assets/tag-popular.svg' },
-    { label: '시청중', iconUrl: '/assets/tag-watching.svg' },
-    { label: '부산대', iconUrl: '/assets/tag-busan.svg' },
-    { label: '경성대', iconUrl: '/assets/tag-kyungsung.svg' },
-    { label: '동의대', iconUrl: '/assets/tag-dongui.svg' },
+    { label: '인기 영화', iconUrl: '/assets/icon/tag-popular.svg' },
+    { label: '시청중', iconUrl: '/assets/icon/tag-watching.svg' },
+    { label: '부산대', iconUrl: '/assets/icon/tag-busan.svg' },
+    { label: '경성대', iconUrl: '/assets/icon/tag-kyungsung.svg' },
+    { label: '동의대', iconUrl: '/assets/icon/tag-dongui.svg' },
   ];
   const navigate = useNavigate();
   // 임시

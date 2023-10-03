@@ -182,7 +182,7 @@ function MoviePlayer() {
           <div>
             파수꾼{' '}
             <img
-              src={`${process.env.PUBLIC_URL}/assets/baytree.svg`}
+              src={`${process.env.PUBLIC_URL}/assets/icon/baytree.svg`}
               alt="icon"
             />
           </div>

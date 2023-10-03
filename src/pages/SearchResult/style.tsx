@@ -27,4 +27,5 @@ export const ResultWrapper = styled.div`
 
 export const NoResultTextDiv = styled.div`
   font-size: 1rem;
+  cursor: pointer;
 `;
