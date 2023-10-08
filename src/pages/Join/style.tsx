@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
+import Input from 'components/Input';
+
+const MARGIN_LABEL = '9.5rem';
 
 export const Container = styled.div`
   display: flex;
@@ -8,7 +11,6 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 3rem;
-  align-items: center;
   @media ${theme.device.phone} {
     padding: 0;
   }
@@ -25,7 +27,10 @@ export const JoinForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  width: 100%;
+  width: 60%;
+  @media ${theme.device.tablet}, ${theme.device.phone} {
+    width: 100%;
+  }
 `;
 
 export const FormItemDiv = styled.div`
@@ -35,10 +40,12 @@ export const FormItemDiv = styled.div`
   flex-wrap: wrap;
 `;
 
-export const Label = styled.div`
+export const Label = styled.div<{ alignSelf?: string }>`
+  padding: 0.2rem 0;
   width: 8rem;
   font-size: 1.3rem;
   font-weight: 700;
+  ${(props) => props.alignSelf && `align-self: ${props.alignSelf}`};
   @media ${theme.device.tablet} {
     width: 100%;
   }
@@ -56,12 +63,49 @@ export const FlexWrapper = styled.div<{ gap?: string }>`
   cursor: pointer;
 `;
 
+export const WarningMessageDiv = styled.div<{ correct?: boolean }>`
+  margin-left: ${MARGIN_LABEL};
+  width: 100%;
+  color: #f00;
+  ${(props) => props.correct && 'color: #00FF38'};
+  @media ${theme.device.tablet}, ${theme.device.phone} {
+    margin-left: 0;
+  }
+`;
+
+export const PreviewImageWrapper = styled.div`
+  & img {
+    width: 10rem;
+    height: 10rem;
+  }
+  margin-left: ${MARGIN_LABEL};
+  @media ${theme.device.tablet}, ${theme.device.phone} {
+    margin-left: 0;
+  }
+`;
+
+export const AuthForm = styled.div`
+  margin-left: ${MARGIN_LABEL};
+  display: flex;
+  gap: 0;
+  width: 100%;
+  & input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  @media ${theme.device.tablet}, ${theme.device.phone} {
+    margin-left: 0;
+  }
+`;
+
 export const AuthButton = styled.div`
   display: flex;
   padding: 0.4375rem 1.25rem;
   justify-content: center;
   align-items: center;
   border-radius: 0.625rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   background: #666;
   color: #a7a7a7;
   text-align: center;
@@ -82,4 +126,40 @@ export const TermsButton = styled.div`
   text-align: center;
   font-size: 0.75rem;
   font-weight: 700;
+`;
+
+export const FormTitle = styled.div`
+  width: 100%;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+`;
+
+export const Textarea = styled.textarea`
+  padding: 1.25rem;
+  border: 2px solid #666;
+  background: #4a4a4a;
+  color: var(--color-font);
+  height: 7rem;
+  border-radius: 0.625rem;
+  flex-grow: 1;
+  resize: none;
+`;
+
+export const PhoneInput = styled(Input)`
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Firefox */
+  [type='number'] {
+    -moz-appearance: textfield;
+  }
 `;

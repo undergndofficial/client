@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Container,
   CloseButton,
@@ -11,6 +11,7 @@ import {
   JoinButton,
   InputWrapper,
   BackButton,
+  WarningMessageDiv,
 } from './style';
 import { IoCloseOutline, IoArrowBack } from 'react-icons/io5';
 import { IoMdMail, IoMdLock } from 'react-icons/io';
@@ -18,18 +19,54 @@ import useInput from 'hooks/useInput';
 import FindPassword from './FindPassword';
 import { useNavigate } from 'react-router-dom';
 import Checkbox from 'components/Checkbox';
+import { isEmpty } from 'lodash';
 
 /**
  * 로그인 팝업 컴포넌트
  */
 function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   const [checkedRemember, setCheckedRemember] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('');
+  const [isWarning, setIsWarning] = useState(false);
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const [showFindPassword, setShowFindPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const setWarning = useCallback((message: string) => {
+    setIsWarning(true);
+    setWarningMessage(message);
+  }, []);
+
+  const validateForm = useCallback(() => {
+    if (isEmpty(id.trim())) {
+      setWarning('이메일 또는 전화번호를 입력해주세요.');
+      return false;
+    }
+    if (isEmpty(password.trim())) {
+      setWarning('비밀번호를 입력해주세요.');
+      return false;
+    }
+    setIsWarning(false);
+    return true;
+  }, [id, password]);
+
+  const loginProc = useCallback(() => {
+    if (!validateForm()) return;
+    // const loginId = id.trim();
+    // const loginPassword = password.trim();
+  }, [id, password]);
+
+  const onKeyDownLoginForm = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        loginProc();
+      }
+    },
+    [id, password],
+  );
 
   return (
     <Container
@@ -55,6 +92,9 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
         <>
           <LoginTitleDiv>로그인</LoginTitleDiv>
           <LoginForm>
+            {isWarning && (
+              <WarningMessageDiv>{warningMessage}</WarningMessageDiv>
+            )}
             <InputWrapper>
               <div>
                 <IoMdMail size="21" />
@@ -63,6 +103,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 placeholder="이메일 또는 전화번호"
                 value={id}
                 onChange={onChangeId}
+                onKeyDown={onKeyDownLoginForm}
               />
             </InputWrapper>
             <InputWrapper>
@@ -74,6 +115,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 type="password"
                 value={password}
                 onChange={onChangePassword}
+                onKeyDown={onKeyDownLoginForm}
               />
             </InputWrapper>
             <RememberIdDiv
@@ -86,7 +128,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
             </RememberIdDiv>
           </LoginForm>
           <ButtonWrapper>
-            <LoginButton>로그인</LoginButton>
+            <LoginButton onClick={loginProc}>로그인</LoginButton>
             <FindPasswordButton
               onClick={() => {
                 setShowFindPassword(true);

@@ -52,6 +52,7 @@ const baseStyle = css`
     }
   }
   textarea,
+  select:focus,
   input:focus {
     outline: none;
   }

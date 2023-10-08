@@ -51,6 +51,7 @@ export const RememberIdDiv = styled.div`
 `;
 
 export const LoginForm = styled.form`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -114,4 +115,15 @@ export const JoinButton = styled.div`
     color: #fff;
     font-weight: 600;
   }
+`;
+
+export const WarningMessageDiv = styled.div`
+  color: #f00;
+  font-size: 0.8rem;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -1.7rem);
+  word-break: keep-all;
+  width: 100%;
 `;

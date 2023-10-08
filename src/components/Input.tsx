@@ -11,6 +11,7 @@ const Input = styled.input<SizeProp>`
   color: var(--color-font);
   ${(props) => (props.width ? `width:${props.width};` : 'flex-grow: 1;')}
   height: 2.3rem;
+  border-radius: 0.625rem;
 `;
 
 export default Input;

@@ -1,5 +1,5 @@
-export interface ResponseType {
+export interface ResponseType<T> {
   st: boolean;
-  rs: string | object;
-  err: { code: string; desc: string };
+  rs?: T;
+  err?: { code: string; desc: string };
 }
