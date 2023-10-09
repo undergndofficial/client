@@ -91,3 +91,36 @@ export const ContentDiv = styled.div`
   font-size: 0.875rem;
   font-weight: 500;
 `;
+
+export const CommentInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const CommentToolWrapper = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  display: flex;
+  padding: 0.5rem 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.125rem;
+  color: #7b7b7b;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+  justify-content: center;
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+`;
+
+export const CommentContainer = styled.div`
+  position: relative;
+`;

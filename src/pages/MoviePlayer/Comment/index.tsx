@@ -11,13 +11,20 @@ import {
   ContentDiv,
   ProfileImageDiv,
   WriterDiv,
+  CommentInfoWrapper,
+  CommentToolWrapper,
+  CommentContainer,
 } from './style';
 import { BsChevronRight } from 'react-icons/bs';
+import { BiDotsVerticalRounded, BiSolidTrash } from 'react-icons/bi';
+// import { PiFlagPennantFill } from 'react-icons/pi';
+import { LuPenSquare } from 'react-icons/lu';
 import Input from 'components/Input';
 import Button from 'components/Button';
 
 function Comment() {
   const [starRate, setStarRate] = useState(0);
+  const [showToolIndex, setShowToolIndex] = useState(-1);
 
   return (
     <Container>
@@ -53,16 +60,43 @@ function Comment() {
         <Button width="6.5rem">게시</Button>
       </CommentInput>
       <CommentListDiv>
-        <div>
-          <WriterInfoDiv>
-            <ProfileImageDiv />
-            <WriterDiv>
-              <div>서태성</div>
-              <span>4분 전</span>
-            </WriterDiv>
-          </WriterInfoDiv>
+        <CommentContainer>
+          <CommentInfoWrapper>
+            <WriterInfoDiv>
+              <ProfileImageDiv />
+              <WriterDiv>
+                <div>서태성</div>
+                <span>4분 전</span>
+              </WriterDiv>
+            </WriterInfoDiv>
+            <BiDotsVerticalRounded
+              size="21"
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                setShowToolIndex((prev) => (prev === 0 ? -1 : 0));
+              }}
+            />
+          </CommentInfoWrapper>
           <ContentDiv>댓글 내용입니다.</ContentDiv>
-        </div>
+          {showToolIndex === 0 && (
+            <CommentToolWrapper>
+              <div>
+                <LuPenSquare />
+                수정
+              </div>
+              <div>
+                <BiSolidTrash />
+                삭제
+              </div>
+              {/* 
+              내 댓글이 아닌경우?!
+              <div>
+                <PiFlagPennantFill />
+                신고
+              </div> */}
+            </CommentToolWrapper>
+          )}
+        </CommentContainer>
       </CommentListDiv>
     </Container>
   );
