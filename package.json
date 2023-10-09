@@ -16,7 +16,7 @@
     "@types/react-dom": "^18.2.7",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.5.1",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.10",
     "emotion-normalize": "^11.0.1",
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",

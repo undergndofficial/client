@@ -9,6 +9,8 @@ import UserInfo from 'pages/UserInfo';
 import RequestMovie from 'pages/RequestMovie';
 import Request from 'pages/RequestMovie/Request';
 import Register from 'pages/RequestMovie/Register';
+import Notice from 'pages/Notice';
+import Detail from 'pages/Notice/Detail';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/request-movie" element={<RequestMovie />} />
           <Route path="/request-movie/requset" element={<Request />} />
           <Route path="/request-movie/register" element={<Register />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/:id" element={<Detail />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
