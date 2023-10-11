@@ -8,4 +8,6 @@ export const CheckBoxDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 3px;
+  box-sizing: border-box;
 `;
