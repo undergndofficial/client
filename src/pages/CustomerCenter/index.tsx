@@ -1,6 +1,6 @@
 import Layout from 'layouts/Layout';
 import PageContent from 'layouts/PageContent';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   TitleDiv,
