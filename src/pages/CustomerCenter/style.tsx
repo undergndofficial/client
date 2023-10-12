@@ -8,6 +8,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: start;
   padding: 1rem 5rem;
+  box-sizing: border-box;
   @media ${theme.device.tablet}, ${theme.device.phone} {
     width: 100%;
     padding: 1rem;

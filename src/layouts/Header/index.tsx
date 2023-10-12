@@ -108,11 +108,12 @@ function Header({ scrollTop }: HeaderPropsType) {
           </div>
           <div>로그아웃</div>
           <div
-            onClick={() => {
-              navigate('/join');
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowLoginPopup(true);
             }}
           >
-            회원가입(임시)
+            로그인(임시)
           </div>
         </UserPopupDiv>
       </Modal>
