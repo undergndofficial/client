@@ -124,6 +124,5 @@ export const WarningMessageDiv = styled.div`
   position: absolute;
   left: 50%;
   transform: translate(-50%, -1.7rem);
-  word-break: keep-all;
   width: 100%;
 `;

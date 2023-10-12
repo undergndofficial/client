@@ -92,7 +92,13 @@ function Header({ scrollTop }: HeaderPropsType) {
             계정 및 설정
           </div>
           <div>찜목록</div>
-          <div>고객센터</div>
+          <div
+            onClick={() => {
+              navigate('/customer');
+            }}
+          >
+            고객센터
+          </div>
           <div
             onClick={() => {
               navigate('/request-movie');
@@ -101,6 +107,13 @@ function Header({ scrollTop }: HeaderPropsType) {
             영화 신청
           </div>
           <div>로그아웃</div>
+          <div
+            onClick={() => {
+              navigate('/join');
+            }}
+          >
+            회원가입(임시)
+          </div>
         </UserPopupDiv>
       </Modal>
     </Container>

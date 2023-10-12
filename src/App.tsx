@@ -11,6 +11,9 @@ import Request from 'pages/RequestMovie/Request';
 import Register from 'pages/RequestMovie/Register';
 import Notice from 'pages/Notice';
 import Detail from 'pages/Notice/Detail';
+import CustomerCenter from 'pages/CustomerCenter';
+import Inquiry from 'pages/Inquiry';
+import WriteInquiry from 'pages/Inquiry/Write';
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route path="/request-movie/register" element={<Register />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<Detail />} />
+          <Route path="/customer" element={<CustomerCenter />} />
+          <Route path="/inquiry" element={<Inquiry />} />
+          <Route path="/inquiry/write" element={<WriteInquiry />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

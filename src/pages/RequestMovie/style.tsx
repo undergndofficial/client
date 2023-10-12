@@ -45,7 +45,6 @@ export const DescriptionDiv = styled.div`
   color: #a7a7a7;
   text-align: center;
   font-weight: 400;
-  word-break: keep-all;
 `;
 
 export const ButtonTitleDiv = styled.div`

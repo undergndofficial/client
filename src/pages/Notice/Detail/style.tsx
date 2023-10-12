@@ -28,5 +28,4 @@ export const PostContentDiv = styled.div`
   font-size: 1.25rem;
   font-weight: 500;
   line-height: 1.5;
-  word-break: keep-all;
 `;

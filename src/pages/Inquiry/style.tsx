@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
+import Button from 'components/Button';
 
 export const Container = styled.div`
   display: flex;
@@ -29,8 +30,8 @@ export const BoardTable = styled.table`
   & tbody {
     & tr {
       cursor: pointer;
-      & th:nth-of-type(2),
-      & td:nth-of-type(2) {
+      & th:nth-of-type(3),
+      & td:nth-of-type(3) {
         text-align: left;
       }
     }
@@ -40,8 +41,8 @@ export const BoardTable = styled.table`
   & td:nth-of-type(1) {
     width: 2rem;
   }
-  & th:nth-of-type(3),
-  & td:nth-of-type(3) {
+  & th:nth-of-type(2),
+  & td:nth-of-type(2) {
     width: 5rem;
     @media ${theme.device.tablet}, ${theme.device.phone} {
       display: none;
@@ -54,4 +55,27 @@ export const BoardTable = styled.table`
       display: none;
     }
   }
+  & th:nth-of-type(5),
+  & td:nth-of-type(5) {
+    width: 5rem;
+    @media ${theme.device.tablet}, ${theme.device.phone} {
+      display: none;
+    }
+  }
+`;
+export const WriteButton = styled(Button)`
+  border-radius: 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  align-self: end;
+  margin-bottom: -2.8rem;
+`;
+
+export const StatusDot = styled.div<{ color: string }>`
+  display: inline-block;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+  width: 10px;
+  height: 10px;
+  margin: 0 8px 1px 0;
 `;
