@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const CreateModal = styled.div`
+export const CreateModal = styled.div<{ backgroundFilter: boolean }>`
   position: fixed;
   text-align: center;
   left: 0;

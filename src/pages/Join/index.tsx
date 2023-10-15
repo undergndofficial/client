@@ -58,9 +58,12 @@ function Join() {
   const [phoneAuthcode, onChangePhoneAuthcode] = useInput(''); // 휴대폰 인증 코드
   const [smsAgree, setSmsAgree] = useState(false); // sms 수신 동의
   const [emailAgree, setEmailAgree] = useState(false); // 이메일 수신 동의
+  // 영화인인지 여부
+  const [moviePerson, setMoviePerson] = useState(false);
   // 영화인 정보
   const [nation, setNation] = useState(''); // 국적
   const [gender, setGender] = useState<'woman' | 'man' | 'etc' | ''>('etc'); // 성별
+  const [enName, onChangeEnName] = useInput(''); // 영어 네임
   const [belong, onChangeBelong] = useInput(''); // 소속
   const [notes, onChangeNotes] = useInput(''); // 특이 사항
   // 인증 인풋 보여줄 지 여부
@@ -358,84 +361,105 @@ function Join() {
                 <TermsButton>약관확인</TermsButton>
               </FlexWrapper>
             </FormItemDiv>
+            <FormItemDiv>
+              <Label>추가 정보</Label>
+              <FlexWrapper
+                onClick={() => {
+                  setMoviePerson((prev) => !prev);
+                }}
+              >
+                <Checkbox checked={moviePerson} />
+                영화계 종사자이신가요?
+              </FlexWrapper>
+            </FormItemDiv>
           </JoinForm>
           {/* 영화인 정보 */}
-          <JoinForm>
-            <FormTitle>영화인 정보 등록</FormTitle>
-            <FormItemDiv>
-              <Label>프로필 사진</Label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                style={{ display: 'none' }}
-                ref={fileInput}
-                onChange={(e) => {
-                  const selectedFile = e.target.files && e.target.files[0];
-                  if (selectedFile) {
-                    encodeFileToBase64(selectedFile);
-                  }
-                }}
-              />
-              <IconButton onClick={clickUploadButton}>
-                <HiOutlinePhoto />
-              </IconButton>
-            </FormItemDiv>
-            {imageSrc && (
-              <PreviewImageWrapper>
-                <img src={imageSrc} alt="preview-img" />
-              </PreviewImageWrapper>
-            )}
-            <FormItemDiv>
-              <Label>국적</Label>
-              <Select
-                onChange={onChangeNation}
-                options={nationOptions}
-                placeholder="국적 선택"
-              />
-            </FormItemDiv>
-            <FormItemDiv>
-              <Label>성별</Label>
-              <FlexWrapper
-                onClick={() => {
-                  setGender('man');
-                }}
-              >
-                <Checkbox checked={gender == 'man'} />남
-              </FlexWrapper>
-              <FlexWrapper
-                onClick={() => {
-                  setGender('woman');
-                }}
-              >
-                <Checkbox checked={gender == 'woman'} />여
-              </FlexWrapper>
-              <FlexWrapper
-                onClick={() => {
-                  setGender('etc');
-                }}
-              >
-                <Checkbox checked={gender == 'etc'} />
-                기타
-              </FlexWrapper>
-            </FormItemDiv>
-            <FormItemDiv>
-              <Label>소속</Label>
-              <Input
-                value={belong}
-                onChange={onChangeBelong}
-                placeholder="소속 입력"
-              />
-            </FormItemDiv>
-            <FormItemDiv>
-              <Label alignSelf="start">특이사항</Label>
-              <Textarea
-                placeholder="• 수상경력&#13;• 홍보(어필)등&#13;자유롭게 입력해주세요"
-                value={notes}
-                onChange={onChangeNotes}
-              />
-            </FormItemDiv>
-          </JoinForm>
+          {moviePerson && (
+            <JoinForm>
+              <FormTitle>영화인 정보 등록</FormTitle>
+              <FormItemDiv>
+                <Label>프로필 사진</Label>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={fileInput}
+                  onChange={(e) => {
+                    const selectedFile = e.target.files && e.target.files[0];
+                    if (selectedFile) {
+                      encodeFileToBase64(selectedFile);
+                    }
+                  }}
+                />
+                <IconButton onClick={clickUploadButton}>
+                  <HiOutlinePhoto />
+                </IconButton>
+              </FormItemDiv>
+              {imageSrc && (
+                <PreviewImageWrapper>
+                  <img src={imageSrc} alt="preview-img" />
+                </PreviewImageWrapper>
+              )}
+              <FormItemDiv>
+                <Label>국적</Label>
+                <Select
+                  onChange={onChangeNation}
+                  options={nationOptions}
+                  placeholder="국적 선택"
+                />
+              </FormItemDiv>
+              <FormItemDiv>
+                <Label>영문이름</Label>
+                <Input
+                  value={enName}
+                  onChange={onChangeEnName}
+                  placeholder="영문이름 입력"
+                />
+              </FormItemDiv>
+              <FormItemDiv>
+                <Label>성별</Label>
+                <FlexWrapper
+                  onClick={() => {
+                    setGender('man');
+                  }}
+                >
+                  <Checkbox checked={gender == 'man'} />남
+                </FlexWrapper>
+                <FlexWrapper
+                  onClick={() => {
+                    setGender('woman');
+                  }}
+                >
+                  <Checkbox checked={gender == 'woman'} />여
+                </FlexWrapper>
+                <FlexWrapper
+                  onClick={() => {
+                    setGender('etc');
+                  }}
+                >
+                  <Checkbox checked={gender == 'etc'} />
+                  기타
+                </FlexWrapper>
+              </FormItemDiv>
+              <FormItemDiv>
+                <Label>소속</Label>
+                <Input
+                  value={belong}
+                  onChange={onChangeBelong}
+                  placeholder="소속 입력"
+                />
+              </FormItemDiv>
+              <FormItemDiv>
+                <Label alignSelf="start">특이사항</Label>
+                <Textarea
+                  placeholder="• 수상경력&#13;• 홍보(어필)등&#13;자유롭게 입력해주세요"
+                  value={notes}
+                  onChange={onChangeNotes}
+                />
+              </FormItemDiv>
+            </JoinForm>
+          )}
           <Button width="8rem" onClick={handleSubmit(joinProc)}>
             회원가입
           </Button>
