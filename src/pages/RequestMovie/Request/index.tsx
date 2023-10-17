@@ -20,6 +20,7 @@ function Request() {
   const [directorList, setDirectorList] = useState<string[]>([]);
   const [title, onChangeTitle] = useInput('');
   const [director, onChangeDirector, setDirector] = useInput('');
+  const [isComposing, setIsComposing] = useState(false);
 
   // 해당 인덱스의 감독 삭제
   const deleteDirector = useCallback(
@@ -40,11 +41,12 @@ function Request() {
   // 엔터키 눌렀을때도 감독 리스트에 추가
   const onKeyDownDirector = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (isComposing) return;
       if (e.key === 'Enter') {
         addDirectorList();
       }
     },
-    [director, directorList],
+    [director, directorList, isComposing],
   );
 
   return (
@@ -69,6 +71,8 @@ function Request() {
                   value={director}
                   onChange={onChangeDirector}
                   onKeyDown={onKeyDownDirector}
+                  onCompositionStart={() => setIsComposing(true)}
+                  onCompositionEnd={() => setIsComposing(false)}
                 />
                 <Button onClick={addDirectorList}>추가</Button>
               </>
