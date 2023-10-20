@@ -14,12 +14,13 @@ export interface IAnnounce {
 
 export interface IUser {
   memId: string;
-  memName: string;
   memPass: string;
-  memEmail: string;
-  memPhone: string;
-  agreeUasges: boolean;
-  agreePrivacy: boolean;
-  agreeSms: boolean;
-  agreeMailing: boolean;
+  memName?: string;
+  memEmail?: string;
+  memPhone?: string;
+  agreeUasges?: boolean;
+  agreePrivacy?: boolean;
+  agreeSms?: boolean;
+  agreeMailing?: boolean;
+  created_at?: string;
 }

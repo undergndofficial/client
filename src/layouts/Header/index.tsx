@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Container, Logo, Toolbar, UserPopupDiv } from './style';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import { IoLogIn } from 'react-icons/io5';
@@ -6,6 +6,9 @@ import SearchPopup from 'components/Popup/SearchPopup';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'layouts/Modal';
 import LoginPopup from 'components/Popup/LoginPopup';
+import { isEmpty } from 'lodash';
+import useRequest from 'hooks/useRequest';
+import { signout } from 'api/member';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -14,9 +17,13 @@ interface HeaderPropsType {
  * 레이아웃 헤더
  */
 function Header({ scrollTop }: HeaderPropsType) {
-  // 임시 데이터
-  const isLogin = true;
+  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setIsLogin(!isEmpty(token));
+  }, []);
 
   // 사용자 설정 팝업 열고 닫기
   const [showUserPopup, setShowUserPopup] = useState(false);
@@ -34,6 +41,20 @@ function Header({ scrollTop }: HeaderPropsType) {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const closeLoginPopup = useCallback(() => {
     setShowLoginPopup(false);
+  }, []);
+
+  // 로그아웃
+  const requestLogout = useRequest(signout);
+  const logout = useCallback(() => {
+    localStorage.removeItem('accessToken');
+    window.location.href = '/';
+    // requestLogout()
+    //   .then(() => {
+    //     window.location.href = '/';
+    //   })
+    //   .finally(() => {
+    //     localStorage.removeItem('accessToken');
+    //   });
   }, []);
 
   return (
@@ -106,15 +127,7 @@ function Header({ scrollTop }: HeaderPropsType) {
           >
             영화 신청
           </div>
-          <div>로그아웃</div>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowLoginPopup(true);
-            }}
-          >
-            로그인(임시)
-          </div>
+          <div onClick={logout}>로그아웃</div>
         </UserPopupDiv>
       </Modal>
     </Container>

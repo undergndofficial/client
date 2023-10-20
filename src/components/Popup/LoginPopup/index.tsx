@@ -20,26 +20,35 @@ import FindPassword from './FindPassword';
 import { useNavigate } from 'react-router-dom';
 import Checkbox from 'components/Checkbox';
 import { isEmpty } from 'lodash';
+import requestData from 'hooks/useRequest';
+import { signin } from 'api/member';
+import { IUser } from 'types/db';
 
 /**
  * 로그인 팝업 컴포넌트
  */
 function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
-  const [checkedRemember, setCheckedRemember] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('');
+  // 경고 문구
   const [isWarning, setIsWarning] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('');
+  // 아이디, 비밀번호, 비밀번호 기억
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
-
+  const [checkedRemember, setCheckedRemember] = useState(false);
+  // 비밀번호 찾기 보여주기 여부
   const [showFindPassword, setShowFindPassword] = useState(false);
+  // 로그인 요청
+  const requestLogin = requestData(signin);
 
   const navigate = useNavigate();
 
+  // 경고문구 설정
   const setWarning = useCallback((message: string) => {
     setIsWarning(true);
     setWarningMessage(message);
   }, []);
 
+  // 유효성 검사
   const validateForm = useCallback(() => {
     if (isEmpty(id.trim())) {
       setWarning('이메일 또는 전화번호를 입력해주세요.');
@@ -53,12 +62,27 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
     return true;
   }, [id, password]);
 
+  // 로그인 요청
   const loginProc = useCallback(() => {
     if (!validateForm()) return;
-    // const loginId = id.trim();
-    // const loginPassword = password.trim();
+    const loginInfo = {
+      memId: id.trim(),
+      memPass: password.trim(),
+    };
+    requestLogin(loginInfo).then((data) => {
+      const { accessToken } = data as {
+        user: IUser;
+        accessToken: string;
+        refreshToken: string;
+      };
+      if (accessToken) {
+        localStorage.setItem('accessToken', accessToken);
+      }
+      window.location.href = '/';
+    });
   }, [id, password]);
 
+  // 엔터키로도 로그인 폼 제출
   const onKeyDownLoginForm = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {

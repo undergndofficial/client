@@ -5,6 +5,24 @@ import { IUser } from 'types/db';
 const PREFIX_URL = '/member';
 
 /**
+ * 로그인을 한다.
+ */
+export function signin(params: IUser): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.post(`${PREFIX_URL}/signin`, params);
+}
+
+/**
+ * 로그아웃 한다.
+ */
+export function signout(): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.get(`${PREFIX_URL}/signout`);
+}
+
+/**
  * 회원가입을 한다.
  */
 export function signup(params: IUser): Promise<{

@@ -22,7 +22,7 @@ import Checkbox from 'components/Checkbox';
 import IconButton from 'components/IconButton';
 import Select from 'components/Select';
 import useInput from 'hooks/useInput';
-import useGetData from 'hooks/useGetData';
+import requestData from 'hooks/useRequest';
 import { getNationList } from 'api/common';
 import { INation, IUser } from 'types/db';
 import { ActionMeta, SingleValue } from 'react-select';
@@ -79,11 +79,14 @@ function Join() {
 
   const navigate = useNavigate();
 
+  // 회원가입 요청
+  const requestJoin = requestData(signup);
+
   // 중복 체크
-  const fetchDupCheck = useGetData<'duplicated' | 'not duplicated'>(dupCheck);
+  const fetchDupCheck = requestData<'duplicated' | 'not duplicated'>(dupCheck);
 
   // 국가 목록
-  const fetchNationList = useGetData<INation[]>(getNationList);
+  const fetchNationList = requestData<INation[]>(getNationList);
   const [nationList, setNationList] = useState<INation[]>([]);
   useEffect(() => {
     fetchNationList({}).then((data) => {
@@ -207,18 +210,9 @@ function Join() {
       agreeSms: smsAgree,
       agreeMailing: emailAgree,
     };
-    signup(joinUser)
-      .then((res) => {
-        const { data } = res;
-        if (data.st) {
-          navigate('/');
-        } else {
-          console.log(data.err?.desc);
-        }
-      })
-      .catch((e) => {
-        throw new Error(e);
-      });
+    requestJoin(joinUser).then(() => {
+      navigate('/');
+    });
   };
 
   // 파일 업로드 버튼 클릭 핸들러
