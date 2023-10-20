@@ -24,3 +24,11 @@ export interface IUser {
   agreeMailing?: boolean;
   created_at?: string;
 }
+
+export interface IFaq {
+  seq: number;
+  inqCat?: number;
+  inqTxt?: string;
+  faqTitle?: string;
+  faqReply?: string;
+}
