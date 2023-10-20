@@ -2151,6 +2151,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/humps@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/humps/-/humps-2.0.4.tgz#8bf8dc3f248e621d0f0ee6a5fe210582c167e36c"
+  integrity sha512-1Wg0lY4d5cgP5IjTA8jZr94Epxc/abmLO9/LgxPRkoVNRg+eSR6JROXTlfplQOl7jzPM+VpYHmBguN1jdj0Bag==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"
   resolved "https://registry.npmjs.org/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz"
@@ -5457,6 +5462,11 @@ human-signals@^4.3.0:
   version "4.3.1"
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-4.3.1.tgz"
   integrity sha512-nZXjEF2nbo7lIw3mgYjItAfgQXog3OjJogSbKa2CQIIvSGWcKgeJnQlNXip6NglNzYH45nSRiEVimMvYL8DDqQ==
+
+humps@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/humps/-/humps-2.0.1.tgz#dd02ea6081bd0568dc5d073184463957ba9ef9aa"
+  integrity sha512-E0eIbrFWUhwfXJmsbdjRQFQPrl5pTEoKlz163j1mTqqUnU9PgR4AgB8AIITzuB3vLBdxZXyZ9TDIrwB2OASz4g==
 
 iconv-lite@0.4.24:
   version "0.4.24"

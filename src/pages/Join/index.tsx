@@ -22,17 +22,20 @@ import Checkbox from 'components/Checkbox';
 import IconButton from 'components/IconButton';
 import Select from 'components/Select';
 import useInput from 'hooks/useInput';
-import useFetch from 'hooks/useFetch';
+import useGetData from 'hooks/useGetData';
 import { getNationList } from 'api/common';
-import { NationType } from 'types/user';
+import { INation, IUser } from 'types/db';
 import { ActionMeta, SingleValue } from 'react-select';
 import { HiOutlinePhoto } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
+import { dupCheck, signup } from 'api/member';
+import { useNavigate } from 'react-router-dom';
 
 interface UserFormType {
   email: string;
   password: string;
   passwordRe: string;
+  name: string;
   phone: string;
 }
 
@@ -46,6 +49,7 @@ function Join() {
     handleSubmit,
     watch,
     formState: { errors },
+    setError,
   } = useForm<UserFormType>({
     mode: 'onChange',
   });
@@ -73,13 +77,18 @@ function Join() {
   const [doneEmailAuth, setDoneEmailAuth] = useState(false);
   const [donePhoneAuth, setDonePhoneAuth] = useState(false);
 
+  const navigate = useNavigate();
+
+  // 중복 체크
+  const fetchDupCheck = useGetData<'duplicated' | 'not duplicated'>(dupCheck);
+
   // 국가 목록
-  const [nationList, fetchNationList] = useFetch<NationType[]>(
-    getNationList,
-    [],
-  );
+  const fetchNationList = useGetData<INation[]>(getNationList);
+  const [nationList, setNationList] = useState<INation[]>([]);
   useEffect(() => {
-    fetchNationList({});
+    fetchNationList({}).then((data) => {
+      setNationList(data as INation[]);
+    });
   }, []);
 
   // 국가 목록 옵션으로 가공
@@ -89,7 +98,7 @@ function Join() {
   useEffect(() => {
     const options = nationList.map((n) => ({
       label: n.nation,
-      value: n.nationality_seq,
+      value: n.nationalitySeq,
     }));
     setNationOptions(options);
   }, [nationList]);
@@ -124,11 +133,21 @@ function Join() {
 
   // 이메일 인증 받기 버튼 클릭 핸들러
   const onClickSendEmailAuthcode = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       // 이메일이 유효하지 않으면 인증 안보냄
       const email = watch('email');
       if (!email || !emailPattern.test(email)) {
+        setShowEmailAuthForm(false);
+        return;
+      }
+      // 이메일이 중복될 경우 오류 메시지 설정
+      const duplicated = await fetchDupCheck({ ctype: 'email', value: email });
+      if (duplicated === 'duplicated') {
+        setError('email', {
+          type: 'duplicated',
+          message: '중복된 이메일입니다.',
+        });
         setShowEmailAuthForm(false);
         return;
       }
@@ -145,11 +164,21 @@ function Join() {
 
   // 휴대폰 인증 받기 버튼 클릭 핸들러
   const onClickSendPhoneAuthcode = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       // 휴대폰 번호가 유효하지 않으면 인증 안보냄
       const phone = watch('phone').replace(/[^0-9]/g, '');
       if (!phone || !phonePattern.test(phone)) {
+        setShowPhoneAuthForm(false);
+        return;
+      }
+      // 휴대폰 번호가 중복될 경우 오류 메시지 설정
+      const duplicated = await fetchDupCheck({ ctype: 'phone', value: phone });
+      if (duplicated === 'duplicated') {
+        setError('phone', {
+          type: 'duplicated',
+          message: '중복된 휴대폰 번호입니다.',
+        });
         setShowPhoneAuthForm(false);
         return;
       }
@@ -166,7 +195,30 @@ function Join() {
 
   // 회원가입
   const joinProc = (data: UserFormType) => {
-    console.log(data, nation);
+    console.log(nation);
+    const joinUser: IUser = {
+      memId: data.email,
+      memName: data.name,
+      memPass: data.password,
+      memEmail: data.email,
+      memPhone: data.phone,
+      agreeUasges: false,
+      agreePrivacy: false,
+      agreeSms: smsAgree,
+      agreeMailing: emailAgree,
+    };
+    signup(joinUser)
+      .then((res) => {
+        const { data } = res;
+        if (data.st) {
+          navigate('/');
+        } else {
+          console.log(data.err?.desc);
+        }
+      })
+      .catch((e) => {
+        throw new Error(e);
+      });
   };
 
   // 파일 업로드 버튼 클릭 핸들러
@@ -220,10 +272,10 @@ function Join() {
                   인증번호 받기
                 </Button>
               </>
+              {errors.email && (
+                <WarningMessageDiv>{errors.email.message}</WarningMessageDiv>
+              )}
             </FormItemDiv>
-            {errors.email && (
-              <WarningMessageDiv>{errors.email.message}</WarningMessageDiv>
-            )}
             {showEmailAuthForm && (
               <>
                 <FormItemDiv>
@@ -237,12 +289,12 @@ function Join() {
                     />
                     <AuthButton onClick={onClickEmailAuthcode}>인증</AuthButton>
                   </AuthForm>
+                  <WarningMessageDiv correct={doneEmailAuth}>
+                    {doneEmailAuth
+                      ? '인증이 완료되었습니다.'
+                      : '인증을 완료해주세요.'}
+                  </WarningMessageDiv>
                 </FormItemDiv>
-                <WarningMessageDiv correct={doneEmailAuth}>
-                  {doneEmailAuth
-                    ? '인증이 완료되었습니다.'
-                    : '인증을 완료해주세요.'}
-                </WarningMessageDiv>
               </>
             )}
             <FormItemDiv>
@@ -258,10 +310,10 @@ function Join() {
                   },
                 })}
               />
+              {errors.password && (
+                <WarningMessageDiv>{errors.password.message}</WarningMessageDiv>
+              )}
             </FormItemDiv>
-            {errors.password && (
-              <WarningMessageDiv>{errors.password.message}</WarningMessageDiv>
-            )}
             <FormItemDiv>
               <Label>비밀번호 확인</Label>
               <Input
@@ -278,17 +330,31 @@ function Join() {
                   },
                 })}
               />
-            </FormItemDiv>
-            {errors.passwordRe && (
-              <WarningMessageDiv>{errors.passwordRe.message}</WarningMessageDiv>
-            )}
-            {/* 비밀번호가 형식에 맞고 비밀번호 재입력과 일치하면 일치 문구 표출 */}
-            {passwordPattern.test(watch('password')) &&
-              watch('password') === watch('passwordRe') && (
-                <WarningMessageDiv correct>
-                  비밀번호가 일치합니다
+              {errors.passwordRe && (
+                <WarningMessageDiv>
+                  {errors.passwordRe.message}
                 </WarningMessageDiv>
               )}
+              {/* 비밀번호가 형식에 맞고 비밀번호 재입력과 일치하면 일치 문구 표출 */}
+              {passwordPattern.test(watch('password')) &&
+                watch('password') === watch('passwordRe') && (
+                  <WarningMessageDiv correct>
+                    비밀번호가 일치합니다
+                  </WarningMessageDiv>
+                )}
+            </FormItemDiv>
+            <FormItemDiv>
+              <Label>이름</Label>
+              <Input
+                placeholder="이름 입력"
+                {...register('name', {
+                  required: '이름을 입력해주세요.',
+                })}
+              />
+              {errors.name && (
+                <WarningMessageDiv>{errors.name.message}</WarningMessageDiv>
+              )}
+            </FormItemDiv>
             <FormItemDiv>
               <Label>연락처</Label>
               <>
@@ -314,10 +380,10 @@ function Join() {
                   인증번호 받기
                 </Button>
               </>
+              {errors.phone && (
+                <WarningMessageDiv>{errors.phone.message}</WarningMessageDiv>
+              )}
             </FormItemDiv>
-            {errors.phone && (
-              <WarningMessageDiv>{errors.phone.message}</WarningMessageDiv>
-            )}
             {showPhoneAuthForm && (
               <>
                 <FormItemDiv>
@@ -331,12 +397,12 @@ function Join() {
                     />
                     <AuthButton onClick={onClickPhoneAuthcode}>인증</AuthButton>
                   </AuthForm>
+                  <WarningMessageDiv correct={donePhoneAuth}>
+                    {donePhoneAuth
+                      ? '인증이 완료되었습니다.'
+                      : '인증을 완료해주세요.'}
+                  </WarningMessageDiv>
                 </FormItemDiv>
-                <WarningMessageDiv correct={donePhoneAuth}>
-                  {donePhoneAuth
-                    ? '인증이 완료되었습니다.'
-                    : '인증을 완료해주세요.'}
-                </WarningMessageDiv>
               </>
             )}
             <FormItemDiv>

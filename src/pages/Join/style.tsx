@@ -36,8 +36,10 @@ export const JoinForm = styled.form`
 export const FormItemDiv = styled.div`
   display: flex;
   gap: 1.5rem;
+  row-gap: 0.8rem;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
 `;
 
 export const Label = styled.div<{ alignSelf?: string }>`
@@ -65,6 +67,9 @@ export const FlexWrapper = styled.div<{ gap?: string }>`
 
 export const WarningMessageDiv = styled.div<{ correct?: boolean }>`
   margin-left: ${MARGIN_LABEL};
+  /* bottom: -1.8rem;
+  position: absolute; */
+  font-size: 0.9rem;
   width: 100%;
   color: #f00;
   ${(props) => props.correct && 'color: #00FF38'};

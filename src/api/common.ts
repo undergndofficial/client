@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ResponseType } from 'types/common';
-import { NationType } from 'types/user';
+import { INation } from 'types/db';
 
 const PREFIX_URL = '/common';
 
@@ -12,6 +12,6 @@ export function getNationList({
   keyword,
 }: {
   keyword?: string;
-} = {}): Promise<{ data: ResponseType<NationType[]> }> {
+} = {}): Promise<{ data: ResponseType<INation[]> }> {
   return axios.get(`${PREFIX_URL}/nationality/${keyword ? keyword : ''}`);
 }
