@@ -46,8 +46,8 @@ export function dupCheck(params: {
 }
 
 /**
- * access token으로 로그인한 사용자의 정보를 불러온다
+ * 로그인한 사용자의 정보를 불러온다
  */
-export function getMemberInfo(): Promise<{ data: ResponseType<IUser> }> {
-  return axios.patch(`${PREFIX_URL}`);
-}
+// export function getMemberInfo(): Promise<{ data: ResponseType<IUser> }> {
+//   return axios.patch(`${PREFIX_URL}`);
+// }
