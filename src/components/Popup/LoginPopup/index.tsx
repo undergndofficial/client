@@ -38,7 +38,11 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   // 비밀번호 찾기 보여주기 여부
   const [showFindPassword, setShowFindPassword] = useState(false);
   // 로그인 요청
-  const requestLogin = requestData(signin);
+  const requestLogin = requestData<{
+    user: IUser;
+    accessToken: string;
+    refreshToken: string;
+  }>(signin);
 
   const navigate = useNavigate();
 

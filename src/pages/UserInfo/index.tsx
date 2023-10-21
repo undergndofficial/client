@@ -8,11 +8,23 @@ import {
   InfoItemWrapper,
   BottomButton,
 } from './style';
+// import useRequest from 'hooks/useRequest';
+// import { getMemberInfo } from 'api/member';
+// import { IUser } from 'types/db';
 
 /**
  * 계정 정보 페이지
  */
 function UserInfo() {
+  // 유저 정보
+  // const requestUserInfo = useRequest<IUser>(getMemberInfo);
+  // const [userInfo, setUserInfo] = useState({});
+  // useEffect(() => {
+  //   requestUserInfo().then((data) => {
+  //     setUserInfo(data);
+  //   });
+  // }, []);
+
   return (
     <Layout showFooter={false}>
       <PageContent>

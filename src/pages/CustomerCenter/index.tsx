@@ -95,10 +95,9 @@ function CustomerCenter() {
           <MenuWrapper>
             <MenuTitleDiv>FAQ 카테고리</MenuTitleDiv>
             <div>
-              {inqList.map((inq, i) => (
-                <>
+              {inqList.map((inq) => (
+                <div key={inq.inqCat}>
                   <MenuDiv
-                    key={i}
                     onClick={() => {
                       toggleOpenMenuId(inq.inqCat.toString());
                     }}
@@ -111,9 +110,9 @@ function CustomerCenter() {
                     )}
                   </MenuDiv>
                   <SubMenuWrapper selected={openMenuIds[inq.inqCat]}>
-                    {inq.faqs.map((faq, i) => (
+                    {inq.faqs.map((faq) => (
                       <SubMenuDiv
-                        key={i}
+                        key={faq.seq}
                         onClick={() => {
                           setCurFaq(faq);
                         }}
@@ -123,7 +122,7 @@ function CustomerCenter() {
                       </SubMenuDiv>
                     ))}
                   </SubMenuWrapper>
-                </>
+                </div>
               ))}
             </div>
             <Button

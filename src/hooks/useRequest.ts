@@ -6,23 +6,25 @@ const useRequest = <T>(
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const requestData = (params?: any) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await axiosRequest(params);
-        const { data } = res;
-        if (data.st) {
-          if (data.rs) {
-            resolve(data.rs);
+    return new Promise(
+      async (resolve: (value: T | boolean) => void, reject) => {
+        try {
+          const res = await axiosRequest(params);
+          const { data } = res;
+          if (data.st) {
+            if (data.rs) {
+              resolve(data.rs);
+            } else {
+              resolve(data.st);
+            }
           } else {
-            resolve(data.st);
+            reject(new Error(data.err?.desc));
           }
-        } else {
-          reject(new Error(data.err?.desc));
+        } catch (e) {
+          reject(e);
         }
-      } catch (e) {
-        reject(e);
-      }
-    });
+      },
+    );
   };
 
   return requestData;

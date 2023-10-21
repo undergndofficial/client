@@ -22,7 +22,11 @@ export interface IUser {
   agreePrivacy?: boolean;
   agreeSms?: boolean;
   agreeMailing?: boolean;
-  created_at?: string;
+  createdAt?: string;
+  isDormant?: number;
+  isWithdraw?: number;
+  isBanned?: number;
+  lastLoginAt?: string;
 }
 
 export interface IFaq {

@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'layouts/Modal';
 import LoginPopup from 'components/Popup/LoginPopup';
 import { isEmpty } from 'lodash';
-import useRequest from 'hooks/useRequest';
-import { signout } from 'api/member';
+// import useRequest from 'hooks/useRequest';
+// import { signout } from 'api/member';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -44,7 +44,7 @@ function Header({ scrollTop }: HeaderPropsType) {
   }, []);
 
   // 로그아웃
-  const requestLogout = useRequest(signout);
+  // const requestLogout = useRequest(signout);
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
     window.location.href = '/';
