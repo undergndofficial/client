@@ -4,6 +4,7 @@ import emotionNormalize from 'emotion-normalize';
 import theme from './theme';
 
 const baseStyle = css`
+  @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
   ${emotionNormalize}
   :root {
     --color-background: black;
@@ -18,6 +19,7 @@ const baseStyle = css`
     --color-heartlike: #ff0000;
   }
   html {
+    font-family: 'Noto Sans KR', sans-serif;
     @media ${theme.device.phone} {
       font-size: 13px;
     }

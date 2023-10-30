@@ -15,10 +15,13 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import useInput from 'hooks/useInput';
 import { isEmpty } from 'lodash';
+import useRequest from 'hooks/useRequest';
+import { requestMovie } from 'api/movie';
+import { IRequestMovie } from 'types/db';
 
 function Request() {
   const [directorList, setDirectorList] = useState<string[]>([]);
-  const [title, onChangeTitle] = useInput('');
+  const [title, onChangeTitle, setTitle] = useInput('');
   const [director, onChangeDirector, setDirector] = useInput('');
   const [isComposing, setIsComposing] = useState(false);
 
@@ -48,6 +51,35 @@ function Request() {
     },
     [director, directorList, isComposing],
   );
+
+  // 유효성 검사
+  const validate = useCallback(() => {
+    if (!title.trim()) {
+      return false;
+    }
+    if (isEmpty(directorList)) {
+      return false;
+    }
+    return true;
+  }, [title, directorList]);
+
+  // 영화 요청
+  const requsetRequestMovie = useRequest<boolean>(requestMovie);
+  const requsetProc = useCallback(() => {
+    if (validate()) return;
+    const movie: IRequestMovie = {
+      movTitle: title,
+      directors: directorList.join(','),
+    };
+    requsetRequestMovie(movie)
+      .then(() => {
+        setTitle('');
+        setDirectorList([]);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  }, [title, directorList]);
 
   return (
     <Layout>
@@ -92,7 +124,7 @@ function Request() {
               </DirectorListDiv>
             </FormItemDiv>
           </RequestForm>
-          <RequestButton>요청</RequestButton>
+          <RequestButton onClick={requsetProc}>요청</RequestButton>
         </Container>
       </PageContent>
     </Layout>

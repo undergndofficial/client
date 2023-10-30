@@ -58,9 +58,7 @@ function WriteInquiry() {
               <SelectWrapper>
                 <Select
                   placeholder="유형 선택"
-                  onChange={() => {
-                    onChangeType;
-                  }}
+                  onChange={onChangeType}
                   options={[{ label: '문의 유형', value: 'tmp' }]}
                 />
               </SelectWrapper>

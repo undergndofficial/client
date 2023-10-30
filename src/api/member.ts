@@ -26,9 +26,22 @@ export function signout(): Promise<{
  * 회원가입을 한다.
  */
 export function signup(params: IUser): Promise<{
-  data: ResponseType<never>;
+  data: ResponseType<{ memSeq: number }>;
 }> {
   return axios.put(`${PREFIX_URL}/signup`, params);
+}
+
+/**
+ * 회원가입 시 영화인으로 등록한다.
+ */
+export function signupFilmpeople(params: FormData): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.put(`${PREFIX_URL}/signup-with-filmpeople`, params, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 /**

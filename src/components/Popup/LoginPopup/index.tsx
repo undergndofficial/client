@@ -20,7 +20,7 @@ import FindPassword from './FindPassword';
 import { useNavigate } from 'react-router-dom';
 import Checkbox from 'components/Checkbox';
 import { isEmpty } from 'lodash';
-import requestData from 'hooks/useRequest';
+import useRequest from 'hooks/useRequest';
 import { signin } from 'api/member';
 import { IUser } from 'types/db';
 
@@ -38,7 +38,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   // 비밀번호 찾기 보여주기 여부
   const [showFindPassword, setShowFindPassword] = useState(false);
   // 로그인 요청
-  const requestLogin = requestData<{
+  const requestLogin = useRequest<{
     user: IUser;
     accessToken: string;
     refreshToken: string;
@@ -73,17 +73,18 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
       memId: id.trim(),
       memPass: password.trim(),
     };
-    requestLogin(loginInfo).then((data) => {
-      const { accessToken } = data as {
-        user: IUser;
-        accessToken: string;
-        refreshToken: string;
-      };
-      if (accessToken) {
-        localStorage.setItem('accessToken', accessToken);
-      }
-      window.location.href = '/';
-    });
+    requestLogin(loginInfo)
+      .then((data) => {
+        const { accessToken, refreshToken } = data;
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+        }
+        window.location.href = '/';
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   }, [id, password]);
 
   // 엔터키로도 로그인 폼 제출

@@ -22,13 +22,13 @@ import Checkbox from 'components/Checkbox';
 import IconButton from 'components/IconButton';
 import Select from 'components/Select';
 import useInput from 'hooks/useInput';
-import requestData from 'hooks/useRequest';
+import useRequest from 'hooks/useRequest';
 import { getNationList } from 'api/common';
-import { INation, IUser } from 'types/db';
+import { IFilmpeople, INation, IUser } from 'types/db';
 import { ActionMeta, SingleValue } from 'react-select';
 import { HiOutlinePhoto } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
-import { dupCheck, signup } from 'api/member';
+import { dupCheck, signup, signupFilmpeople } from 'api/member';
 import { useNavigate } from 'react-router-dom';
 
 interface UserFormType {
@@ -63,10 +63,11 @@ function Join() {
   const [smsAgree, setSmsAgree] = useState(false); // sms 수신 동의
   const [emailAgree, setEmailAgree] = useState(false); // 이메일 수신 동의
   // 영화인인지 여부
-  const [moviePerson, setMoviePerson] = useState(false);
+  const [filmPerson, setFilmPerson] = useState(false);
   // 영화인 정보
+  const [photo, setPhoto] = useState<Blob | null>(null);
   const [nation, setNation] = useState(''); // 국적
-  const [gender, setGender] = useState<'woman' | 'man' | 'etc' | ''>('etc'); // 성별
+  const [gender, setGender] = useState<'F' | 'M' | 'E'>('E'); // 성별
   const [enName, onChangeEnName] = useInput(''); // 영어 네임
   const [belong, onChangeBelong] = useInput(''); // 소속
   const [notes, onChangeNotes] = useInput(''); // 특이 사항
@@ -80,17 +81,18 @@ function Join() {
   const navigate = useNavigate();
 
   // 회원가입 요청
-  const requestJoin = requestData(signup);
-
+  const requestJoin = useRequest<{ memSeq: number }>(signup);
+  // 영화인 등록 요청
+  const requestFilmPeople = useRequest<boolean>(signupFilmpeople);
   // 중복 체크
-  const fetchDupCheck = requestData<'duplicated' | 'not duplicated'>(dupCheck);
+  const fetchDupCheck = useRequest<'duplicated' | 'not duplicated'>(dupCheck);
 
   // 국가 목록
-  const fetchNationList = requestData<INation[]>(getNationList);
+  const fetchNationList = useRequest<INation[]>(getNationList);
   const [nationList, setNationList] = useState<INation[]>([]);
   useEffect(() => {
     fetchNationList({}).then((data) => {
-      setNationList(data as INation[]);
+      setNationList(data);
     });
   }, []);
 
@@ -197,8 +199,7 @@ function Join() {
   }, []);
 
   // 회원가입
-  const joinProc = (data: UserFormType) => {
-    console.log(nation);
+  const joinProc = async (data: UserFormType) => {
     const joinUser: IUser = {
       memId: data.email,
       memName: data.name,
@@ -210,9 +211,45 @@ function Join() {
       agreeSms: smsAgree,
       agreeMailing: emailAgree,
     };
-    requestJoin(joinUser).then(() => {
-      navigate('/');
-    });
+    requestJoin(joinUser)
+      .then((data) => {
+        if (filmPerson) {
+          const { memSeq } = data;
+          const filmPeople: IFilmpeople = {
+            fpKoName: enName, // TODO:수정 필요. 임시
+            fpEnName: enName,
+            fpPhoto: photo as File,
+            fpNationalitySeq: nation,
+            fpSex: gender,
+            fpBirthYear: 0,
+            fpDeparts: belong,
+            fpRemarks: notes,
+            memSeq: memSeq,
+          };
+          const formData = new FormData();
+          formData.append('fp_ko_name', filmPeople.fpKoName);
+          formData.append('fp_en_name', filmPeople.fpEnName);
+          formData.append('photo', filmPeople.fpPhoto);
+          formData.append('fp_nationality_seq', filmPeople.fpNationalitySeq);
+          formData.append('fp_sex', filmPeople.fpSex);
+          formData.append('fp_birth_year', filmPeople.fpBirthYear.toString());
+          formData.append('fp_departs', filmPeople.fpDeparts);
+          formData.append('fp_remarks', filmPeople.fpRemarks);
+          formData.append('mem_seq', filmPeople.memSeq.toString());
+          requestFilmPeople(formData)
+            .then(() => {
+              navigate('/');
+            })
+            .catch((e) => {
+              console.log(e.message);
+            });
+        } else {
+          navigate('/');
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   };
 
   // 파일 업로드 버튼 클릭 핸들러
@@ -226,6 +263,7 @@ function Join() {
   const encodeFileToBase64 = (fileBlob: File) => {
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
+    setPhoto(fileBlob);
 
     return new Promise<void>((resolve) => {
       reader.onload = () => {
@@ -425,16 +463,16 @@ function Join() {
               <Label>추가 정보</Label>
               <FlexWrapper
                 onClick={() => {
-                  setMoviePerson((prev) => !prev);
+                  setFilmPerson((prev) => !prev);
                 }}
               >
-                <Checkbox checked={moviePerson} />
+                <Checkbox checked={filmPerson} />
                 영화계 종사자이신가요?
               </FlexWrapper>
             </FormItemDiv>
           </JoinForm>
           {/* 영화인 정보 */}
-          {moviePerson && (
+          {filmPerson && (
             <JoinForm>
               <FormTitle>영화인 정보 등록</FormTitle>
               <FormItemDiv>
@@ -481,24 +519,24 @@ function Join() {
                 <Label>성별</Label>
                 <FlexWrapper
                   onClick={() => {
-                    setGender('man');
+                    setGender('M');
                   }}
                 >
-                  <Checkbox checked={gender == 'man'} />남
+                  <Checkbox checked={gender == 'M'} />남
                 </FlexWrapper>
                 <FlexWrapper
                   onClick={() => {
-                    setGender('woman');
+                    setGender('F');
                   }}
                 >
-                  <Checkbox checked={gender == 'woman'} />여
+                  <Checkbox checked={gender == 'F'} />여
                 </FlexWrapper>
                 <FlexWrapper
                   onClick={() => {
-                    setGender('etc');
+                    setGender('E');
                   }}
                 >
-                  <Checkbox checked={gender == 'etc'} />
+                  <Checkbox checked={gender == 'E'} />
                   기타
                 </FlexWrapper>
               </FormItemDiv>

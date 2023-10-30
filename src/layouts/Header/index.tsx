@@ -46,14 +46,17 @@ function Header({ scrollTop }: HeaderPropsType) {
   // 로그아웃
   // const requestLogout = useRequest(signout);
   const logout = useCallback(() => {
-    localStorage.removeItem('accessToken');
     window.location.href = '/';
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     // requestLogout()
     //   .then(() => {
     //     window.location.href = '/';
-    //   })
-    //   .finally(() => {
     //     localStorage.removeItem('accessToken');
+    //     localStorage.removeItem('refreshToken');
+    //   })
+    //   .catch((e) => {
+    //     console.log(e.message);
     //   });
   }, []);
 

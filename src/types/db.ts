@@ -29,10 +29,28 @@ export interface IUser {
   lastLoginAt?: string;
 }
 
+export interface IFilmpeople {
+  fpKoName: string;
+  fpEnName: string;
+  fpPhoto: File;
+  fpNationalitySeq: string;
+  fpSex: 'M' | 'F' | 'E';
+  fpBirthYear: number;
+  fpDeparts: string;
+  fpRemarks: string;
+  memSeq: number;
+}
+
 export interface IFaq {
   seq: number;
   inqCat?: number;
   inqTxt?: string;
   faqTitle?: string;
   faqReply?: string;
+}
+
+export interface IRequestMovie {
+  movTitle: string;
+  directors: string;
+  reqComment?: string;
 }

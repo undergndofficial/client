@@ -32,30 +32,34 @@ function CustomerCenter() {
   const [inqList, setInqList] = useState<IInq[]>([]);
   const requestFaqs = useRequest(getFaqList);
   useEffect(() => {
-    requestFaqs().then((data) => {
-      const newFaqs: IInq[] = (data as IFaq[]).reduce<IInq[]>(
-        (result: IInq[], item: IFaq) => {
-          const existingCategory = result.find(
-            (category) => category.inqCat === item.inqCat,
-          );
-          if (existingCategory) {
-            existingCategory.faqs.push({
-              faqTitle: item.faqTitle || '',
-              seq: item.seq,
-            });
-          } else {
-            result.push({
-              inqCat: item.inqCat || 0,
-              inqText: item.inqTxt || '',
-              faqs: [{ faqTitle: item.faqTitle || '', seq: item.seq }],
-            });
-          }
-          return result;
-        },
-        [],
-      );
-      setInqList(newFaqs);
-    });
+    requestFaqs()
+      .then((data) => {
+        const newFaqs: IInq[] = data.reduce<IInq[]>(
+          (result: IInq[], item: IFaq) => {
+            const existingCategory = result.find(
+              (category) => category.inqCat === item.inqCat,
+            );
+            if (existingCategory) {
+              existingCategory.faqs.push({
+                faqTitle: item.faqTitle || '',
+                seq: item.seq,
+              });
+            } else {
+              result.push({
+                inqCat: item.inqCat || 0,
+                inqText: item.inqTxt || '',
+                faqs: [{ faqTitle: item.faqTitle || '', seq: item.seq }],
+              });
+            }
+            return result;
+          },
+          [],
+        );
+        setInqList(newFaqs);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   }, []);
 
   // 현재 열린 메뉴들
@@ -79,12 +83,16 @@ function CustomerCenter() {
   const reqeustFaqDetail = useRequest(getFaqDetail);
   useEffect(() => {
     if (isEmpty(curFaq)) return;
-    reqeustFaqDetail(curFaq.seq).then((data) => {
-      const { faqReply } = (data as IFaq[])[0];
-      if (faqReply) {
-        setContent(faqReply);
-      }
-    });
+    reqeustFaqDetail(curFaq.seq)
+      .then((data) => {
+        const { faqReply } = data[0];
+        if (faqReply) {
+          setContent(faqReply);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   }, [curFaq]);
 
   return (
