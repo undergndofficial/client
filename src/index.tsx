@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import axios from 'axios';
 import humps from 'humps';
+import { useNavigate } from 'react-router-dom';
 
 // 요청 인터셉터
 axios.interceptors.request.use(
   (config) => {
+    // 폼데이터의 경우 카멜케이스로 바꾸면 에러가 발생
     if (!(config.data instanceof FormData)) {
       config.data = humps.decamelizeKeys(config.data);
     }
@@ -14,7 +16,7 @@ axios.interceptors.request.use(
     const accessToken: string | null = localStorage.getItem('accessToken');
     const refreshToken: string | null = localStorage.getItem('refreshToken');
     if (accessToken && refreshToken) {
-      config.headers.Authorization = `Bearer Token ${accessToken}`;
+      config.headers.Authorization = `Token ${accessToken}`;
       config.headers.refresh = `${refreshToken}`;
     }
     return config;
@@ -28,20 +30,41 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     response.data = humps.camelizeKeys(response.data);
-    const { data } = response;
-    if (!data.st) {
-      // 토큰이 만료된 경우 재발급된 accessToken을 받아 저장 후 재요청
-      // if (data.err.code === 'err_auth_001') {
-      //     const { accessToken, refreshToken } = data;
-      //     localStorage.setItem('accessToken', accessToken);
-      //     localStorage.setItem('refreshToken', refreshToken);
-      //     return axios(response.config);
-      // }
-    }
     return response;
   },
   async (error) => {
-    return Promise.reject(error);
+    const { config, response } = error;
+    response.data = humps.camelizeKeys(response.data);
+    //  401에러가 아닌 경우 그냥 에러 발생
+    if (response.status !== 401 || config.sent) {
+      // 403 에러인 경우는 사용자 상태 변경인 경우
+      // 로그인 정보가 유효하지 않을 경우 (err_auth_002)
+      // 사용자의 상태가 변경(탈퇴, 사용중지)되었을 경우 (err_mem_090)
+      // 홈 화면으로 리다이렉트 후 에러 발생
+      if (response.status === 403) {
+        if (
+          response.data.err.code === 'err_auth_002' ||
+          response.data.err.code === 'err_mem_090'
+        ) {
+          // 토큰 삭제
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          const navigate = useNavigate();
+          navigate('/');
+        }
+      }
+      return Promise.reject(error);
+    }
+    // 아닌 경우 토큰 갱신
+    config.sent = true; // 무한 재요청 방지
+    const { accessToken, refreshToken } = response.data;
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    if (accessToken && refreshToken) {
+      config.headers.Authorization = `Bearer Token ${accessToken}`;
+      config.headers.refresh = `${refreshToken}`;
+    }
+    return axios(config);
   },
 );
 

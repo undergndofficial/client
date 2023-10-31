@@ -66,7 +66,7 @@ function Request() {
   // 영화 요청
   const requsetRequestMovie = useRequest<boolean>(requestMovie);
   const requsetProc = useCallback(() => {
-    if (validate()) return;
+    if (!validate()) return;
     const movie: IRequestMovie = {
       movTitle: title,
       directors: directorList.join(','),

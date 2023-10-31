@@ -32,6 +32,7 @@ import { dupCheck, signup, signupFilmpeople } from 'api/member';
 import { useNavigate } from 'react-router-dom';
 
 interface UserFormType {
+  id: string;
   email: string;
   password: string;
   passwordRe: string;
@@ -201,11 +202,11 @@ function Join() {
   // 회원가입
   const joinProc = async (data: UserFormType) => {
     const joinUser: IUser = {
-      memId: data.email,
+      memId: data.id,
       memName: data.name,
       memPass: data.password,
       memEmail: data.email,
-      memPhone: data.phone,
+      memPhone: data.phone.replace(/[^0-9]/g, ''),
       agreeUasges: false,
       agreePrivacy: false,
       agreeSms: smsAgree,
@@ -284,51 +285,23 @@ function Join() {
           <JoinForm>
             <FormTitle>기본 정보 등록</FormTitle>
             <FormItemDiv>
-              <Label>이메일</Label>
+              <Label>아이디</Label>
               <>
                 <Input
-                  placeholder="E-mail 입력"
-                  {...register('email', {
-                    required: '이메일을 입력해주세요.',
-                    pattern: {
-                      value: emailPattern,
-                      message: '이메일 형식이 올바르지 않습니다.',
-                    },
+                  placeholder="아이디를 입력해주세요"
+                  {...register('id', {
+                    required: '아이디를 입력해주세요.',
+                    // pattern: {
+                    //   value: idPattern,
+                    //   message: '아이디 형식이 올바르지 않습니다.',
+                    // },
                   })}
-                  disabled={doneEmailAuth}
                 />
-                <Button
-                  onClick={onClickSendEmailAuthcode}
-                  disabled={doneEmailAuth}
-                >
-                  인증번호 받기
-                </Button>
               </>
-              {errors.email && (
-                <WarningMessageDiv>{errors.email.message}</WarningMessageDiv>
+              {errors.id && (
+                <WarningMessageDiv>{errors.id.message}</WarningMessageDiv>
               )}
-            </FormItemDiv>
-            {showEmailAuthForm && (
-              <>
-                <FormItemDiv>
-                  <AuthForm>
-                    <Input
-                      placeholder="인증번호 입력"
-                      width="50%"
-                      value={emailAuthcode}
-                      onChange={onChangeEmailAuthcode}
-                      disabled={doneEmailAuth}
-                    />
-                    <AuthButton onClick={onClickEmailAuthcode}>인증</AuthButton>
-                  </AuthForm>
-                  <WarningMessageDiv correct={doneEmailAuth}>
-                    {doneEmailAuth
-                      ? '인증이 완료되었습니다.'
-                      : '인증을 완료해주세요.'}
-                  </WarningMessageDiv>
-                </FormItemDiv>
-              </>
-            )}
+            </FormItemDiv>{' '}
             <FormItemDiv>
               <Label>비밀번호</Label>
               <Input
@@ -353,13 +326,6 @@ function Join() {
                 type="password"
                 {...register('passwordRe', {
                   required: '비밀번호를 한번 더 입력해주세요.',
-                  validate: {
-                    check: (value) => {
-                      if (watch('password') !== value) {
-                        return '비밀번호가 일치하지 않습니다.';
-                      }
-                    },
-                  },
                 })}
               />
               {errors.passwordRe && (
@@ -368,19 +334,24 @@ function Join() {
                 </WarningMessageDiv>
               )}
               {/* 비밀번호가 형식에 맞고 비밀번호 재입력과 일치하면 일치 문구 표출 */}
-              {passwordPattern.test(watch('password')) &&
-                watch('password') === watch('passwordRe') && (
+              {!errors.passwordRe &&
+                passwordPattern.test(watch('password')) &&
+                (watch('password') === watch('passwordRe') ? (
                   <WarningMessageDiv correct>
                     비밀번호가 일치합니다
                   </WarningMessageDiv>
-                )}
+                ) : (
+                  <WarningMessageDiv>
+                    비밀번호가 일치하지 않습니다
+                  </WarningMessageDiv>
+                ))}
             </FormItemDiv>
             <FormItemDiv>
               <Label>이름</Label>
               <Input
                 placeholder="이름 입력"
                 {...register('name', {
-                  required: '이름을 입력해주세요.',
+                  required: '이름을 입력해주세요',
                 })}
               />
               {errors.name && (
@@ -388,10 +359,10 @@ function Join() {
               )}
             </FormItemDiv>
             <FormItemDiv>
-              <Label>연락처</Label>
+              <Label>전화번호</Label>
               <>
                 <Input
-                  placeholder="전화번호 입력"
+                  placeholder="전화번호를 입력해주세요"
                   value={phone}
                   {...register('phone', {
                     required: '전화 번호를 입력해주세요.',
@@ -421,7 +392,7 @@ function Join() {
                 <FormItemDiv>
                   <AuthForm>
                     <Input
-                      placeholder="인증번호 입력"
+                      placeholder="인증번호를 입력해주세요"
                       width="50%"
                       value={phoneAuthcode}
                       onChange={onChangePhoneAuthcode}
@@ -431,6 +402,52 @@ function Join() {
                   </AuthForm>
                   <WarningMessageDiv correct={donePhoneAuth}>
                     {donePhoneAuth
+                      ? '인증이 완료되었습니다.'
+                      : '인증을 완료해주세요.'}
+                  </WarningMessageDiv>
+                </FormItemDiv>
+              </>
+            )}
+            <FormItemDiv>
+              <Label>이메일</Label>
+              <>
+                <Input
+                  placeholder="example@undergnd.com"
+                  {...register('email', {
+                    required: '이메일을 입력해주세요.',
+                    pattern: {
+                      value: emailPattern,
+                      message: '이메일 형식이 올바르지 않습니다.',
+                    },
+                  })}
+                  disabled={doneEmailAuth}
+                />
+                <Button
+                  onClick={onClickSendEmailAuthcode}
+                  disabled={doneEmailAuth}
+                >
+                  인증번호 받기
+                </Button>
+              </>
+              {errors.email && (
+                <WarningMessageDiv>{errors.email.message}</WarningMessageDiv>
+              )}
+            </FormItemDiv>
+            {showEmailAuthForm && (
+              <>
+                <FormItemDiv>
+                  <AuthForm>
+                    <Input
+                      placeholder="인증번호를 입력해주세요"
+                      width="50%"
+                      value={emailAuthcode}
+                      onChange={onChangeEmailAuthcode}
+                      disabled={doneEmailAuth}
+                    />
+                    <AuthButton onClick={onClickEmailAuthcode}>인증</AuthButton>
+                  </AuthForm>
+                  <WarningMessageDiv correct={doneEmailAuth}>
+                    {doneEmailAuth
                       ? '인증이 완료되었습니다.'
                       : '인증을 완료해주세요.'}
                   </WarningMessageDiv>

@@ -83,7 +83,11 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
         window.location.href = '/';
       })
       .catch((e) => {
-        console.log(e.message);
+        if (e.code === 'err_008' || e.code === 'err_004') {
+          setWarning(e.message);
+        } else {
+          console.error(e.message);
+        }
       });
   }, [id, password]);
 
