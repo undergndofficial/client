@@ -100,6 +100,7 @@ function Join() {
   }, []);
 
   // 국가 목록 옵션으로 가공
+  const [nationOptions, setNationOptions, onChangeNation] =
     useSelect(setNation); // 국가 목록
   useEffect(() => {
     const optionData = nationList as unknown as { [key: string]: string }[];
