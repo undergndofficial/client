@@ -48,12 +48,13 @@ function Header({ scrollTop }: HeaderPropsType) {
   const logout = useCallback(() => {
     requestLogout()
       .then(() => {
+        alert('로그아웃 되었습니다.');
         window.location.href = '/';
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
   }, []);
 

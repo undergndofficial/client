@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import axios from 'axios';
 import humps from 'humps';
-import { useNavigate } from 'react-router-dom';
 
 // 요청 인터셉터
 axios.interceptors.request.use(
@@ -37,22 +36,20 @@ axios.interceptors.response.use(
     response.data = humps.camelizeKeys(response.data);
     //  401에러가 아닌 경우 그냥 에러 발생
     if (response.status !== 401 || config.sent) {
-      // 403 에러인 경우는 사용자 상태 변경인 경우
-      // 로그인 정보가 유효하지 않을 경우 (err_auth_002)
-      // 사용자의 상태가 변경(탈퇴, 사용중지)되었을 경우 (err_mem_090)
-      // 홈 화면으로 리다이렉트 후 에러 발생
-      if (response.status === 403) {
-        if (
-          response.data.err.code === 'err_auth_002' ||
-          response.data.err.code === 'err_mem_090'
-        ) {
-          // 토큰 삭제
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          const navigate = useNavigate();
-          navigate('/');
-        }
-      }
+      return Promise.reject(error);
+    }
+    // 로그인 정보가 유효하지 않을 경우 (err_auth_002)
+    // 사용자의 상태가 변경(탈퇴, 사용중지)되었을 경우 (err_mem_090)
+    // 홈 화면으로 리다이렉트 후 에러 발생
+    if (
+      response.data.err.code === 'err_auth_002' ||
+      response.data.err.code === 'err_mem_090'
+    ) {
+      // 토큰 삭제
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/';
+      alert('로그인 상태가 만료되었습니다. 다시 로그인해주세요.');
       return Promise.reject(error);
     }
     // 아닌 경우 토큰 갱신

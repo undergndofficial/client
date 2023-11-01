@@ -24,12 +24,14 @@ import Select from 'components/Select';
 import useInput from 'hooks/useInput';
 import useRequest from 'hooks/useRequest';
 import { getNationList } from 'api/common';
-import { IFilmpeople, INation, IUser } from 'types/db';
-import { ActionMeta, SingleValue } from 'react-select';
+import { IFilmpeople, IUser } from 'types/db';
+import { INation } from 'types/common';
 import { HiOutlinePhoto } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { dupCheck, signup, signupFilmpeople } from 'api/member';
 import { useNavigate } from 'react-router-dom';
+import useSelect from 'hooks/useSelect';
+import { getSelectOptionList } from 'utils/common';
 
 interface UserFormType {
   id: string;
@@ -98,31 +100,13 @@ function Join() {
   }, []);
 
   // 국가 목록 옵션으로 가공
-  const [nationOptions, setNationOptions] = useState<
-    { label: string; value: string }[]
-  >([]);
+    useSelect(setNation); // 국가 목록
   useEffect(() => {
-    const options = nationList.map((n) => ({
-      label: n.nation,
-      value: n.nationalitySeq,
-    }));
-    setNationOptions(options);
+    const optionData = nationList as unknown as { [key: string]: string }[];
+    setNationOptions(
+      getSelectOptionList(optionData, 'nation', 'nationalitySeq'),
+    );
   }, [nationList]);
-
-  // 국가 변경 핸들러
-  const onChangeNation = useCallback(
-    (
-      newValue: SingleValue<{ label: string; value: string }>,
-      actionMeta: ActionMeta<{ label: string; value: string }>,
-    ) => {
-      if (actionMeta.action === 'select-option') {
-        setNation(newValue?.value as string);
-      } else if (actionMeta.action === 'clear') {
-        setNation('');
-      }
-    },
-    [],
-  );
 
   // 휴대폰 번호 변경에 따라 xxx-xxxx-xxxx 형태로 바꿔주기
   const onChangePhone = useCallback(
@@ -201,6 +185,15 @@ function Join() {
 
   // 회원가입
   const joinProc = async (data: UserFormType) => {
+    // 아이디가 중복될 경우 오류 메시지 설정
+    const duplicated = await fetchDupCheck({ ctype: 'id', value: data.id });
+    if (duplicated === 'duplicated') {
+      setError('id', {
+        type: 'duplicated',
+        message: '중복된 아이디입니다.',
+      });
+      return;
+    }
     const joinUser: IUser = {
       memId: data.id,
       memName: data.name,
@@ -239,17 +232,18 @@ function Join() {
           formData.append('mem_seq', filmPeople.memSeq.toString());
           requestFilmPeople(formData)
             .then(() => {
+              alert('회원가입 되었습니다.');
               navigate('/');
             })
             .catch((e) => {
-              console.log(e.message);
+              console.error(e.message);
             });
         } else {
           navigate('/');
         }
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
   };
 
@@ -502,8 +496,14 @@ function Join() {
                   ref={fileInput}
                   onChange={(e) => {
                     const selectedFile = e.target.files && e.target.files[0];
-                    if (selectedFile) {
+                    if (
+                      selectedFile?.type == 'image/png' ||
+                      selectedFile?.type == 'image/jpeg' ||
+                      selectedFile?.type == 'image/jpg'
+                    ) {
                       encodeFileToBase64(selectedFile);
+                    } else {
+                      alert('png, jpg, jpeg 파일만 업로드할 수 있습니다.');
                     }
                   }}
                 />

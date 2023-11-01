@@ -58,7 +58,7 @@ function CustomerCenter() {
         setInqList(newFaqs);
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
   }, []);
 
@@ -91,7 +91,7 @@ function CustomerCenter() {
         }
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
   }, [curFaq]);
 

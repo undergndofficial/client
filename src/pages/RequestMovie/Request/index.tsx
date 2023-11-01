@@ -9,7 +9,6 @@ import {
   Label,
   RequestButton,
   DirectorListDiv,
-  DirectorTagDiv,
 } from './style';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -18,39 +17,22 @@ import { isEmpty } from 'lodash';
 import useRequest from 'hooks/useRequest';
 import { requestMovie } from 'api/movie';
 import { IRequestMovie } from 'types/db';
+import useTagInput from 'hooks/useTagInput';
+import InputTagList from 'components/InputTagList';
 
 function Request() {
-  const [directorList, setDirectorList] = useState<string[]>([]);
   const [title, onChangeTitle, setTitle] = useInput('');
   const [director, onChangeDirector, setDirector] = useInput('');
   const [isComposing, setIsComposing] = useState(false);
 
   // 해당 인덱스의 감독 삭제
-  const deleteDirector = useCallback(
-    (index: number) => {
-      setDirectorList(directorList.filter((_, i) => index !== i));
-    },
-    [directorList],
-  );
-
-  // 입력한 감독을 감독 리스트에 추가
-  const addDirectorList = useCallback(() => {
-    const addItem = director.trim();
-    if (isEmpty(addItem)) return;
-    setDirector('');
-    setDirectorList((prev) => [...prev, addItem]);
-  }, [director, directorList]);
-
-  // 엔터키 눌렀을때도 감독 리스트에 추가
-  const onKeyDownDirector = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (isComposing) return;
-      if (e.key === 'Enter') {
-        addDirectorList();
-      }
-    },
-    [director, directorList, isComposing],
-  );
+  const [
+    directorList,
+    setDirectorList,
+    deleteDirector,
+    addDirectorList,
+    onKeyDownDirector,
+  ] = useTagInput(setDirector, isComposing);
 
   // 유효성 검사
   const validate = useCallback(() => {
@@ -75,9 +57,10 @@ function Request() {
       .then(() => {
         setTitle('');
         setDirectorList([]);
+        alert('영화를 요청하였습니다.');
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
   }, [title, directorList]);
 
@@ -102,25 +85,25 @@ function Request() {
                   placeholder="감독 이름을 입력해주세요"
                   value={director}
                   onChange={onChangeDirector}
-                  onKeyDown={onKeyDownDirector}
+                  onKeyDown={(e) => {
+                    onKeyDownDirector(e, director);
+                  }}
                   onCompositionStart={() => setIsComposing(true)}
                   onCompositionEnd={() => setIsComposing(false)}
                 />
-                <Button onClick={addDirectorList}>추가</Button>
+                <Button
+                  onClick={() => {
+                    addDirectorList(director);
+                  }}
+                >
+                  추가
+                </Button>
               </>
               <DirectorListDiv>
-                {directorList.map((d, i) => (
-                  <DirectorTagDiv key={i}>
-                    {d}
-                    <div
-                      onClick={() => {
-                        deleteDirector(i);
-                      }}
-                    >
-                      &times;
-                    </div>
-                  </DirectorTagDiv>
-                ))}
+                <InputTagList
+                  tagList={directorList}
+                  deleteTag={deleteDirector}
+                />
               </DirectorListDiv>
             </FormItemDiv>
           </RequestForm>

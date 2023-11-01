@@ -23,7 +23,7 @@ const useRequest = <T>(
           reject(new CustomError(errorMessage, errorCode));
         }
       } catch (e) {
-        reject(e);
+        alert('서비스에 오류가 발생하였습니다.');
       }
     });
   };

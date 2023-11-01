@@ -51,6 +51,7 @@ function Select({
   onChange,
   options,
   placeholder,
+  width,
 }: {
   onChange: (
     newValue: SingleValue<{ label: string; value: string }>,
@@ -58,9 +59,10 @@ function Select({
   ) => void;
   options: { label: string; value: string }[];
   placeholder?: string;
+  width?: string;
 }) {
   return (
-    <Container>
+    <Container width={width}>
       <ReactSelect
         onChange={onChange}
         options={options}

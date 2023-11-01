@@ -83,11 +83,16 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
         window.location.href = '/';
       })
       .catch((e) => {
-        if (e.code === 'err_008' || e.code === 'err_004') {
+        if (
+          e.code === 'err_004' ||
+          e.code === 'err_005' ||
+          e.code === 'err_006' ||
+          e.code === 'err_007' ||
+          e.code === 'err_008'
+        ) {
           setWarning(e.message);
-        } else {
-          console.error(e.message);
         }
+        console.error(e.message);
       });
   }, [id, password]);
 

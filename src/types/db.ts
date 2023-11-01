@@ -1,9 +1,3 @@
-export interface INation {
-  nationalitySeq: string;
-  nation: string;
-  nationEn: string;
-}
-
 export interface IAnnounce {
   seq: number;
   ann_title: string;
