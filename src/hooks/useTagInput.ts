@@ -30,7 +30,7 @@ const useTagInput = (
       const addItem = tag.trim();
       if (isEmpty(addItem)) return;
       setTag('');
-      setTagList((prev) => [...prev, addItem]);
+      setTagList((prev) => [addItem, ...prev]);
     },
     [tagList],
   );

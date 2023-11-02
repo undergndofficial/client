@@ -26,7 +26,7 @@ export interface IUser {
 export interface IFilmpeople {
   fpKoName: string;
   fpEnName: string;
-  fpPhoto: File;
+  fpPhoto: File | null;
   fpNationalitySeq: string;
   fpSex: 'M' | 'F' | 'E';
   fpBirthYear: number;

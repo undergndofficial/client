@@ -105,7 +105,7 @@ function MovieInfo() {
   // 태그
   const [tag, onChangeTag, setTag] = useInput<string>('');
   const [isComposingTag, setIsComposingTag] = useState(false);
-  const [tags, setTags, deleteTag, addTag, onKeyDownTag] = useTagInput(
+  const [tags, , deleteTag, addTag, onKeyDownTag] = useTagInput(
     setTag,
     isComposingTag,
   );
@@ -116,7 +116,7 @@ function MovieInfo() {
   const [isComposingDistributor, setIsComposingDistributor] = useState(false);
   const [
     distributors,
-    setDistributors,
+    ,
     deleteDistributor,
     addDistributor,
     onKeyDownDistributor,

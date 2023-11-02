@@ -14,7 +14,7 @@ const DatePicker = ({
 }: {
   placeholder?: string;
   selectedDate: Date | null;
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  setSelectedDate: (value: Date | null) => void;
   error?: boolean;
 }) => {
   const dayMap: { [key: string]: string } = {

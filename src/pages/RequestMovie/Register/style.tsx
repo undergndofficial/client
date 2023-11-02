@@ -111,7 +111,7 @@ export const FlexWrapper = styled.div<{ gap?: string }>`
 `;
 
 export const TagListDiv = styled.div`
-  margin-left: 9.5rem;
+  margin-left: 10.5rem;
   width: 100%;
   @media ${theme.device.phone}, ${theme.device.tablet} {
     margin-left: 0;

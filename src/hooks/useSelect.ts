@@ -15,9 +15,7 @@ type ReturnTypes = [
 /**
  * select용 커스텀 훅..
  */
-const useSelect = (
-  setOption?: Dispatch<SetStateAction<string>>,
-): ReturnTypes => {
+const useSelect = (setOption?: (value: string) => void): ReturnTypes => {
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     [],
   );
