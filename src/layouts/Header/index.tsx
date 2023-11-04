@@ -9,6 +9,7 @@ import LoginPopup from 'components/Popup/LoginPopup';
 import { isEmpty } from 'lodash';
 import useRequest from 'hooks/useRequest';
 import { signout } from 'api/member';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -17,6 +18,7 @@ interface HeaderPropsType {
  * 레이아웃 헤더
  */
 function Header({ scrollTop }: HeaderPropsType) {
+  const { t } = useTranslation();
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ function Header({ scrollTop }: HeaderPropsType) {
   const logout = useCallback(() => {
     requestLogout()
       .then(() => {
-        alert('로그아웃 되었습니다.');
+        alert(t('message.message1'));
         window.location.href = '/';
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
@@ -111,24 +113,24 @@ function Header({ scrollTop }: HeaderPropsType) {
               closeUserPopup();
             }}
           >
-            계정 및 설정
+            {t('accountSetting')}
           </div>
-          <div>찜목록</div>
+          <div>{t('likeList')}</div>
           <div
             onClick={() => {
               navigate('/customer');
             }}
           >
-            고객센터
+            {t('help')}
           </div>
           <div
             onClick={() => {
               navigate('/request-movie');
             }}
           >
-            영화 신청
+            {t('movieApplication')}
           </div>
-          <div onClick={logout}>로그아웃</div>
+          <div onClick={logout}>{t('logout')}</div>
         </UserPopupDiv>
       </Modal>
     </Container>

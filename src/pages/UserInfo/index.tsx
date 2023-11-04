@@ -8,6 +8,7 @@ import {
   InfoItemWrapper,
   BottomButton,
 } from './style';
+import { useTranslation } from 'react-i18next';
 // import useRequest from 'hooks/useRequest';
 // import { getMemberInfo } from 'api/member';
 // import { IUser } from 'types/db';
@@ -16,6 +17,7 @@ import {
  * 계정 정보 페이지
  */
 function UserInfo() {
+  const { t } = useTranslation();
   // 유저 정보
   // const requestUserInfo = useRequest<IUser>(getMemberInfo);
   // const [userInfo, setUserInfo] = useState({});
@@ -30,47 +32,49 @@ function UserInfo() {
       <PageContent>
         <Container>
           <div>
-            <Title>기본 정보</Title>
+            <Title>{t('basicInfo')}</Title>
             <InfoItemWrapper>
               <InfoItemDiv>
-                <label>계정 이메일</label>
+                <label>{t('email')}</label>
                 <span>sailormoon917@naver.com</span>
-                <button>변경</button>
+                <button>{t('modify2')}</button>
               </InfoItemDiv>
               <InfoItemDiv>
-                <label>비밀번호</label>
+                <label>{t('password')}</label>
                 <span>********</span>
-                <button>변경</button>
+                <button>{t('modify2')}</button>
               </InfoItemDiv>
               <InfoItemDiv>
-                <label>전화번호</label>
+                <label>{t('phone')}</label>
                 <span>010-2851-2740</span>
-                <button>변경</button>
+                <button>{t('modify2')}</button>
               </InfoItemDiv>
             </InfoItemWrapper>
           </div>
           <div>
-            <Title>시청 데이터</Title>
+            <Title>{t('viewData')}</Title>
             <InfoItemWrapper>
               <InfoItemDiv>
-                <label>최근 시청목록</label>
+                <label>{t('recentViewList')}</label>
                 <span>최근 시청 영화 1 </span>
-                <button>전체 시청 기록</button>
+                <button>{t('allViewHistory')}</button>
               </InfoItemDiv>
               <InfoItemDiv>
-                <label>누적 시청시간</label>
-                <span>238시간 57분(상위 10%)</span>
+                <label>{t('totalViewTime')}</label>
+                <span>
+                  238{t('hour')} 57{t('minute')} ({t('top')} 10%)
+                </span>
               </InfoItemDiv>
               <InfoItemDiv>
-                <label>일별 시청 시간</label>
+                <label>{t('dailyViewTime')}</label>
                 <span>2023-03-02_11:52</span>
-                <button>전체 시청 시간</button>
+                <button>{t('allViewTime')}전체 시청 시간</button>
               </InfoItemDiv>
               <InfoItemDiv>
-                <label>총 시청 편 수</label>
-                <span>76 편</span>
+                <label>{t('totalViewCount')}</label>
+                <span>76 {t('movieConut')}</span>
               </InfoItemDiv>
-              <BottomButton>장르별 시청 횟수 보기</BottomButton>
+              <BottomButton>{t('showViewCountByGerne')}</BottomButton>
             </InfoItemWrapper>
           </div>
         </Container>

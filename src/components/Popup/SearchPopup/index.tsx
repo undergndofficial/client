@@ -4,11 +4,13 @@ import { Container, SearchInputForm } from './style';
 import RecentKeywordResult from './RecentKeywordResult';
 import { IoChevronBack } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 검색 팝업 컴포넌트
  */
 function SearchPopup({ closeSearchPopup }: { closeSearchPopup: () => void }) {
+  const { t } = useTranslation();
   const [keyword, setKeyword] = useState('');
   const onChangeKeyword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +43,7 @@ function SearchPopup({ closeSearchPopup }: { closeSearchPopup: () => void }) {
           onClick={closeSearchPopup}
         />
         <input
-          placeholder="검색어"
+          placeholder={t('searchKeyword')}
           value={keyword}
           onChange={onChangeKeyword}
         />

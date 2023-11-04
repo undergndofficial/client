@@ -5,6 +5,7 @@ import { Container, CalendarHeaderDiv } from './style';
 import { MdArrowBackIos } from 'react-icons/md';
 import { MdArrowForwardIos } from 'react-icons/md';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 const DatePicker = ({
   selectedDate,
@@ -17,14 +18,15 @@ const DatePicker = ({
   setSelectedDate: (value: Date | null) => void;
   error?: boolean;
 }) => {
+  const { t } = useTranslation();
   const dayMap: { [key: string]: string } = {
-    Sunday: '일',
-    Monday: '월',
-    Tuesday: '화',
-    Wednesday: '수',
-    Thursday: '목',
-    Friday: '금',
-    Saturday: '토',
+    Sunday: t('sun'),
+    Monday: t('mon'),
+    Tuesday: t('tue'),
+    Wednesday: t('wed'),
+    Thursday: t('thr'),
+    Friday: t('fri'),
+    Saturday: t('sat'),
   };
 
   return (

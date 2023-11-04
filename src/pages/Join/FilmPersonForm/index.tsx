@@ -21,7 +21,7 @@ import useSelect from 'hooks/useSelect';
 import { getSelectOptionList } from 'utils/common';
 import { getNationList } from 'api/common';
 import { IFilmForm } from 'types/join';
-import { isEmpty, isNil } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 영화인 등록 폼
@@ -46,6 +46,7 @@ function FilmPersonForm({
     message?: string,
   ) => boolean;
 }) {
+  const { t } = useTranslation();
   // 국가 목록
   const fetchNationList = useRequest<INation[]>(getNationList);
   const [nationList, setNationList] = useState<INation[]>([]);
@@ -59,7 +60,7 @@ function FilmPersonForm({
   const [nationOptions, setNationOptions, onChangeNation] = useSelect(
     (value) => {
       setFilmPersonInfo((prev) => ({ ...prev, nation: value }));
-      setFilmPersonErrorInfo(value, 'nation', '국가를 선택해주세요.');
+      setFilmPersonErrorInfo(value, 'nation', t('message.message20'));
     },
   ); // 국가 목록
   useEffect(() => {
@@ -95,19 +96,19 @@ function FilmPersonForm({
   return (
     <>
       <JoinForm>
-        <FormTitle>영화인 정보 등록</FormTitle>
+        <FormTitle>{t('filmPersonRegister')}</FormTitle>
         <FlexWrapper
           onClick={() => {
             setFilmPerson((prev) => !prev);
           }}
         >
           <Checkbox checked={filmPerson} />
-          영화계 종사자이신가요?
+          {t('message.message37')}
         </FlexWrapper>
         {filmPerson && (
           <>
             <FormItemDiv>
-              <Label>프로필 사진</Label>
+              <Label>{t('profilePicture')}</Label>
               <input
                 type="file"
                 id="image"
@@ -123,7 +124,7 @@ function FilmPersonForm({
                   ) {
                     encodeFileToBase64(selectedFile);
                   } else {
-                    alert('png, jpg, jpeg 파일만 업로드할 수 있습니다.');
+                    alert(t('message.message38'));
                   }
                 }}
               />
@@ -137,10 +138,10 @@ function FilmPersonForm({
               </PreviewImageWrapper>
             )}
             <FormItemDiv>
-              <Label required>영문이름</Label>
+              <Label required>{t('enName')}</Label>
               <Input
                 value={filmPersonInfo.enName}
-                placeholder="영문이름 입력"
+                placeholder={t('message.message19')}
                 onChange={(e) => {
                   const value = e.target.value;
                   setFilmPersonInfo((prev) => ({
@@ -150,7 +151,7 @@ function FilmPersonForm({
                   setFilmPersonErrorInfo(
                     value,
                     'enName',
-                    '영문 이름을 입력해주세요.',
+                    t('message.message19'),
                   );
                 }}
               />
@@ -161,11 +162,11 @@ function FilmPersonForm({
               )}
             </FormItemDiv>
             <FormItemDiv>
-              <Label required>국적</Label>
+              <Label required>{t('nation')}</Label>
               <Select
                 onChange={onChangeNation}
                 options={nationOptions}
-                placeholder="국적 선택"
+                placeholder={t('selectNation')}
               />
               {filmPersonError.nation.error && (
                 <WarningMessageDiv>
@@ -174,20 +175,22 @@ function FilmPersonForm({
               )}
             </FormItemDiv>
             <FormItemDiv>
-              <Label required>성별</Label>
+              <Label required>{t('gender')}</Label>
               <FlexWrapper
                 onClick={() => {
                   setFilmPersonInfo((prev) => ({ ...prev, gender: 'M' }));
                 }}
               >
-                <Checkbox checked={filmPersonInfo.gender == 'M'} />남
+                <Checkbox checked={filmPersonInfo.gender == 'M'} />
+                {t('male')}
               </FlexWrapper>
               <FlexWrapper
                 onClick={() => {
                   setFilmPersonInfo((prev) => ({ ...prev, gender: 'F' }));
                 }}
               >
-                <Checkbox checked={filmPersonInfo.gender == 'F'} />여
+                <Checkbox checked={filmPersonInfo.gender == 'F'} />
+                {t('female')}
               </FlexWrapper>
               <FlexWrapper
                 onClick={() => {
@@ -195,11 +198,11 @@ function FilmPersonForm({
                 }}
               >
                 <Checkbox checked={filmPersonInfo.gender == 'E'} />
-                기타
+                {t('etc')}
               </FlexWrapper>
             </FormItemDiv>
             <FormItemDiv>
-              <Label required>생년월일</Label>
+              <Label required> {t('birthDate')}</Label>
               <DatePicker
                 selectedDate={filmPersonInfo.birthDate}
                 setSelectedDate={(value) => {
@@ -207,10 +210,10 @@ function FilmPersonForm({
                   setFilmPersonErrorInfo(
                     value,
                     'birthDate',
-                    '생년월일을 선택해주세요.',
+                    t('message.message39'),
                   );
                 }}
-                placeholder="생년월일 선택"
+                placeholder={t('selectBirthDate')}
               />
               {filmPersonError.birthDate.error && (
                 <WarningMessageDiv>
@@ -219,17 +222,17 @@ function FilmPersonForm({
               )}
             </FormItemDiv>
             <FormItemDiv>
-              <Label>데뷔일</Label>
+              <Label>{t('debutDate')}</Label>
               <DatePicker
                 selectedDate={filmPersonInfo.debutDate}
                 setSelectedDate={(value) => {
                   setFilmPersonInfo((prev) => ({ ...prev, debutDate: value }));
                 }}
-                placeholder="데뷔일 선택"
+                placeholder={t('selectDebutDate')}
               />
             </FormItemDiv>
             <FormItemDiv>
-              <Label>소속</Label>
+              <Label>{t('belong')}</Label>
               <Input
                 value={filmPersonInfo.belong}
                 onChange={(e) => {
@@ -238,13 +241,13 @@ function FilmPersonForm({
                     belong: e.target.value,
                   }));
                 }}
-                placeholder="소속 입력"
+                placeholder={t('message.message40')}
               />
             </FormItemDiv>
             <FormItemDiv>
-              <Label alignSelf="start">특이사항</Label>
+              <Label alignSelf="start">{t('notes')}</Label>
               <Textarea
-                placeholder="• 수상경력&#13;• 홍보(어필)등&#13;자유롭게 입력해주세요"
+                placeholder={t('message.message41')}
                 value={filmPersonInfo.notes}
                 onChange={(e) => {
                   setFilmPersonInfo((prev) => ({

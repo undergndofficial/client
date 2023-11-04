@@ -46,7 +46,7 @@ export const Label = styled.div<{ alignSelf?: string; required?: boolean }>`
   font-size: 1.3rem;
   font-weight: 700;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 0.5rem;
   ${(props) => props.alignSelf && `align-self: ${props.alignSelf}`};
   ${(props) =>

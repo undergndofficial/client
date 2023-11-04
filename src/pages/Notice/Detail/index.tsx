@@ -4,17 +4,21 @@ import React from 'react';
 import { TitleDiv } from '../style';
 import { PostNumberDiv, PostHeaderDiv, PostContentDiv } from './style';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 function Detail() {
+  const { t } = useTranslation();
   return (
     <Layout>
       <PageContent>
         <PostNumberDiv>No.223</PostNumberDiv>
         <TitleDiv>제 1회 국제 대학 독립영화제 개최 안내</TitleDiv>
         <PostHeaderDiv>
-          <div>내용</div>
-          <div>등록일: {dayjs().format('YY.MM.DD')}</div>
-          <div>조회수: 134</div>
+          <div>{t('content')}</div>
+          <div>
+            {t('registerDate')}: {dayjs().format('YY.MM.DD')}
+          </div>
+          <div>{t('views')}: 134</div>
         </PostHeaderDiv>
         <PostContentDiv>
           안녕하세요! 저희는 언더그라운드드에서 독립영화를 지지하고 발전시키기

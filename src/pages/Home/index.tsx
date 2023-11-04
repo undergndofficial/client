@@ -3,11 +3,13 @@ import Layout from 'layouts/Layout';
 import { MainPosterDiv, DetailButton, MovieListWrapper } from './style';
 import MovieList from './MovieList';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 메인 화면 페이지
  */
 function Home() {
+  const { t } = useTranslation();
   // 임시 데이터
   const tagList = [
     { label: '인기 영화', iconUrl: '/assets/icon/tag-popular.svg' },
@@ -28,7 +30,7 @@ function Home() {
             navigate(`/player/${id}`);
           }}
         >
-          자세히 보기
+          {t('showDetail')}
         </DetailButton>
       </MainPosterDiv>
       <MovieListWrapper>

@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import useRequest from 'hooks/useRequest';
 import { getFaqDetail, getFaqList } from 'api/customer';
 import { IFaq } from 'types/db';
+import { useTranslation } from 'react-i18next';
 
 // 해당 컴포넌트에서 사용하는 faq 타입
 interface IInq {
@@ -28,6 +29,7 @@ interface IInq {
 }
 
 function CustomerCenter() {
+  const { t } = useTranslation();
   // faq 데이터
   const [inqList, setInqList] = useState<IInq[]>([]);
   const requestFaqs = useRequest(getFaqList);
@@ -98,10 +100,10 @@ function CustomerCenter() {
   return (
     <Layout>
       <PageContent>
-        <TitleDiv>고객센터</TitleDiv>
+        <TitleDiv>{t('help')}</TitleDiv>
         <Container>
           <MenuWrapper>
-            <MenuTitleDiv>FAQ 카테고리</MenuTitleDiv>
+            <MenuTitleDiv>{t('faqCategory')}</MenuTitleDiv>
             <div>
               {inqList.map((inq) => (
                 <div key={inq.inqCat}>
@@ -138,7 +140,7 @@ function CustomerCenter() {
                 navigate('/inquiry');
               }}
             >
-              1 대 1 문의
+              {t('oneToOneInquiry')}
             </Button>
           </MenuWrapper>
           {!isEmpty(content) ? (
@@ -147,9 +149,7 @@ function CustomerCenter() {
               {content}
             </ContentDiv>
           ) : (
-            <NoContentDiv>
-              FAQ 카테고리에서 문의하실 내용을 선택해주세요.
-            </NoContentDiv>
+            <NoContentDiv>{t('message.message7')}</NoContentDiv>
           )}
         </Container>
       </PageContent>

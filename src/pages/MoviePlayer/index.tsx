@@ -22,9 +22,12 @@ import Rating from 'react-star-ratings';
 import { Controls } from './PlayerControl';
 import theme from 'styles/theme';
 import Comment from './Comment';
+import { useTranslation } from 'react-i18next';
 // import { useParams } from 'react-router-dom';
 
 function MoviePlayer() {
+  const { t } = useTranslation();
+
   const [playing, setPlaying] = useState(false); // 재생중
   const [volume, setVolume] = useState(0.5); // 볼륨 크기
   const [playbackRate, setPlaybackRate] = useState(1); // 배속
@@ -143,7 +146,7 @@ function MoviePlayer() {
       >
         <ReactPlayer
           ref={playerRef}
-          url="/assets/tmp-movie.mp4"
+          url={`${process.env.PUBLIC_URL}/assets/tmp-movie.mp4`}
           width="100%"
           height={isMobile || fullScreen ? '100%' : '77vh'}
           playing={playing}
@@ -220,9 +223,9 @@ function MoviePlayer() {
               starSpacing="2px"
             />
             <RunningTimeDiv>
-              총 1시간 56분
+              {t('total')} 1{t('hour')} 56{t('minute')}
               <br />
-              조회수 8만 회
+              {t('views')} 8만 {t('count')}
             </RunningTimeDiv>
           </div>
         </DescriptionDiv>

@@ -4,11 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PageContent from 'layouts/PageContent';
 import { KeywordWrapper, ResultWrapper, NoResultTextDiv } from './style';
 import SearchResultItem from './SearchResultItem';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 검색 결과 페이지
  */
 function SearchResult() {
+  const { t } = useTranslation();
   const { keyword } = useParams();
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ function SearchResult() {
               navigate('/request-movie');
             }}
           >
-            찾으시는 영화가 없을 땐?
+            {t('message.message13')}
           </NoResultTextDiv>
         </KeywordWrapper>
         <ResultWrapper>

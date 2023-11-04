@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Container, Subtitle } from './style';
+import { useTranslation } from 'react-i18next';
 
 function SubtitleControl() {
+  const { t } = useTranslation();
   const subtitleList = [
-    '끄기',
+    t('off'),
     '한국어',
     'English',
     '日本語',

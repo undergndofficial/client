@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import axios from 'axios';
 import humps from 'humps';
+import 'locales/i18n';
 
 // 요청 인터셉터
 axios.interceptors.request.use(

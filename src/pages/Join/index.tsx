@@ -26,11 +26,13 @@ import { useNavigate } from 'react-router-dom';
 import { isEmpty, isNil } from 'lodash';
 import FilmPersonForm from './FilmPersonForm';
 import { IFilmForm, IUserForm } from 'types/join';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 회원 가입 페이지
  */
 function Join() {
+  const { t } = useTranslation();
   const [filmPersonStep, setFilmPersonStep] = useState(false);
   // 기본 정보
   const {
@@ -118,7 +120,7 @@ function Join() {
       if (duplicated === 'duplicated') {
         setError('email', {
           type: 'duplicated',
-          message: '중복된 이메일입니다.',
+          message: t('message.message16'),
         });
         setShowEmailAuthForm(false);
         return;
@@ -149,7 +151,7 @@ function Join() {
       if (duplicated === 'duplicated') {
         setError('phone', {
           type: 'duplicated',
-          message: '중복된 휴대폰 번호입니다.',
+          message: t('message.message17'),
         });
         setShowPhoneAuthForm(false);
         return;
@@ -173,7 +175,7 @@ function Join() {
     if (duplicated === 'duplicated') {
       setError('id', {
         type: 'duplicated',
-        message: '중복된 아이디입니다.',
+        message: t('message.message18'),
       });
       errorFlag = true;
     }
@@ -223,7 +225,7 @@ function Join() {
       !setFilmPersonErrorInfo(
         filmPersonInfo.enName,
         'enName',
-        '영문 이름을 입력해주세요.',
+        t('message.message19'),
       )
     ) {
       flag = false;
@@ -232,7 +234,7 @@ function Join() {
       !setFilmPersonErrorInfo(
         filmPersonInfo.nation,
         'nation',
-        '국가를 선택해주세요.',
+        t('message.message20'),
       )
     ) {
       flag = false;
@@ -241,7 +243,7 @@ function Join() {
       !setFilmPersonErrorInfo(
         filmPersonInfo.birthDate,
         'birthDate',
-        '생년월일을 선택해주세요.',
+        t('message.message21'),
       )
     ) {
       flag = false;
@@ -285,14 +287,14 @@ function Join() {
           }
           requestFilmPeople(formData)
             .then(() => {
-              alert('회원가입 되었습니다.');
+              alert(t('message.message22'));
               navigate('/');
             })
             .catch((e) => {
               console.error(e.message);
             });
         } else {
-          alert('회원가입 되었습니다.');
+          alert(t('message.message22'));
           navigate('/');
         }
       })
@@ -305,18 +307,20 @@ function Join() {
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>회원가입</TitleDiv>
+          <TitleDiv>{t('register')}</TitleDiv>
           {/* 기본 정보  */}
           {!filmPersonStep ? (
             <JoinForm>
-              <FormTitle>기본 정보 등록</FormTitle>
+              <FormTitle>
+                {t('basicInfo')} {t('enroll')}
+              </FormTitle>
               <FormItemDiv>
-                <Label required>아이디</Label>
+                <Label required>{t('id')}</Label>
                 <>
                   <Input
-                    placeholder="아이디를 입력해주세요"
+                    placeholder={t('message.message23')}
                     {...register('id', {
-                      required: '아이디를 입력해주세요.',
+                      required: t('message.message23'),
                       // pattern: {
                       //   value: idPattern,
                       //   message: '아이디 형식이 올바르지 않습니다.',
@@ -327,17 +331,17 @@ function Join() {
                 {errors.id && (
                   <WarningMessageDiv>{errors.id.message}</WarningMessageDiv>
                 )}
-              </FormItemDiv>{' '}
+              </FormItemDiv>
               <FormItemDiv>
-                <Label required>비밀번호</Label>
+                <Label required>{t('password')}</Label>
                 <Input
-                  placeholder="8자~16자, 문자, 숫자, 특수문자 포함"
+                  placeholder={t('message.message24')}
                   type="password"
                   {...register('password', {
-                    required: '비밀번호를 입력해주세요.',
+                    required: t('message.message25'),
                     pattern: {
                       value: passwordPattern,
-                      message: '비밀번호 형식이 올바르지 않습니다.',
+                      message: t('message.message26'),
                     },
                   })}
                 />
@@ -348,12 +352,12 @@ function Join() {
                 )}
               </FormItemDiv>
               <FormItemDiv>
-                <Label required>비밀번호 확인</Label>
+                <Label required>{t('passwordConfirm')}</Label>
                 <Input
-                  placeholder="8자~16자, 문자, 숫자, 특수문자 포함"
+                  placeholder={t('message.message24')}
                   type="password"
                   {...register('passwordRe', {
-                    required: '비밀번호를 한번 더 입력해주세요.',
+                    required: t('message.message27'),
                   })}
                 />
                 {errors.passwordRe && (
@@ -366,20 +370,20 @@ function Join() {
                   passwordPattern.test(watch('password')) &&
                   (watch('password') === watch('passwordRe') ? (
                     <WarningMessageDiv correct>
-                      비밀번호가 일치합니다
+                      {t('message.message28')}
                     </WarningMessageDiv>
                   ) : (
                     <WarningMessageDiv>
-                      비밀번호가 일치하지 않습니다
+                      {t('message.message29')}
                     </WarningMessageDiv>
                   ))}
               </FormItemDiv>
               <FormItemDiv>
-                <Label required>이름</Label>
+                <Label required>{t('name')}</Label>
                 <Input
-                  placeholder="이름 입력"
+                  placeholder={t('message.message30')}
                   {...register('name', {
-                    required: '이름을 입력해주세요',
+                    required: t('message.message30'),
                   })}
                 />
                 {errors.name && (
@@ -387,17 +391,17 @@ function Join() {
                 )}
               </FormItemDiv>
               <FormItemDiv>
-                <Label required>전화번호</Label>
+                <Label required>{t('phone')}</Label>
                 <>
                   <Input
-                    placeholder="전화번호를 입력해주세요"
+                    placeholder={t('message.message31')}
                     value={phone}
                     {...register('phone', {
-                      required: '전화 번호를 입력해주세요.',
+                      required: t('message.message31'),
                       validate: {
                         check: (value) => {
                           if (!phonePattern.test(value.replace(/[^0-9]/g, '')))
-                            return '전화번호 형식이 올바르지 않습니다.';
+                            return t('message.message32');
                         },
                       },
                       onChange: onChangePhone,
@@ -408,7 +412,7 @@ function Join() {
                     onClick={onClickSendPhoneAuthcode}
                     disabled={showPhoneAuthForm}
                   >
-                    인증번호 받기
+                    {t('sendAuthCode')}
                   </Button>
                 </>
                 {errors.phone && (
@@ -420,33 +424,33 @@ function Join() {
                   <FormItemDiv>
                     <AuthForm>
                       <Input
-                        placeholder="인증번호를 입력해주세요"
+                        placeholder={t('message.message33')}
                         width="50%"
                         value={phoneAuthcode}
                         onChange={onChangePhoneAuthcode}
                         disabled={donePhoneAuth}
                       />
                       <AuthButton onClick={onClickPhoneAuthcode}>
-                        인증
+                        {t('auth')}
                       </AuthButton>
                     </AuthForm>
                     <WarningMessageDiv correct={donePhoneAuth}>
                       {donePhoneAuth
-                        ? '인증이 완료되었습니다.'
-                        : '인증을 완료해주세요.'}
+                        ? t('message.message34')
+                        : t('message.message35')}
                     </WarningMessageDiv>
                   </FormItemDiv>
                 </>
               )}
               <FormItemDiv>
-                <Label>이메일</Label>
+                <Label>{t('email')}</Label>
                 <>
                   <Input
                     placeholder="example@undergnd.com"
                     {...register('email', {
                       pattern: {
                         value: emailPattern,
-                        message: '이메일 형식이 올바르지 않습니다.',
+                        message: t('message.message36'),
                       },
                     })}
                     disabled={showEmailAuthForm}
@@ -455,7 +459,7 @@ function Join() {
                     onClick={onClickSendEmailAuthcode}
                     disabled={showEmailAuthForm}
                   >
-                    인증번호 받기
+                    {t('sendAuthCode')}
                   </Button>
                 </>
                 {errors.email && (
@@ -467,26 +471,26 @@ function Join() {
                   <FormItemDiv>
                     <AuthForm>
                       <Input
-                        placeholder="인증번호를 입력해주세요"
+                        placeholder={t('message.message33')}
                         width="50%"
                         value={emailAuthcode}
                         onChange={onChangeEmailAuthcode}
                         disabled={doneEmailAuth}
                       />
                       <AuthButton onClick={onClickEmailAuthcode}>
-                        인증
+                        {t('auth')}
                       </AuthButton>
                     </AuthForm>
                     <WarningMessageDiv correct={doneEmailAuth}>
                       {doneEmailAuth
-                        ? '인증이 완료되었습니다.'
-                        : '인증을 완료해주세요.'}
+                        ? t('message.message34')
+                        : t('message.message35')}
                     </WarningMessageDiv>
                   </FormItemDiv>
                 </>
               )}
               <FormItemDiv>
-                <Label>수신동의</Label>
+                <Label>{t('incomingAgree')}</Label>
                 <FlexWrapper gap="2">
                   <FlexWrapper
                     onClick={() => {
@@ -494,7 +498,7 @@ function Join() {
                     }}
                   >
                     <Checkbox checked={smsAgree} />
-                    SMS 수신동의
+                    SMS {t('incomingAgree')}
                   </FlexWrapper>
                   <FlexWrapper
                     onClick={() => {
@@ -502,9 +506,9 @@ function Join() {
                     }}
                   >
                     <Checkbox checked={emailAgree} />
-                    e-mail 수신동의
+                    e-mail {t('incomingAgree')}
                   </FlexWrapper>
-                  <TermsButton>약관확인</TermsButton>
+                  <TermsButton>{t('termCheck')}</TermsButton>
                 </FlexWrapper>
               </FormItemDiv>
             </JoinForm>
@@ -521,7 +525,7 @@ function Join() {
           )}
           {!filmPersonStep ? (
             <Button width="8rem" onClick={handleSubmit(onClickNextButton)}>
-              다음
+              {t('next')}
             </Button>
           ) : (
             <FlexWrapper gap="1.5">
@@ -531,10 +535,10 @@ function Join() {
                   setFilmPersonStep(false);
                 }}
               >
-                이전
+                {t('prev')}
               </Button>
               <Button width="8rem" onClick={joinProc}>
-                회원가입
+                {t('register')}
               </Button>
             </FlexWrapper>
           )}

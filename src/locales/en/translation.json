@@ -1,0 +1,9 @@
+{
+  "header": {
+    "logout": "Sign Out",
+    "login": "Sign In",
+    "language": "Languages",
+    "register": "Sign Up",
+    "help": "Help"
+  }
+}

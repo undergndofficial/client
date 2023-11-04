@@ -21,8 +21,10 @@ import { BiDotsVerticalRounded, BiSolidTrash } from 'react-icons/bi';
 import { LuPenSquare } from 'react-icons/lu';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import { useTranslation } from 'react-i18next';
 
 function Comment() {
+  const { t } = useTranslation();
   const [starRate, setStarRate] = useState(0);
   const [showToolIndex, setShowToolIndex] = useState(-1);
 
@@ -56,8 +58,8 @@ function Comment() {
         )}
       </StarWrapper>
       <CommentInput>
-        <Input placeholder="댓글 내용을 작성해주세요." width="100%" />
-        <Button width="6.5rem">게시</Button>
+        <Input placeholder={t('message.message8')} width="100%" />
+        <Button width="6.5rem">{t('publish')}</Button>
       </CommentInput>
       <CommentListDiv>
         <CommentContainer>
@@ -66,7 +68,7 @@ function Comment() {
               <ProfileImageDiv />
               <WriterDiv>
                 <div>서태성</div>
-                <span>4분 전</span>
+                <span>4{t('minutesBefore')}</span>
               </WriterDiv>
             </WriterInfoDiv>
             <BiDotsVerticalRounded
@@ -82,11 +84,11 @@ function Comment() {
             <CommentToolWrapper>
               <div>
                 <LuPenSquare />
-                수정
+                {t('modify')}
               </div>
               <div>
                 <BiSolidTrash />
-                삭제
+                {t('delete')}
               </div>
               {/* 
               내 댓글이 아닌경우?!

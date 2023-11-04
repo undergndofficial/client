@@ -23,11 +23,13 @@ import { isEmpty } from 'lodash';
 import useRequest from 'hooks/useRequest';
 import { signin } from 'api/member';
 import { IUser } from 'types/db';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 로그인 팝업 컴포넌트
  */
 function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
+  const { t } = useTranslation();
   // 경고 문구
   const [isWarning, setIsWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
@@ -55,11 +57,11 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   // 유효성 검사
   const validateForm = useCallback(() => {
     if (isEmpty(id.trim())) {
-      setWarning('이메일 또는 전화번호를 입력해주세요.');
+      setWarning(t('message.message2'));
       return false;
     }
     if (isEmpty(password.trim())) {
-      setWarning('비밀번호를 입력해주세요.');
+      setWarning(t('message.message3'));
       return false;
     }
     setIsWarning(false);
@@ -128,7 +130,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
         </>
       ) : (
         <>
-          <LoginTitleDiv>로그인</LoginTitleDiv>
+          <LoginTitleDiv>{t('login')}</LoginTitleDiv>
           <LoginForm>
             {isWarning && (
               <WarningMessageDiv>{warningMessage}</WarningMessageDiv>
@@ -138,7 +140,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 <IoMdMail size="21" />
               </div>
               <input
-                placeholder="이메일 또는 전화번호"
+                placeholder={t('id')}
                 value={id}
                 onChange={onChangeId}
                 onKeyDown={onKeyDownLoginForm}
@@ -149,7 +151,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 <IoMdLock size="21" />
               </div>
               <input
-                placeholder="비밀번호"
+                placeholder={t('password')}
                 type="password"
                 value={password}
                 onChange={onChangePassword}
@@ -162,27 +164,27 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
               }}
             >
               <Checkbox checked={checkedRemember} />
-              <div>&nbsp; 아이디 저장</div>
+              <div>&nbsp; {t('rememberId')}</div>
             </RememberIdDiv>
           </LoginForm>
           <ButtonWrapper>
-            <LoginButton onClick={loginProc}>로그인</LoginButton>
+            <LoginButton onClick={loginProc}> {t('login')}</LoginButton>
             <FindPasswordButton
               onClick={() => {
                 setShowFindPassword(true);
               }}
             >
-              비밀번호 찾기
+              {t('findPassword')}
             </FindPasswordButton>
           </ButtonWrapper>
           <JoinButton>
-            아직 회원이 아니신가요? &nbsp;
+            {t('message.message4')}&nbsp;
             <span
               onClick={() => {
                 navigate('/join');
               }}
             >
-              회원가입
+              {t('register')}
             </span>
           </JoinButton>
         </>

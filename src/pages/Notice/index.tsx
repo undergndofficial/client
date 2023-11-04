@@ -6,8 +6,10 @@ import dayjs from 'dayjs';
 import Pagination from 'components/Pagination';
 import theme from 'styles/theme';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Notice() {
+  const { t } = useTranslation();
   const PAGE_SIZE = 10;
   const [page, setPage] = useState(1);
   const [limitPage, setLimitPage] = useState(10);
@@ -43,14 +45,14 @@ function Notice() {
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>공지사항</TitleDiv>
+          <TitleDiv>{t('notice')}</TitleDiv>
           <BoardTable>
             <thead>
               <tr>
                 <th>No</th>
-                <th>제목</th>
-                <th>등록일</th>
-                <th>조회수</th>
+                <th>{t('title')}</th>
+                <th>{t('registerDate')}</th>
+                <th>{t('views')}</th>
               </tr>
             </thead>
             <tbody>

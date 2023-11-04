@@ -7,11 +7,13 @@ import {
   EmptyResultDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 최근 검색어 결과 컴포넌트
  */
 function RecentKeywordResult() {
+  const { t } = useTranslation();
   // 임시 데이터
   const keywords: string[] = [
     '파수꾼',
@@ -49,7 +51,7 @@ function RecentKeywordResult() {
     <div>
       {keywords.length === 0 ? (
         <EmptyResultDiv>
-          <div>최근 검색기록이 없습니다</div>
+          <div>{t('message.message15')}</div>
         </EmptyResultDiv>
       ) : (
         <>
@@ -67,7 +69,7 @@ function RecentKeywordResult() {
             ))}
           </RecentKeywordWrapper>
           <AllDeleteButton>
-            <div>검색기록 모두 삭제</div>
+            <div>{t('message.message14')}</div>
           </AllDeleteButton>
         </>
       )}

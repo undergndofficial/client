@@ -9,6 +9,7 @@ import {
   TitleDiv,
   DescriptionDiv,
 } from './style';
+import { useTranslation } from 'react-i18next';
 
 interface ReportType {
   id: number;
@@ -27,35 +28,36 @@ function ReportPopup({
   showReportPopup: boolean;
   closePopup: () => void;
 }) {
+  const { t } = useTranslation();
   const reportList: ReportType[] = [
     {
       id: 1,
       icon: <SiSpeedtest />,
-      title: '버퍼링 및 로딩',
-      description: '영상이 흐리거나, 로딩이 지연되거나, 로딩이 되지 않습니다.',
+      title: t('bufferingLoading'),
+      description: t('message.message8'),
     },
     {
       id: 2,
       icon: <BsCardText />,
-      title: '자막 및 캡션',
-      description: '자막이나 캡션이 제대로 작동하지 않습니다.',
+      title: t('subtitlesCaption'),
+      description: t('message.message9'),
     },
     {
       id: 3,
-      title: '음성 및 영상',
-      description: '영상의 소리가 잘 안들리거나 영상이 잘 보이지 않습니다.',
+      title: t('audioVideo'),
+      description: t('message.message10'),
     },
     {
       id: 4,
-      title: '다른 문제',
-      description: '작동에 다른 문제가 있습니다.',
+      title: t('otherProblem'),
+      description: t('message.message11'),
     },
   ];
 
   return (
     <Container visible={showReportPopup}>
       <ReportTitleDiv>
-        <div>어떤 문제를 겪고 계신가요? </div>
+        <div>{t('message.message12')} </div>
         <AiOutlineClose
           size="21"
           onClick={(e) => {

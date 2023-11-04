@@ -9,11 +9,13 @@ import {
   WhiteFontDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 검색 결과로 보여질 영화 아이템
  */
 function SearchResultItem() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   // 임시
   const id = 1;
@@ -37,10 +39,10 @@ function SearchResultItem() {
         <AdditionalInfoDiv>
           <WhiteFontDiv>2014.04.25</WhiteFontDiv>
           <div>
-            조회수 <WhiteFontDiv>802</WhiteFontDiv> 회
+            {t('views')} <WhiteFontDiv>802</WhiteFontDiv> {t('count')}
           </div>
           <div>
-            좋아요 <WhiteFontDiv>56</WhiteFontDiv> 개
+            {t('like')} <WhiteFontDiv>56</WhiteFontDiv> {t('count2')}
           </div>
         </AdditionalInfoDiv>
       </MovieInfoDiv>

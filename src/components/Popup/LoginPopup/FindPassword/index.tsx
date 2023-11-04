@@ -10,40 +10,42 @@ import {
 import { IoMdMail } from 'react-icons/io';
 import { IoCall } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 비밀번호 찾기 화면
  */
 function FindPassword() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <>
       <Container>
-        <TitleDiv>아이디 / 비밀번호 찾기</TitleDiv>
+        <TitleDiv>{t('findIdPassword')}</TitleDiv>
         <ContentDiv>
           <FindWayDiv>
             <FindIconWrapper>
               <IoCall />
             </FindIconWrapper>
-            <span>전화번호 인증</span>
+            <span>{`${t('phone')} ${t('auth')}`}</span>
           </FindWayDiv>
           <FindWayDiv>
             <FindIconWrapper>
               <IoMdMail />
             </FindIconWrapper>
-            <span>이메일 인증</span>
+            <span>{`${t('email')} ${t('auth')}`}</span>
           </FindWayDiv>
         </ContentDiv>
       </Container>
       <BottomInfoWrapper>
-        <div>문의</div>
-        <div>고객센터</div>
+        <div>{t('inquiry')}</div>
+        <div>{t('help')}</div>
         <div
           onClick={() => {
             navigate('/join');
           }}
         >
-          회원가입
+          {t('register')}
         </div>
       </BottomInfoWrapper>
     </>

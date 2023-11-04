@@ -15,11 +15,13 @@ import Input from 'components/Input';
 import Select from 'components/Select';
 import useInput from 'hooks/useInput';
 import { ActionMeta, SingleValue } from 'react-select';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 1대1 문의 작성 페이지
  */
 function WriteInquiry() {
+  const { t } = useTranslation();
   const [title, onChangeTitle] = useInput('');
   const [content, onChangeContent] = useInput('');
   const [, setType] = useState('');
@@ -43,36 +45,38 @@ function WriteInquiry() {
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>1대1 문의</TitleDiv>
+          <TitleDiv>{t('oneToOneInquiry')}</TitleDiv>
           <WriteForm>
             <FormItemDiv>
-              <Label>문의 제목</Label>
+              <Label>{t('inquiryTitle')}</Label>
               <Input
                 value={title}
                 onChange={onChangeTitle}
-                placeholder="문의 제목을 입력해주세요"
+                placeholder={t('message.message6')}
               />
             </FormItemDiv>
             <FormItemDiv>
-              <Label>문의 유형</Label>
+              <Label>{t('inquiryType')}</Label>
               <SelectWrapper>
                 <Select
-                  placeholder="유형 선택"
+                  placeholder={t('selectType')}
                   onChange={onChangeType}
-                  options={[{ label: '문의 유형', value: 'tmp' }]}
+                  options={[{ label: `${t('inquiryType')}`, value: 'tmp' }]}
                 />
               </SelectWrapper>
             </FormItemDiv>
             <FormItemDiv>
-              <Label alignSelf="start">문의 내용</Label>
+              <Label alignSelf="start">{t('inquiryContent')}</Label>
               <Textarea
-                placeholder="1대1 문의 내용을 입력해주세요"
+                placeholder={t('message.message5')}
                 value={content}
                 onChange={onChangeContent}
               />
             </FormItemDiv>
           </WriteForm>
-          <WriteButton width="10rem">1대1 문의 등록</WriteButton>
+          <WriteButton width="10rem">
+            {t('registeroneToOneInquiry')}
+          </WriteButton>
         </Container>
       </PageContent>
     </Layout>

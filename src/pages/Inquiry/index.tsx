@@ -12,8 +12,10 @@ import theme from 'styles/theme';
 import dayjs from 'dayjs';
 import Pagination from 'components/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Inquiry() {
+  const { t } = useTranslation();
   const PAGE_SIZE = 10;
   const [page, setPage] = useState(1);
   const [limitPage, setLimitPage] = useState(10);
@@ -55,22 +57,22 @@ function Inquiry() {
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>1대1 문의 내역</TitleDiv>
+          <TitleDiv>{`${t('oneToOneInquiry')} ${t('list')}`}</TitleDiv>
           <WriteButton
             onClick={() => {
               navigate('/inquiry/write');
             }}
           >
-            글쓰기
+            {t('write')}
           </WriteButton>
           <BoardTable>
             <thead>
               <tr>
                 <th>No</th>
-                <th>문의 유형</th>
-                <th>문의 제목</th>
-                <th>문의 날짜</th>
-                <th>상태</th>
+                <th>{t('inquiryType')}</th>
+                <th>{t('inquiryTitle')}</th>
+                <th>{t('inquiryDate')}</th>
+                <th>{t('status')}</th>
               </tr>
             </thead>
             <tbody>
