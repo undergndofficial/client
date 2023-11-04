@@ -14,27 +14,34 @@ import Detail from 'pages/Notice/Detail';
 import CustomerCenter from 'pages/CustomerCenter';
 import Inquiry from 'pages/Inquiry';
 import WriteInquiry from 'pages/Inquiry/Write';
+import PrivateRoute from 'layouts/PrivateRoute';
 
 function App() {
   return (
     <div>
-      <GlobalStyle />{' '}
+      <GlobalStyle />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/join" element={<Join />} />
           <Route path="/player/:id" element={<MoviePlayer />} />
           <Route path="/search/:keyword" element={<SearchResult />} />
-          <Route path="/mypage" element={<UserInfo />} />
-          <Route path="/request-movie" element={<RequestMovie />} />
-          <Route path="/request-movie/requset" element={<Request />} />
-          <Route path="/request-movie/register" element={<Register />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<Detail />} />
           <Route path="/customer" element={<CustomerCenter />} />
           <Route path="/inquiry" element={<Inquiry />} />
-          <Route path="/inquiry/write" element={<WriteInquiry />} />
           <Route path="*" element={<Navigate to="/" />} />
+          {/* 인증을 안해야지만 접속 가능한 페이지 */}
+          <Route element={<PrivateRoute userAuthentication={false} />}>
+            <Route path="/join" element={<Join />} />
+          </Route>
+          {/* 인증을 해야만 접속 가능한 페이지 */}
+          <Route element={<PrivateRoute userAuthentication={true} />}>
+            <Route path="/mypage" element={<UserInfo />} />
+            <Route path="/request-movie" element={<RequestMovie />} />
+            <Route path="/request-movie/requset" element={<Request />} />
+            <Route path="/request-movie/register" element={<Register />} />
+            <Route path="/inquiry/write" element={<WriteInquiry />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
