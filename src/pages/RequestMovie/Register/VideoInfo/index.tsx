@@ -21,7 +21,6 @@ import {
   Label,
   CheckboxWrapper,
   FlexWrapper,
-  TagListDiv,
 } from '../style';
 import Button from 'components/Button';
 import { isEmpty } from 'lodash';
@@ -116,7 +115,7 @@ function VideoInfo() {
   return (
     <Form>
       <FormItemDiv>
-        <Label>동영상</Label>
+        <Label required>동영상</Label>
         <input
           type="file"
           id="video"
@@ -213,7 +212,7 @@ function VideoInfo() {
         </SubtitleListDiv>
       )}
       <FormItemDiv>
-        <Label>화면비율</Label>
+        <Label required>화면비율</Label>
         <CheckboxWrapper>
           {screenRatioList.map((ratio) => (
             <FlexWrapper
@@ -233,7 +232,7 @@ function VideoInfo() {
         </CheckboxWrapper>
       </FormItemDiv>
       <FormItemDiv>
-        <Label>색채</Label>
+        <Label required>색채</Label>
         <CheckboxWrapper>
           {colorationList.map((color) => (
             <FlexWrapper

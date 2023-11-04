@@ -132,11 +132,11 @@ function MovieInfo() {
         )} */}
       </FormItemDiv>
       <FormItemDiv>
-        <Label>영문 제목</Label>
+        <Label required>영문 제목</Label>
         <Input placeholder="영문 제목을 입력해주세요" />
       </FormItemDiv>
       {/* <FormItemDiv>
-        <Label>구분</Label>
+        <Label required>구분</Label>
         <Select
           onChange={onChangeCategory}
           options={categoryOptions}
@@ -144,7 +144,7 @@ function MovieInfo() {
         />
       </FormItemDiv> */}
       <FormItemDiv>
-        <Label>세부 장르</Label>
+        <Label required>세부 장르</Label>
         <CheckboxWrapper>
           {gerneList.map((gerne) => (
             <FlexWrapper
@@ -186,7 +186,7 @@ function MovieInfo() {
         </TagListDiv>
       </FormItemDiv>
       <FormItemDiv>
-        <Label>관람 등급</Label>
+        <Label required>관람 등급</Label>
         <Select
           onChange={onChangeRating}
           options={ratingOptions}
@@ -194,7 +194,7 @@ function MovieInfo() {
         />
       </FormItemDiv>
       <FormItemDiv>
-        <Label>사용 언어</Label>
+        <Label required>사용 언어</Label>
         <Select
           onChange={onChangeLang}
           options={langOptions}
@@ -202,7 +202,7 @@ function MovieInfo() {
         />
       </FormItemDiv>
       <FormItemDiv>
-        <Label>제작국가</Label>
+        <Label required>제작국가</Label>
         <Select
           onChange={onChangeNation}
           options={nationOptions}
@@ -210,7 +210,7 @@ function MovieInfo() {
         />
       </FormItemDiv>
       <FormItemDiv>
-        <Label>제작년도</Label>
+        <Label required>제작년도</Label>
         <Select
           onChange={onChangeProductionYear}
           options={productionYearOptions}
@@ -252,7 +252,7 @@ function MovieInfo() {
         </TagListDiv>
       </FormItemDiv>
       <FormItemDiv>
-        <Label>온라인 공개 이력</Label>
+        <Label required>온라인 공개 이력</Label>
         <CheckboxWrapper>
           <FlexWrapper
             onClick={() => {
@@ -282,7 +282,7 @@ function MovieInfo() {
         </CheckboxWrapper>
       </FormItemDiv>
       <FormItemDiv>
-        <Label>시놉시스</Label>
+        <Label required>시놉시스</Label>
         <Textarea
           placeholder="시놉시스를 입력해주세요"
           value={movPlot}

@@ -524,7 +524,7 @@ function Join() {
               다음
             </Button>
           ) : (
-            <>
+            <FlexWrapper gap="1.5">
               <Button
                 width="8rem"
                 onClick={() => {
@@ -536,7 +536,7 @@ function Join() {
               <Button width="8rem" onClick={joinProc}>
                 회원가입
               </Button>
-            </>
+            </FlexWrapper>
           )}
         </Container>
       </PageContent>

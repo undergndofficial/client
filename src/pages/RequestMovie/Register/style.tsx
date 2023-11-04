@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 
-const MARGIN_LABEL = '9.5rem';
+const MARGIN_LABEL = '10.5rem';
 
 export const Container = styled.div`
   display: flex;
@@ -40,12 +40,18 @@ export const FormItemDiv = styled.div`
   position: relative;
 `;
 
-export const Label = styled.div<{ alignSelf?: string }>`
+export const Label = styled.div<{ alignSelf?: string; required?: boolean }>`
   padding: 0.2rem 0;
-  width: 9.5rem;
+  width: 10.5rem;
   font-size: 1.3rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   ${(props) => props.alignSelf && `align-self: ${props.alignSelf}`};
+  ${(props) =>
+    props.required &&
+    "::after { content: '*'; color: #f00; font-weight: 500; }"}
   @media ${theme.device.tablet} {
     width: 100%;
   }
