@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, FormItemDiv } from '../style';
+import { ButtonWrapper, Form, FormItemDiv, FormTitle } from '../style';
 import Input from 'components/Input';
 import useInput from 'hooks/useInput';
 import useTagInput from 'hooks/useTagInput';
@@ -12,8 +12,12 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { CareerDiv, CareerListDiv } from './style';
+import { IRegisterProp } from 'types/props';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 function CareerInfo() {
+  const { props }: { props: IRegisterProp } = useOutletContext();
+  const navigate = useNavigate();
   const [career, onChangeCareer, setCareer] = useInput<string>('');
   const [isComposing, setIsComposing] = useState(false);
   const [careers, setCareers, deleteCareer, addCareer, onKeyDownCareer] =
@@ -29,66 +33,91 @@ function CareerInfo() {
   };
 
   return (
-    <Form>
-      <FormItemDiv>
-        <Input
-          placeholder="이력을 입력해주세요"
-          value={career}
-          onChange={onChangeCareer}
-          onKeyDown={(e) => {
-            onKeyDownCareer(e, career);
-          }}
-          onCompositionStart={() => setIsComposing(true)}
-          onCompositionEnd={() => setIsComposing(false)}
-        />
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            addCareer(career);
-          }}
-        >
-          추가
-        </Button>
-      </FormItemDiv>
-      {!isEmpty(careers) && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <CareerListDiv
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {careers.map((item, index) => (
-                  <Draggable
-                    key={`${item}${index}`}
-                    draggableId={`${item}${index}`}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <CareerDiv
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {careers.length - index}&nbsp;&nbsp;&nbsp;{item}
-                        <div
-                          onClick={() => {
-                            deleteCareer(index);
-                          }}
+    <>
+      <FormTitle>작품 상영/수상 경력</FormTitle>
+      <Form>
+        <FormItemDiv>
+          <Input
+            placeholder="이력을 입력해주세요"
+            value={career}
+            onChange={onChangeCareer}
+            onKeyDown={(e) => {
+              onKeyDownCareer(e, career);
+            }}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
+          />
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              addCareer(career);
+            }}
+          >
+            추가
+          </Button>
+        </FormItemDiv>
+        {!isEmpty(careers) && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <CareerListDiv
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {careers.map((item, index) => (
+                    <Draggable
+                      key={`${item}${index}`}
+                      draggableId={`${item}${index}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <CareerDiv
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
                         >
-                          &times;
-                        </div>
-                      </CareerDiv>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </CareerListDiv>
-            )}
-          </Droppable>
-        </DragDropContext>
-      )}
-    </Form>
+                          {careers.length - index}&nbsp;&nbsp;&nbsp;{item}
+                          <div
+                            onClick={() => {
+                              deleteCareer(index);
+                            }}
+                          >
+                            &times;
+                          </div>
+                        </CareerDiv>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </CareerListDiv>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
+      </Form>
+      <ButtonWrapper>
+        {props.prevUrl !== null && (
+          <Button
+            onClick={() => {
+              navigate(`/request-movie/register/${props.prevUrl}`);
+            }}
+          >
+            이전
+          </Button>
+        )}
+        {props.nextUrl !== null ? (
+          <Button
+            onClick={() => {
+              navigate(`/request-movie/register/${props.nextUrl}`);
+            }}
+          >
+            다음
+          </Button>
+        ) : (
+          <Button>등록 신청</Button>
+        )}
+      </ButtonWrapper>
+    </>
   );
 }
 

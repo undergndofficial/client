@@ -21,12 +21,18 @@ import {
   Label,
   CheckboxWrapper,
   FlexWrapper,
+  FormTitle,
+  ButtonWrapper,
 } from '../style';
 import Button from 'components/Button';
 import { isEmpty } from 'lodash';
 import { SubtitleDiv, SubtitleListDiv } from './style';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { IRegisterProp } from 'types/props';
 
 function VideoInfo() {
+  const { props }: { props: IRegisterProp } = useOutletContext();
+  const navigate = useNavigate();
   const [screenRatio, setScreenRatio] = useState(0);
   const [coloration, setColoration] = useState(0);
   const [subtitleList, setSubTitleList] = useState<
@@ -113,145 +119,170 @@ function VideoInfo() {
   );
 
   return (
-    <Form>
-      <FormItemDiv>
-        <Label required>동영상</Label>
-        <input
-          type="file"
-          id="video"
-          accept="video/*"
-          style={{ display: 'none' }}
-          ref={videoInput}
-          onChange={(e) => {
-            const video = e.target.files && e.target.files[0];
-            if (!video) return;
-            if (video?.type == 'video/mp4' || video?.type == 'video/mov') {
-              setVideoFile(video);
-            } else {
-              alert('mp4, mov 파일만 업로드할 수 있습니다.');
-            }
-          }}
-        />
-        <FlexWrapper gap="1.5">
-          <IconButton onClick={clickVideoUploadButton}>
-            <BiSolidCameraMovie />
-          </IconButton>
-          {videoFile && videoFile.name}
-        </FlexWrapper>
-      </FormItemDiv>
-      <FormItemDiv>
-        <Label>썸네일</Label>
-        <input
-          type="file"
-          id="image"
-          accept="image/*"
-          style={{ display: 'none' }}
-          ref={coverInput}
-          onChange={(e) => {
-            const image = e.target.files && e.target.files[0];
-            if (!image) return;
-            if (
-              image.type == 'image/png' ||
-              image.type == 'image/jpeg' ||
-              image.type == 'image/jpg'
-            ) {
-              setCoverFile(image);
-            } else {
-              alert('png, jpg, jpeg 파일만 업로드할 수 있습니다.');
-            }
-          }}
-        />
-        <FlexWrapper gap="1.5">
-          <IconButton onClick={clickCoverUploadButton}>
-            <HiOutlinePhoto />
-          </IconButton>
-          {coverFile && coverFile.name}
-        </FlexWrapper>
-      </FormItemDiv>
-      <FormItemDiv>
-        <Label>자막</Label>
-        <FlexWrapper gap="1.5">
-          <Select
-            onChange={onChangeLang}
-            options={langOptions}
-            placeholder="언어 선택"
-          />
+    <>
+      <FormTitle>영상 정보</FormTitle>
+      <Form>
+        <FormItemDiv>
+          <Label required>동영상</Label>
           <input
             type="file"
-            id="subtitle"
-            accept=".srt, .vtt"
+            id="video"
+            accept="video/*"
             style={{ display: 'none' }}
-            ref={subtitleInput}
+            ref={videoInput}
             onChange={(e) => {
-              const file = e.target.files && e.target.files[0];
-              if (!file) return;
-              setSubtitlefile(file);
+              const video = e.target.files && e.target.files[0];
+              if (!video) return;
+              if (video?.type == 'video/mp4' || video?.type == 'video/mov') {
+                setVideoFile(video);
+              } else {
+                alert('mp4, mov 파일만 업로드할 수 있습니다.');
+              }
             }}
           />
-          <IconButton onClick={clickSubtitleUploadButton}>
-            <BsCardText />
-          </IconButton>
-          {subtitlefile && subtitlefile.name}
-          <Button onClick={addSubtitles}>추가</Button>
-        </FlexWrapper>
-      </FormItemDiv>
-      {!isEmpty(subtitleList) && (
-        <SubtitleListDiv>
-          {subtitleList.map((subtitle) => (
-            <SubtitleDiv key={subtitle.lang}>
-              {subtitle.langTxt} - {subtitle.subtitlefile.name}
-              <div
+          <FlexWrapper gap="1.5">
+            <IconButton onClick={clickVideoUploadButton}>
+              <BiSolidCameraMovie />
+            </IconButton>
+            {videoFile && videoFile.name}
+          </FlexWrapper>
+        </FormItemDiv>
+        <FormItemDiv>
+          <Label>썸네일</Label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            style={{ display: 'none' }}
+            ref={coverInput}
+            onChange={(e) => {
+              const image = e.target.files && e.target.files[0];
+              if (!image) return;
+              if (
+                image.type == 'image/png' ||
+                image.type == 'image/jpeg' ||
+                image.type == 'image/jpg'
+              ) {
+                setCoverFile(image);
+              } else {
+                alert('png, jpg, jpeg 파일만 업로드할 수 있습니다.');
+              }
+            }}
+          />
+          <FlexWrapper gap="1.5">
+            <IconButton onClick={clickCoverUploadButton}>
+              <HiOutlinePhoto />
+            </IconButton>
+            {coverFile && coverFile.name}
+          </FlexWrapper>
+        </FormItemDiv>
+        <FormItemDiv>
+          <Label>자막</Label>
+          <FlexWrapper gap="1.5">
+            <Select
+              onChange={onChangeLang}
+              options={langOptions}
+              placeholder="언어 선택"
+            />
+            <input
+              type="file"
+              id="subtitle"
+              accept=".srt, .vtt"
+              style={{ display: 'none' }}
+              ref={subtitleInput}
+              onChange={(e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                setSubtitlefile(file);
+              }}
+            />
+            <IconButton onClick={clickSubtitleUploadButton}>
+              <BsCardText />
+            </IconButton>
+            {subtitlefile && subtitlefile.name}
+            <Button onClick={addSubtitles}>추가</Button>
+          </FlexWrapper>
+        </FormItemDiv>
+        {!isEmpty(subtitleList) && (
+          <SubtitleListDiv>
+            {subtitleList.map((subtitle) => (
+              <SubtitleDiv key={subtitle.lang}>
+                {subtitle.langTxt} - {subtitle.subtitlefile.name}
+                <div
+                  onClick={() => {
+                    deleteSubtitle(subtitle.lang);
+                  }}
+                >
+                  &times;
+                </div>
+              </SubtitleDiv>
+            ))}
+          </SubtitleListDiv>
+        )}
+        <FormItemDiv>
+          <Label required>화면비율</Label>
+          <CheckboxWrapper>
+            {screenRatioList.map((ratio) => (
+              <FlexWrapper
+                key={ratio.screenRatio}
                 onClick={() => {
-                  deleteSubtitle(subtitle.lang);
+                  setScreenRatio((prev) =>
+                    prev !== 0 && prev === ratio.screenRatio
+                      ? 0
+                      : ratio.screenRatio,
+                  );
                 }}
               >
-                &times;
-              </div>
-            </SubtitleDiv>
-          ))}
-        </SubtitleListDiv>
-      )}
-      <FormItemDiv>
-        <Label required>화면비율</Label>
-        <CheckboxWrapper>
-          {screenRatioList.map((ratio) => (
-            <FlexWrapper
-              key={ratio.screenRatio}
-              onClick={() => {
-                setScreenRatio((prev) =>
-                  prev !== 0 && prev === ratio.screenRatio
-                    ? 0
-                    : ratio.screenRatio,
-                );
-              }}
-            >
-              <Checkbox checked={ratio.screenRatio === screenRatio} />
-              {ratio.screenRatioTxt}
-            </FlexWrapper>
-          ))}
-        </CheckboxWrapper>
-      </FormItemDiv>
-      <FormItemDiv>
-        <Label required>색채</Label>
-        <CheckboxWrapper>
-          {colorationList.map((color) => (
-            <FlexWrapper
-              key={color.coloration}
-              onClick={() => {
-                setColoration((prev) =>
-                  prev !== 0 && prev === color.coloration
-                    ? 0
-                    : color.coloration,
-                );
-              }}
-            >
-              <Checkbox checked={color.coloration === coloration} />
-              {color.colorationTxt}
-            </FlexWrapper>
-          ))}
-        </CheckboxWrapper>
-      </FormItemDiv>
-    </Form>
+                <Checkbox checked={ratio.screenRatio === screenRatio} />
+                {ratio.screenRatioTxt}
+              </FlexWrapper>
+            ))}
+          </CheckboxWrapper>
+        </FormItemDiv>
+        <FormItemDiv>
+          <Label required>색채</Label>
+          <CheckboxWrapper>
+            {colorationList.map((color) => (
+              <FlexWrapper
+                key={color.coloration}
+                onClick={() => {
+                  setColoration((prev) =>
+                    prev !== 0 && prev === color.coloration
+                      ? 0
+                      : color.coloration,
+                  );
+                }}
+              >
+                <Checkbox checked={color.coloration === coloration} />
+                {color.colorationTxt}
+              </FlexWrapper>
+            ))}
+          </CheckboxWrapper>
+        </FormItemDiv>
+      </Form>
+      <ButtonWrapper>
+        {props.prevUrl !== null && (
+          <Button
+            onClick={() => {
+              navigate(`/request-movie/register/${props.prevUrl}`);
+            }}
+          >
+            이전
+          </Button>
+        )}
+        {props.nextUrl !== null ? (
+          <Button
+            onClick={() => {
+              navigate(`/request-movie/register/${props.nextUrl}`);
+            }}
+          >
+            다음
+          </Button>
+        ) : (
+          <Button>등록 신청</Button>
+        )}
+      </ButtonWrapper>
+    </>
   );
 }
 

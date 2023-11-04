@@ -20,7 +20,7 @@ import useRequest from 'hooks/useRequest';
 import useSelect from 'hooks/useSelect';
 import { getSelectOptionList } from 'utils/common';
 import { getNationList } from 'api/common';
-import { IFilmForm } from 'types/join';
+import { IFilmForm } from 'types/form';
 import { useTranslation } from 'react-i18next';
 
 /**

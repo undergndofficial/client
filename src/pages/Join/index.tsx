@@ -25,7 +25,7 @@ import { dupCheck, signup, signupFilmpeople } from 'api/member';
 import { useNavigate } from 'react-router-dom';
 import { isEmpty, isNil } from 'lodash';
 import FilmPersonForm from './FilmPersonForm';
-import { IFilmForm, IUserForm } from 'types/join';
+import { IFilmForm, IUserForm } from 'types/form';
 import { useTranslation } from 'react-i18next';
 
 /**
