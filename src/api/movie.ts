@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './config';
 import { ResponseType } from 'types/common';
 import { IRequestMovie } from 'types/db';
 
