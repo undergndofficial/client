@@ -450,9 +450,9 @@ function MovieInfo({
           </CheckboxWrapper>
         </FormItemDiv>
         <FormItemDiv>
-          <Label required>{t('message.message49')}</Label>
+          <Label required>{t('synopsis')}</Label>
           <Textarea
-            placeholder={t('synopsis')}
+            placeholder={t('message.message49')}
             value={movPlot}
             onChange={onChangeMovPlot}
           />
