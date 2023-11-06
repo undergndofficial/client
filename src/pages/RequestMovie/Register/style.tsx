@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import theme from 'styles/theme';
 
-const MARGIN_LABEL = '10.5rem';
+const MARGIN_LABEL = '12rem';
 
 export const Container = styled.div`
   display: flex;
@@ -117,7 +117,7 @@ export const FlexWrapper = styled.div<{ gap?: string }>`
 `;
 
 export const TagListDiv = styled.div`
-  margin-left: 10.5rem;
+  margin-left: ${MARGIN_LABEL};
   width: 100%;
   @media ${theme.device.phone}, ${theme.device.tablet} {
     margin-left: 0;
@@ -156,6 +156,5 @@ export const StepDiv = styled.div<{ selected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   word-break: keep-all;
 `;

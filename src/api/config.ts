@@ -59,7 +59,7 @@ instance.interceptors.response.use(
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     if (accessToken && refreshToken) {
-      config.headers.Authorization = `Bearer Token ${accessToken}`;
+      config.headers.Authorization = `Token ${accessToken}`;
       config.headers.refresh = `${refreshToken}`;
     }
     return axios(config);

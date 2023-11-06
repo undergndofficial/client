@@ -15,11 +15,6 @@ import CustomerCenter from 'pages/CustomerCenter';
 import Inquiry from 'pages/Inquiry';
 import WriteInquiry from 'pages/Inquiry/Write';
 import PrivateRoute from 'layouts/PrivateRoute';
-import MovieInfo from 'pages/RequestMovie/Register/MovieInfo';
-import ProducerInfo from 'pages/RequestMovie/Register/ProducerInfo';
-import CareerInfo from 'pages/RequestMovie/Register/CareerInfo';
-import VideoInfo from 'pages/RequestMovie/Register/VideoInfo';
-import InquiryInfo from 'pages/RequestMovie/Register/InquiryInfo';
 
 function App() {
   return (
@@ -44,25 +39,7 @@ function App() {
             <Route path="/mypage" element={<UserInfo />} />
             <Route path="/request-movie" element={<RequestMovie />} />
             <Route path="/request-movie/requset" element={<Request />} />
-            <Route path="/request-movie/register" element={<Register />}>
-              <Route path="/request-movie/register" element={<MovieInfo />} />
-              <Route
-                path="/request-movie/register/video"
-                element={<VideoInfo />}
-              />
-              <Route
-                path="/request-movie/register/producer"
-                element={<ProducerInfo />}
-              />
-              <Route
-                path="/request-movie/register/career"
-                element={<CareerInfo />}
-              />
-              <Route
-                path="/request-movie/register/inquiry"
-                element={<InquiryInfo />}
-              />
-            </Route>
+            <Route path="/request-movie/register" element={<Register />} />
             <Route path="/inquiry/write" element={<WriteInquiry />} />
           </Route>
         </Routes>

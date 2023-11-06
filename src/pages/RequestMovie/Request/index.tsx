@@ -19,8 +19,10 @@ import { requestMovie } from 'api/movie';
 import { IRequestMovie } from 'types/db';
 import useTagInput from 'hooks/useTagInput';
 import InputTagList from 'components/InputTagList';
+import { useTranslation } from 'react-i18next';
 
 function Request() {
+  const { t } = useTranslation();
   const [title, onChangeTitle, setTitle] = useInput('');
   const [director, onChangeDirector, setDirector] = useInput('');
   const [isComposing, setIsComposing] = useState(false);
@@ -46,18 +48,18 @@ function Request() {
   }, [title, directorList]);
 
   // 영화 요청
-  const requsetRequestMovie = useRequest<boolean>(requestMovie);
-  const requsetProc = useCallback(() => {
+  const requestRequestMovie = useRequest<boolean>(requestMovie);
+  const requestProc = useCallback(() => {
     if (!validate()) return;
     const movie: IRequestMovie = {
       movTitle: title,
       directors: directorList.join(','),
     };
-    requsetRequestMovie(movie)
+    requestRequestMovie(movie)
       .then(() => {
         setTitle('');
         setDirectorList([]);
-        alert('영화를 요청하였습니다.');
+        alert(t('message.message44'));
       })
       .catch((e) => {
         console.error(e.message);
@@ -68,21 +70,21 @@ function Request() {
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>영화 요청</TitleDiv>
+          <TitleDiv>{t('requestMovie')}</TitleDiv>
           <RequestForm>
             <FormItemDiv>
-              <Label>제목</Label>
+              <Label>{t('title')}</Label>
               <Input
-                placeholder="영화 제목을 입력해주세요"
+                placeholder={t('message.message46')}
                 value={title}
                 onChange={onChangeTitle}
               />
             </FormItemDiv>
             <FormItemDiv>
-              <Label>감독</Label>
+              <Label>{t('director')}</Label>
               <>
                 <Input
-                  placeholder="감독 이름을 입력해주세요"
+                  placeholder={t('message.message45')}
                   value={director}
                   onChange={onChangeDirector}
                   onKeyDown={(e) => {
@@ -96,7 +98,7 @@ function Request() {
                     addDirectorList(director);
                   }}
                 >
-                  추가
+                  {t('add')}
                 </Button>
               </>
               <DirectorListDiv>
@@ -107,7 +109,7 @@ function Request() {
               </DirectorListDiv>
             </FormItemDiv>
           </RequestForm>
-          <RequestButton onClick={requsetProc}>요청</RequestButton>
+          <RequestButton onClick={requestProc}>{t('request')}</RequestButton>
         </Container>
       </PageContent>
     </Layout>

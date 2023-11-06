@@ -15,7 +15,7 @@ import Select from 'components/Select';
 import Checkbox from 'components/Checkbox';
 import DatePicker from 'components/DatePicker';
 import { HiOutlinePhoto } from 'react-icons/hi2';
-import { INation } from 'types/common';
+import { INation } from 'types/db';
 import useRequest from 'hooks/useRequest';
 import useSelect from 'hooks/useSelect';
 import { getSelectOptionList } from 'utils/common';
@@ -58,9 +58,9 @@ function FilmPersonForm({
 
   // 국가 목록 옵션으로 가공
   const [nationOptions, setNationOptions, onChangeNation] = useSelect(
-    (value) => {
-      setFilmPersonInfo((prev) => ({ ...prev, nation: value }));
-      setFilmPersonErrorInfo(value, 'nation', t('message.message20'));
+    (option) => {
+      setFilmPersonInfo((prev) => ({ ...prev, nation: option.value }));
+      setFilmPersonErrorInfo(option.value, 'nation', t('message.message20'));
     },
   ); // 국가 목록
   useEffect(() => {

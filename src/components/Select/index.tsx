@@ -2,6 +2,7 @@
 import React from 'react';
 import { Container } from './style';
 import ReactSelect, { SingleValue, ActionMeta } from 'react-select';
+import { SelectOptionType } from 'types/common';
 
 const customStyles: any = {
   control: (provided: any) => ({
@@ -52,6 +53,7 @@ function Select({
   options,
   placeholder,
   width,
+  value,
 }: {
   onChange: (
     newValue: SingleValue<{ label: string; value: string }>,
@@ -60,6 +62,7 @@ function Select({
   options: { label: string; value: string }[];
   placeholder?: string;
   width?: string;
+  value?: SelectOptionType;
 }) {
   return (
     <Container width={width}>
@@ -68,6 +71,7 @@ function Select({
         options={options}
         placeholder={placeholder}
         styles={customStyles}
+        value={value}
       />
     </Container>
   );

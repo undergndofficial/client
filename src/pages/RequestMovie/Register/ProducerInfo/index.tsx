@@ -1,36 +1,41 @@
 import React from 'react';
 import { FormTitle, Form, ButtonWrapper } from '../style';
 import { IRegisterProp } from 'types/props';
-import { useNavigate, useOutletContext } from 'react-router-dom';
 import Button from 'components/Button';
+import { useTranslation } from 'react-i18next';
 
-function ProducerInfo() {
-  const { props }: { props: IRegisterProp } = useOutletContext();
-  const navigate = useNavigate();
+function ProducerInfo({
+  /* movSeq,*/
+  step,
+  setCurStep,
+  stepSize,
+}: IRegisterProp) {
+  const { t } = useTranslation();
   return (
     <>
       <FormTitle>제작자 정보</FormTitle>
       <Form>제작자 정보</Form>
+
       <ButtonWrapper>
-        {props.prevUrl !== null && (
+        {step > 0 && (
           <Button
             onClick={() => {
-              navigate(`/request-movie/register/${props.prevUrl}`);
+              setCurStep(step - 1);
             }}
           >
-            이전
+            {t('prev')}
           </Button>
         )}
-        {props.nextUrl !== null ? (
+        {step < stepSize - 1 ? (
           <Button
             onClick={() => {
-              navigate(`/request-movie/register/${props.nextUrl}`);
+              setCurStep(step + 1);
             }}
           >
-            다음
+            {t('next')}
           </Button>
         ) : (
-          <Button>등록 신청</Button>
+          <Button>{t('registerRequest')}</Button>
         )}
       </ButtonWrapper>
     </>

@@ -1,6 +1,6 @@
+import { ResponseType } from 'types/common';
 import axios from './config';
 import {
-  ResponseType,
   INation,
   ILang,
   IGerne,
@@ -8,7 +8,7 @@ import {
   IFaqCategory,
   IColoration,
   IScreenRatio,
-} from 'types/common';
+} from 'types/db';
 
 const PREFIX_URL = '/common';
 

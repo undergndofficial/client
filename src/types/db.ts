@@ -1,9 +1,9 @@
 export interface IAnnounce {
   seq: number;
-  ann_title: string;
-  ann_body: string;
+  annTitle: string;
+  annBody: string;
   hits: number;
-  created_at: Date;
+  createdAt: Date;
 }
 
 export interface IUser {
@@ -47,4 +47,115 @@ export interface IRequestMovie {
   movTitle: string;
   directors: string;
   reqComment?: string;
+}
+
+export interface IMovieInfo {
+  movTitle?: string;
+  movTitleEn: string;
+  catSeq: number;
+  gernes: number[];
+  tags?: string[];
+  ratingSeq: number;
+  langCode: string;
+  nationalitySeq: string;
+  productionYear: number;
+  releasedAt?: string;
+  distributors?: string[];
+  onlinePublish: string | null;
+  movPlot: string;
+  directorNote?: string;
+}
+
+export interface IMovieBasicInfo {
+  movSeq: number;
+  movFile: string;
+  memSeq: number;
+  coverUrl: string;
+  screenRatioTxt: string;
+  colorationTxt: string;
+  movTitle: string;
+  movTitleEn: string;
+  catName: string;
+  ratingTxt: string;
+  langName: string;
+  nation: string;
+  runningTime: number;
+  movPlot: string;
+  directorNote: string;
+  productionYear: number;
+  releasedAt: string;
+  onlinePublish: string;
+  hitCount: number;
+  viewedCount: number;
+  starringStd: number;
+  reviewCount: number;
+  favorCount: number;
+  isShow: number;
+  isDeleted: number;
+  isApproved: number;
+  createdAt: string;
+}
+
+export interface IVideoInfo {
+  screenRatio: number;
+  coloration: number;
+}
+
+export interface IAward {
+  awSeq: number;
+  awardContent: string;
+  inorder: number;
+}
+export interface INation {
+  nationalitySeq: string;
+  nation: string;
+  nationEn: string;
+}
+
+export interface ILang {
+  langCode: string;
+  langName: string;
+}
+
+export interface IGerne {
+  gernSeq: number;
+  gernName: string;
+  usedCound: number;
+}
+
+export interface IRating {
+  ratingSeq: number;
+  ratingTxt: string;
+}
+
+export interface IFaqCategory {
+  inqCat: number;
+  inqTxt: string;
+}
+
+export interface IScreenRatio {
+  screenRatio: number;
+  screenRatioTxt: string;
+}
+
+export interface IColoration {
+  coloration: number;
+  colorationTxt: string;
+}
+
+export interface IMovieGerne {
+  gmSeq: number;
+  movSeq: number;
+  gernName: string;
+}
+
+export interface IMovieTag {
+  tmSeq: number;
+  movSeq: number;
+  tagName: string;
+}
+
+export interface IMovieDistributor {
+  dmSeq: number;
+  distName: string;
 }

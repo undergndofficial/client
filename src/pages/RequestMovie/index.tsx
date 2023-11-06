@@ -11,15 +11,17 @@ import {
   ButtonIconDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function RequestMovie() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <Layout>
       <PageContent>
         <Container>
-          <TitleDiv>영화 신청</TitleDiv>
+          <TitleDiv>{t('movieApplication')}</TitleDiv>
           <ButtonWrapper>
             <RequestButton
               onClick={() => {
@@ -29,10 +31,8 @@ function RequestMovie() {
               <ButtonIconDiv
                 url={`${process.env.PUBLIC_URL}/assets/icon/request-icon.svg`}
               />
-              <ButtonTitleDiv>영화 요청</ButtonTitleDiv>
-              <DescriptionDiv>
-                일반 사용자 분들이 보고 싶은 영화가 있을 때 이용해주세요
-              </DescriptionDiv>
+              <ButtonTitleDiv>{t('requestMovie')}</ButtonTitleDiv>
+              <DescriptionDiv>{t('message.message42')}</DescriptionDiv>
             </RequestButton>
             <RequestButton
               onClick={() => {
@@ -42,10 +42,8 @@ function RequestMovie() {
               <ButtonIconDiv
                 url={`${process.env.PUBLIC_URL}/assets/icon/register-icon.svg`}
               />
-              <ButtonTitleDiv>영화 등록 신청</ButtonTitleDiv>
-              <DescriptionDiv>
-                영화 제작자 분들이 자신의 영화를 등록하고 싶을 때 이용해주세요
-              </DescriptionDiv>
+              <ButtonTitleDiv>{t('reigsterMovie')}</ButtonTitleDiv>
+              <DescriptionDiv>{t('message.message43')}</DescriptionDiv>
             </RequestButton>
           </ButtonWrapper>
         </Container>

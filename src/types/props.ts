@@ -1,4 +1,10 @@
+import { IMovieBasicInfo } from './db';
+
 export interface IRegisterProp {
-  nextUrl: string | null;
-  prevUrl: string | null;
+  step: number;
+  setCurStep: React.Dispatch<React.SetStateAction<number>>;
+  stepSize: number;
+  movSeq: number | null;
+  setMovSeq?: React.Dispatch<React.SetStateAction<number | null>>;
+  movieInfo?: IMovieBasicInfo | null;
 }
