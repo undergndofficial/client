@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Input from 'components/Input';
 import Select from 'components/Select';
 import useRequest from 'hooks/useRequest';
@@ -86,16 +86,10 @@ function MovieInfo({
   const [selectedGerneList, setSelectedGerneList] = useState<{
     [key: number]: boolean;
   }>({});
-  const toggleSelectedGerne = (key: number) => {
-    setSelectedGerneList((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
   // 태그
   const [tag, onChangeTag, setTag] = useInput<string>('');
   const [isComposingTag, setIsComposingTag] = useState(false);
-  const [tags, setTags, deleteTag, addTag, onKeyDownTag] = useTagInput(
+  const [tags, , deleteTag, addTag, onKeyDownTag] = useTagInput(
     setTag,
     isComposingTag,
   );
@@ -174,6 +168,43 @@ function MovieInfo({
     setProductionYearOptions(yearsArray);
   }, []);
 
+  // 태그 로드
+  const loadTags = useCallback(() => {
+    requsetOriginTags(movSeq)
+      .then((data) => {
+        setOriginTags(data);
+      })
+      .catch((e) => console.error(e));
+  }, [movSeq]);
+  // 배급사 로드
+  const loadDists = useCallback(() => {
+    requsetOriginDistributor(movSeq)
+      .then((data) => {
+        setOriginDistributor(data);
+        const dists = data.map((item) => item.distName);
+        setDistributors(dists);
+      })
+      .catch((e) => console.error(e));
+  }, [movSeq]);
+  // 장르 로드
+  const loadGernes = useCallback(() => {
+    requestOriginGenrens(movSeq)
+      .then((data) => {
+        setOriginGenres(data);
+        const newSelectedGerneList: {
+          [key: number]: boolean;
+        } = {};
+        const gernes = gerneList
+          .filter((g) => data.some((o) => o.gernName === g.gernName))
+          .map((item) => item.gernSeq);
+        gernes.forEach((item) => {
+          newSelectedGerneList[item] = true;
+        });
+        setSelectedGerneList(newSelectedGerneList);
+      })
+      .catch((e) => console.error(e));
+  }, [movSeq, gerneList]);
+
   // 영화 기본 정보 저장
   useEffect(() => {
     if (!movieInfo) return;
@@ -203,35 +234,10 @@ function MovieInfo({
     setMovPlot(movieInfo.movPlot);
     setDirectorNote(movieInfo.directorNote);
     // movSeq가 있는 경우 movSeq로 영화 정보 불러오기
-    // 장르
-    requestOriginGenrens(movSeq)
-      .then((data) => {
-        setOriginGenres(data);
-        const gernes = gerneList
-          .filter((g) => data.some((o) => o.gernName === g.gernName))
-          .map((item) => item.gernSeq);
-        gernes.forEach((item) => {
-          selectedGerneList[item] = true;
-        });
-      })
-      .catch((e) => console.error(e));
-    // 태그
-    requsetOriginTags(movSeq)
-      .then((data) => {
-        setOriginTags(data);
-        const tags = data.map((item) => item.tagName);
-        setTags(tags);
-      })
-      .catch((e) => console.error(e));
-    // 배급사
-    requsetOriginDistributor(movSeq)
-      .then((data) => {
-        setOriginDistributor(data);
-        const dists = data.map((item) => item.distName);
-        setDistributors(dists);
-      })
-      .catch((e) => console.error(e));
-  }, [movieInfo, ratingOptions, langOptions, nationOptions]);
+    loadGernes();
+    loadTags();
+    loadDists();
+  }, [movieInfo, gerneList, ratingOptions, langOptions, nationOptions]);
   // 영화 정보 폼 내용 가져오기
   const getMovieFormInfo = () => {
     const gernes = gerneList
@@ -277,6 +283,110 @@ function MovieInfo({
   const requestDelTag = useRequest<boolean>(deleteMovieTag);
   const requestAddDist = useRequest<boolean>(addMovieDistributor);
   const requestDelDist = useRequest<boolean>(deleteMovieDistributor);
+  // 저장된 태그 삭제
+  const deleteTagProc = useCallback(
+    (tmSeq: number) => {
+      requestDelTag({ movSeq, tmSeq })
+        .then(() => {
+          loadTags();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq],
+  );
+  // 저장된 영화 정보에 태그 추가
+  const addTagProc = useCallback(
+    (tagName: string) => {
+      requestAddTag({ movSeq, tagName })
+        .then(() => {
+          loadTags();
+          setTag('');
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq],
+  );
+  // 저장된 배급사 삭제
+  const deleteDistProc = useCallback(
+    (dmSeq: number) => {
+      requestDelDist({ movSeq, dmSeq })
+        .then(() => {
+          loadDists();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq],
+  );
+  // 저장된 영화 정보에 배급사 추가
+  const addDistProc = useCallback(
+    (distName: string) => {
+      requestAddDist({ movSeq, distName })
+        .then(() => {
+          loadDists();
+          setDistributor('');
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq],
+  );
+  // 저장된 장르 삭제
+  const deleteGernProc = useCallback(
+    (gmSeq: number) => {
+      requestDelGern({ movSeq, gmSeq })
+        .then(() => {
+          loadGernes();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq, gerneList],
+  );
+  // 저장된 영화 정보에 장르 추가
+  const addGernProc = useCallback(
+    (gernSeq: number) => {
+      requestAddGern({ movSeq, gernSeq })
+        .then(() => {
+          loadGernes();
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+    [movSeq, gerneList],
+  );
+  // 장르 체크박스를 토글한다.
+  const toggleSelectedGerne = (key: number) => {
+    // 생성 시 추가되는 경우
+    if (!movSeq) {
+      setSelectedGerneList((prev) => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+    } else {
+      // 기존 영화에 추가
+      if (!selectedGerneList[key]) {
+        addGernProc(key);
+      } else {
+        // 기존 영화에서 삭제
+        const gernIdx = gerneList.findIndex((item) => item.gernSeq === key);
+        const gernName = gerneList[gernIdx].gernName;
+        const originIdx = originGenres.findIndex(
+          (item) => item.gernName === gernName,
+        );
+        const gmSeq = originGenres[originIdx].gmSeq;
+        deleteGernProc(gmSeq);
+      }
+    }
+  };
   // 기본 정보를 수정한다
   const updateProc = async () => {
     // 기본 정보
@@ -386,7 +496,15 @@ function MovieInfo({
               value={tag}
               onChange={onChangeTag}
               onKeyDown={(e) => {
-                onKeyDownTag(e, tag);
+                if (movSeq) {
+                  if (isComposingTag) return;
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addTagProc(tag);
+                  }
+                } else {
+                  onKeyDownTag(e, tag);
+                }
               }}
               onCompositionStart={() => setIsComposingTag(true)}
               onCompositionEnd={() => setIsComposingTag(false)}
@@ -394,14 +512,27 @@ function MovieInfo({
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                addTag(tag);
+                if (movSeq) {
+                  addTagProc(tag);
+                } else {
+                  addTag(tag);
+                }
               }}
             >
               {t('add')}
             </Button>
           </>
           <TagListDiv>
-            <InputTagList tagList={tags} deleteTag={deleteTag} />
+            {movSeq ? (
+              <InputTagList
+                tagList={originTags.map((item) => item.tagName)}
+                deleteTag={(i) => {
+                  deleteTagProc(originTags[i].tmSeq);
+                }}
+              />
+            ) : (
+              <InputTagList tagList={tags} deleteTag={deleteTag} />
+            )}
           </TagListDiv>
         </FormItemDiv>
         <FormItemDiv>
@@ -456,7 +587,15 @@ function MovieInfo({
               value={distributor}
               onChange={onChangeDistributor}
               onKeyDown={(e) => {
-                onKeyDownDistributor(e, distributor);
+                if (movSeq) {
+                  if (isComposingDistributor) return;
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addDistProc(distributor);
+                  }
+                } else {
+                  onKeyDownDistributor(e, distributor);
+                }
               }}
               onCompositionStart={() => setIsComposingDistributor(true)}
               onCompositionEnd={() => setIsComposingDistributor(false)}
@@ -464,17 +603,30 @@ function MovieInfo({
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                addDistributor(distributor);
+                if (movSeq) {
+                  addDistProc(distributor);
+                } else {
+                  addDistributor(distributor);
+                }
               }}
             >
               {t('add')}
             </Button>
           </>
           <TagListDiv>
-            <InputTagList
-              tagList={distributors}
-              deleteTag={deleteDistributor}
-            />
+            {movSeq ? (
+              <InputTagList
+                tagList={originDistributor.map((item) => item.distName)}
+                deleteTag={(i) => {
+                  deleteDistProc(originDistributor[i].dmSeq);
+                }}
+              />
+            ) : (
+              <InputTagList
+                tagList={distributors}
+                deleteTag={deleteDistributor}
+              />
+            )}
           </TagListDiv>
         </FormItemDiv>
         <FormItemDiv>
