@@ -28,6 +28,8 @@ import { isEmpty } from 'lodash';
 import { SubtitleDiv, SubtitleListDiv } from './style';
 import { IRegisterProp } from 'types/props';
 import {
+  deleteSubtitle,
+  getVideoinfo,
   registerCoverFile,
   registerMovieFile,
   registerSubtitleFile,
@@ -36,8 +38,16 @@ import {
 import { IVideoInfo, IColoration, ILang, IScreenRatio } from 'types/db';
 import { useTranslation } from 'react-i18next';
 import { SelectOptionType } from 'types/common';
+import { toast } from 'react-toastify';
 
-function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
+function VideoInfo({
+  movSeq,
+  step,
+  setCurStep,
+  stepSize,
+  movieInfo,
+  loadData,
+}: IRegisterProp) {
   const { t } = useTranslation();
   const [screenRatio, setScreenRatio] = useState(0); // 화면비
   const [coloration, setColoration] = useState(0); // 색채
@@ -52,6 +62,8 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
   const [subtitlefile, setSubtitlefile] = useState<File | null>(null); // 자막 파일
   const [coverFile, setCoverFile] = useState<File | null>(null); // 썸네일 이미지
   const [videoFile, setVideoFile] = useState<File | null>(null); // 영화 파일
+  const [videoFileName, setVideoFileName] = useState('');
+  const [coverFileName, setCoverFileName] = useState('');
   const [screenRatioList, setScreenRatioList] = useState<IScreenRatio[]>([]); // 화면비
   const [colorationList, setColorationList] = useState<IColoration[]>([]); // 색채
   // 화면비, 색채, 언어 목록 로드
@@ -75,6 +87,26 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     });
   }, []);
 
+  // 기존 정보 로드
+  const requestVideoInfo = useRequest<IVideoInfo[]>(getVideoinfo);
+  useEffect(() => {
+    if (!movSeq) return;
+    // 파일 정보
+    setCoverFileName(movieInfo?.coverUrl || '');
+    setVideoFileName(movieInfo?.movFile || '');
+    // 영상 정보
+    requestVideoInfo(movSeq).then((data) => {
+      if (data.length > 0) {
+        setScreenRatio(data[0].screenRatio);
+        setColoration(data[0].coloration);
+      }
+    });
+  }, [movSeq]);
+  useEffect(() => {
+    setCoverFileName(movieInfo?.coverUrl || '');
+    setVideoFileName(movieInfo?.movFile || '');
+  }, [movieInfo]);
+
   // 썸네일 파일 업로드 버튼 클릭 핸들러
   const coverInput = useRef<HTMLInputElement | null>(null);
   const clickCoverUploadButton = useCallback(() => {
@@ -92,9 +124,15 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
   }, []);
   // 자막 추가 버튼 클릭 핸들러
   const addSubtitles = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       if (subtitlefile && lang) {
+        const formData = new FormData();
+        formData.append('subtitlefile', subtitlefile);
+        formData.append('lang', lang.value);
+        await requestSubtitlefile({ movSeq, formData }).catch((e) => {
+          console.error(e);
+        });
         // 이미 추가된 언어일 경우 자막파일 교체
         const langItemIdx = subtitleList.findIndex(
           (item) => item.lang === lang.value,
@@ -102,6 +140,9 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
         let newList = [...subtitleList];
         if (langItemIdx > -1) {
           newList = newList.filter((item) => item.lang !== lang.value);
+          toast.success(
+            '중복된 언어의 자막이 업로드되어 파일을 교체 하였습니다',
+          );
         }
         const langIdx = langOptions.findIndex(
           (item) => item.value === lang.value,
@@ -117,8 +158,12 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     [lang, subtitlefile, subtitleList],
   );
   // 해당 인덱스의 자막 삭제
-  const deleteSubtitle = useCallback(
-    (targetLang: string) => {
+  const requestDeleteSubtitle = useRequest<boolean>(deleteSubtitle);
+  const deleteSubtitleByLang = useCallback(
+    async (targetLang: string) => {
+      await requestDeleteSubtitle({ movSeq, lang: targetLang }).catch((e) => {
+        console.error(e);
+      });
       setSubTitleList((prev) =>
         prev.filter((item) => targetLang !== item.lang),
       );
@@ -130,40 +175,47 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
   const requestCoverfile = useRequest<boolean>(registerCoverFile); // 커버파일 저장
   const requestSubtitlefile = useRequest<boolean>(registerSubtitleFile); // 자막 파일 저장
   const requestVideoinfo = useRequest<boolean>(registerVideoinfo); // 영상 정보 저장
-  // 영상 정보 저장
-  const saveProc = async () => {
-    // 자막 파일
-    subtitleList.forEach(async (subtitle) => {
-      const subtitleFormdata = new FormData();
-      subtitleFormdata.append('subtitlefile', subtitle.subtitlefile as File);
-      subtitleFormdata.append('lang', subtitle.lang);
-      await requestSubtitlefile({
-        movSeq: movSeq,
-        formData: subtitleFormdata,
-      }).catch((e) => {
-        console.error(e.message);
-      });
-    });
+  // 영화 파일 업로드
+  useEffect(() => {
     // 영상 파일
+    if (!videoFile) return;
     const movieFormdata = new FormData();
     movieFormdata.append('movfile', videoFile as File);
-    await requestMovfile({
-      movSeq: movSeq,
+    setVideoFileName('업로드 중 입니다...');
+    requestMovfile({
+      movSeq,
       formData: movieFormdata,
-    }).catch((e) => {
-      console.error(e.message);
-    });
-    // 커버 파일
+    })
+      .then(() => {
+        if (loadData) loadData();
+      })
+      .catch((e) => {
+        console.error(e.message);
+      })
+      .finally(() => {
+        setVideoFileName(videoFile?.name || '');
+      });
+  }, [videoFile]);
+  // 커버 파일 업로드
+  useEffect(() => {
+    if (!coverFile) return;
     const coverFormdata = new FormData();
     coverFormdata.append('coverfile', coverFile as File);
     if (coverFile) {
-      await requestCoverfile({
+      requestCoverfile({
         movSeq: movSeq,
         formData: coverFormdata,
-      }).catch((e) => {
-        console.error(e.message);
-      });
+      })
+        .then(() => {
+          if (loadData) loadData();
+        })
+        .catch((e) => {
+          console.error(e.message);
+        });
     }
+  }, [coverFile]);
+  // 영상 정보 저장
+  const saveProc = async () => {
     // 영상 정보
     const videoInfo: IVideoInfo = {
       screenRatio,
@@ -176,10 +228,6 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
       console.error(e.message);
     });
     setCurStep(step + 1);
-  };
-  // 기본 정보를 수정한다
-  const updateProc = () => {
-    // 수정
   };
   // 다음 버튼을 클릭한다.
   const onClickNextButtton = () => {
@@ -204,7 +252,7 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
               if (video?.type == 'video/mp4' || video?.type == 'video/mov') {
                 setVideoFile(video);
               } else {
-                alert('mp4, mov 파일만 업로드할 수 있습니다.');
+                toast.error('mp4, mov 파일만 업로드할 수 있습니다.');
               }
             }}
           />
@@ -212,7 +260,10 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
             <IconButton onClick={clickVideoUploadButton}>
               <BiSolidCameraMovie />
             </IconButton>
-            {videoFile && videoFile.name}
+            {videoFileName &&
+              videoFileName !== '' &&
+              videoFileName !== 'N/A' &&
+              videoFileName}
           </FlexWrapper>
         </FormItemDiv>
         <FormItemDiv>
@@ -233,7 +284,7 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
               ) {
                 setCoverFile(image);
               } else {
-                alert('png, jpg, jpeg 파일만 업로드할 수 있습니다.');
+                toast.error(t('message.message38'));
               }
             }}
           />
@@ -241,7 +292,10 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
             <IconButton onClick={clickCoverUploadButton}>
               <HiOutlinePhoto />
             </IconButton>
-            {coverFile && coverFile.name}
+            {coverFileName &&
+              coverFileName !== '' &&
+              coverFileName !== '-' &&
+              coverFileName}
           </FlexWrapper>
         </FormItemDiv>
         <FormItemDiv>
@@ -278,7 +332,7 @@ function VideoInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
                 {subtitle.langTxt} - {subtitle.subtitlefile.name}
                 <div
                   onClick={() => {
-                    deleteSubtitle(subtitle.lang);
+                    deleteSubtitleByLang(subtitle.lang);
                   }}
                 >
                   &times;

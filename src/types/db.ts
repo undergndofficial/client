@@ -33,6 +33,8 @@ export interface IFilmpeople {
   fpDeparts: string;
   fpRemarks: string;
   memSeq: number;
+  memId?: string;
+  fpSeq: number;
 }
 
 export interface IFaq {
@@ -158,4 +160,28 @@ export interface IMovieTag {
 export interface IMovieDistributor {
   dmSeq: number;
   distName: string;
+}
+
+export interface IMovieFilmPeople {
+  mfpSeq: number;
+  rolesKoName: string;
+  rolesSeq: number;
+  fpSeq: number;
+  filmoRole: string;
+  fpKoName: string;
+  fpEnName: string;
+  fpPhoto: File | null;
+  nation: string;
+  fpSex: string;
+  fpBirthYear: number;
+  fpDeparts: string;
+  fpRemarks: string;
+  memSeq: number;
+}
+
+export interface IRole {
+  rolesSeq: number;
+  rolesGroup: string;
+  rolesKoName: string;
+  isUse: number;
 }

@@ -8,6 +8,7 @@ import {
   IFaqCategory,
   IColoration,
   IScreenRatio,
+  IRole,
 } from 'types/db';
 
 const PREFIX_URL = '/common';
@@ -70,4 +71,13 @@ export function getFaqCategoryList(): Promise<{
   data: ResponseType<IFaqCategory[]>;
 }> {
   return axios.get(`${PREFIX_URL}/faq-category`);
+}
+
+/**
+ * 영화 관계인 역할 표를 조회한다.
+ */
+export function getRoleList(): Promise<{
+  data: ResponseType<IRole[]>;
+}> {
+  return axios.get(`${PREFIX_URL}/roles`);
 }

@@ -57,7 +57,7 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     requestCareerOrderInfo({
       movSeq: movSeq as number,
       awSeq: targetItem.awSeq,
-      inorder: destination.index,
+      inorder: destination.index + 1,
     }).catch((e) => {
       console.error(e.message);
     });
@@ -76,7 +76,7 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
       .catch((e) => {
         console.error(e.message);
       });
-  }, [career]);
+  }, [movSeq, career]);
   // 수상 경력 정보 삭제
   const deleteCareerInfo = useRequest<boolean>(deleteAward);
   const deleteCareer = useCallback(
@@ -94,10 +94,6 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     },
     [movSeq],
   );
-  // 다음 버튼 클릭
-  const onClickNextButton = () => {
-    setCurStep(step + 1);
-  };
 
   return (
     <>
@@ -178,7 +174,13 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
           </Button>
         )}
         {step < stepSize - 1 ? (
-          <Button onClick={onClickNextButton}>{t('next')}</Button>
+          <Button
+            onClick={() => {
+              setCurStep(step + 1);
+            }}
+          >
+            {t('next')}
+          </Button>
         ) : (
           <Button>{t('registerRequest')}</Button>
         )}

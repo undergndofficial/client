@@ -15,6 +15,8 @@ import CustomerCenter from 'pages/CustomerCenter';
 import Inquiry from 'pages/Inquiry';
 import WriteInquiry from 'pages/Inquiry/Write';
 import PrivateRoute from 'layouts/PrivateRoute';
+import { ToastContainer, Flip } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -44,6 +46,19 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Flip}
+      />
     </div>
   );
 }

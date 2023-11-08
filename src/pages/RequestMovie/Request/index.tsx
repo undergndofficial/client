@@ -20,6 +20,7 @@ import { IRequestMovie } from 'types/db';
 import useTagInput from 'hooks/useTagInput';
 import InputTagList from 'components/InputTagList';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 function Request() {
   const { t } = useTranslation();
@@ -59,7 +60,7 @@ function Request() {
       .then(() => {
         setTitle('');
         setDirectorList([]);
-        alert(t('message.message44'));
+        toast.success(t('message.message44'));
       })
       .catch((e) => {
         console.error(e.message);

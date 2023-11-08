@@ -50,7 +50,7 @@ instance.interceptors.response.use(
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       window.location.href = '/';
-      alert('로그인 상태가 만료되었습니다. 다시 로그인해주세요.');
+      ('로그인 상태가 만료되었습니다. 다시 로그인해주세요.');
       return Promise.reject(error);
     }
     // 아닌 경우 토큰 갱신

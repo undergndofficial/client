@@ -22,6 +22,7 @@ import { getSelectOptionList } from 'utils/common';
 import { getNationList } from 'api/common';
 import { IFilmForm } from 'types/form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 /**
  * 영화인 등록 폼
@@ -124,7 +125,7 @@ function FilmPersonForm({
                   ) {
                     encodeFileToBase64(selectedFile);
                   } else {
-                    alert(t('message.message38'));
+                    toast.error(t('message.message38'));
                   }
                 }}
               />

@@ -7,4 +7,5 @@ export interface IRegisterProp {
   movSeq: number | null;
   setMovSeq?: React.Dispatch<React.SetStateAction<number | null>>;
   movieInfo?: IMovieBasicInfo | null;
+  loadData?: () => void;
 }

@@ -40,10 +40,17 @@ import {
   IMovieDistributor,
 } from 'types/db';
 import {
+  addMovieDistributor,
+  addMovieGerne,
+  addMovieTag,
+  deleteMovieDistributor,
+  deleteMovieGerne,
+  deleteMovieTag,
   getDistributorInfo,
   getGerneInfo,
   getMovieTagInfo,
   registerMovieInfo,
+  updateMovieInfo,
 } from 'api/movie';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
@@ -59,6 +66,7 @@ function MovieInfo({
   setCurStep,
   stepSize,
   movieInfo,
+  loadData,
 }: IRegisterProp) {
   const { t } = useTranslation();
   const [movTitle, onChangeMovTitle, setMovTitle] = useInput(''); // 제목
@@ -222,11 +230,8 @@ function MovieInfo({
       })
       .catch((e) => console.error(e));
   }, [movieInfo, ratingOptions, langOptions, nationOptions]);
-
-  // 영화 기본정보 등록 요청
-  const requestBasicInfo = useRequest<{ movSeq: number }>(registerMovieInfo);
-  // 기본 정보를 저장한다.
-  const saveProc = () => {
+  // 영화 정보 폼 내용 가져오기
+  const getMovieFormInfo = () => {
     const gernes = gerneList
       .filter((item) => selectedGerneList[item.gernSeq])
       .map((gerne) => gerne.gernSeq);
@@ -246,6 +251,13 @@ function MovieInfo({
       movPlot,
       directorNote,
     };
+    return movieInfo;
+  };
+  // 영화 기본정보 등록 요청
+  const requestBasicInfo = useRequest<{ movSeq: number }>(registerMovieInfo);
+  // 기본 정보를 저장한다.
+  const saveProc = () => {
+    const movieInfo = getMovieFormInfo();
     requestBasicInfo(movieInfo)
       .then((data) => {
         if (setMovSeq) setMovSeq(data.movSeq);
@@ -255,16 +267,37 @@ function MovieInfo({
         console.error(e.message);
       });
   };
+  // 정보 수정 요청
+  const requestUpdateMovieInfo = useRequest<boolean>(updateMovieInfo);
+  const requestAddGern = useRequest<boolean>(addMovieGerne);
+  const requestDelGern = useRequest<boolean>(deleteMovieGerne);
+  const requestAddTag = useRequest<boolean>(addMovieTag);
+  const requestDelTag = useRequest<boolean>(deleteMovieTag);
+  const requestAddDist = useRequest<boolean>(addMovieDistributor);
+  const requestDelDist = useRequest<boolean>(deleteMovieDistributor);
   // 기본 정보를 수정한다
-  const updateProc = () => {
-    // 수정
+  const updateProc = async () => {
     // 기본 정보
-    // 아래 내용은 기존 데이터랑 원본 데이터랑 대조해서 추가, 삭제 api 따로 호출
-    // 장르
-    // 배급사
-    // 태그
+    const movieInfo: Omit<IMovieInfo, 'gernes' | 'tags' | 'distributors'> = {
+      movTitle,
+      movTitleEn,
+      catSeq: 1,
+      ratingSeq: parseInt(rating?.value as string),
+      langCode: lang?.value as string,
+      nationalitySeq: nationality?.value as string,
+      productionYear: parseInt(productionYear?.value as string),
+      releasedAt: dayjs(releasedAt).format('YYYY-MM-DD'),
+      onlinePublish: onlinePublishFlag ? onlinePublish : null,
+      movPlot,
+      directorNote,
+    };
+    await requestUpdateMovieInfo({ movSeq, movieInfo }).catch((e) => {
+      console.error(e.message);
+    });
+    if (loadData) loadData();
     setCurStep(step + 1);
   };
+
   // 다음 버튼을 클릭한다.
   const onClickNextButtton = () => {
     // movSeq가 있으면 수정

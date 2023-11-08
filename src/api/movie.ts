@@ -2,8 +2,10 @@ import axios from './config';
 import { ResponseType } from 'types/common';
 import {
   IAward,
+  IFilmpeople,
   IMovieBasicInfo,
   IMovieDistributor,
+  IMovieFilmPeople,
   IMovieGerne,
   IMovieInfo,
   IMovieTag,
@@ -68,6 +70,101 @@ export function registerMovieInfo(params: IMovieInfo): Promise<{
 }
 
 /**
+ * 영화 기본 정보를 수정한다.
+ */
+export function updateMovieInfo({
+  movSeq,
+  movieInfo,
+}: {
+  movSeq: number;
+  movieInfo: IMovieInfo;
+}): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.post(`${PREFIX_URL}/${movSeq}`, movieInfo);
+}
+
+/**
+ * 영화에 장르를 추가한다.
+ */
+export function addMovieGerne({
+  movSeq,
+  gernSeq,
+}: {
+  movSeq: number;
+  gernSeq: number;
+}) {
+  return axios.put(`${PREFIX_URL}/${movSeq}/gerne`, { gernSeq });
+}
+
+/**
+ * 영화에 장르를 삭제한다.
+ */
+export function deleteMovieGerne({
+  movSeq,
+  gmSeq,
+}: {
+  movSeq: number;
+  gmSeq: number;
+}) {
+  return axios.delete(`${PREFIX_URL}/${movSeq}/gerne`, { data: { gmSeq } });
+}
+
+/**
+ * 영화에 태그를 추가한다.
+ */
+export function addMovieTag({
+  movSeq,
+  tagName,
+}: {
+  movSeq: number;
+  tagName: string;
+}) {
+  return axios.put(`${PREFIX_URL}/${movSeq}/tags`, { tagName });
+}
+
+/**
+ * 영화 태그를 삭제한다.
+ */
+export function deleteMovieTag({
+  movSeq,
+  tmSeq,
+}: {
+  movSeq: number;
+  tmSeq: number;
+}) {
+  return axios.delete(`${PREFIX_URL}/${movSeq}/tags`, { data: { tmSeq } });
+}
+
+/**
+ * 영화 배급사를 추가한다.
+ */
+export function addMovieDistributor({
+  movSeq,
+  distName,
+}: {
+  movSeq: number;
+  distName: string;
+}) {
+  return axios.put(`${PREFIX_URL}/${movSeq}/distributors`, { distName });
+}
+
+/**
+ * 영화 배급사를 삭제한다.
+ */
+export function deleteMovieDistributor({
+  movSeq,
+  dmSeq,
+}: {
+  movSeq: number;
+  dmSeq: number;
+}) {
+  return axios.delete(`${PREFIX_URL}/${movSeq}/distributors`, {
+    data: { dmSeq },
+  });
+}
+
+/**
  * 영화 파일을 등록한다.
  */
 export function registerMovieFile({
@@ -106,6 +203,15 @@ export function registerCoverFile({
 }
 
 /**
+ * 영화 커버 파일을 삭제한다.
+ */
+export function deleteCoverFile(movSeq: number): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.put(`${PREFIX_URL}/${movSeq}`);
+}
+
+/**
  * 영화 자막 파일을 등록한다.
  */
 export function registerSubtitleFile({
@@ -125,6 +231,30 @@ export function registerSubtitleFile({
 }
 
 /**
+ * 영화 특정 자막을 삭제한다.
+ */
+export function deleteSubtitle({
+  movSeq,
+  lang,
+}: {
+  movSeq: number;
+  lang: string;
+}): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.delete(`${PREFIX_URL}/${movSeq}/subtitle`, { data: { lang } });
+}
+
+/**
+ * 영상 정보를 조회한다.
+ */
+export function getVideoinfo(movSeq: number): Promise<{
+  data: ResponseType<IVideoInfo[]>;
+}> {
+  return axios.get(`${PREFIX_URL}/${movSeq}/videoinfo`);
+}
+
+/**
  * 영상 정보를 등록한다.
  */
 export function registerVideoinfo({
@@ -137,6 +267,60 @@ export function registerVideoinfo({
   data: ResponseType<never>;
 }> {
   return axios.post(`${PREFIX_URL}/${movSeq}/videoinfo`, videoInfo);
+}
+
+/**
+ * 해당 영화의 영화 관계인을 조회한다
+ */
+export function getMovieFilmPeople(movSeq: number): Promise<{
+  data: ResponseType<IMovieFilmPeople[]>;
+}> {
+  return axios.patch(`${PREFIX_URL}/${movSeq}/peoples`);
+}
+
+/**
+ * 영화 관계인을 검색한다
+ */
+export function searchFilmPeople({
+  movSeq,
+  keyword,
+}: {
+  movSeq: number;
+  keyword: string;
+}): Promise<{
+  data: ResponseType<IFilmpeople[]>;
+}> {
+  return axios.get(`${PREFIX_URL}/${movSeq}/peoples?q=${keyword}`);
+}
+
+/**
+ * 해당 영화의 영화 관계인을 추가한다
+ */
+export function addMovieFilmPeople({
+  movSeq,
+  peopleInfo,
+}: {
+  movSeq: number;
+  peopleInfo: Pick<IMovieFilmPeople, 'rolesSeq' | 'filmoRole' | 'fpSeq'>[];
+}): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.put(`${PREFIX_URL}/${movSeq}/peoples`, peopleInfo);
+}
+
+/**
+ * 해당 영화의 영화 관계인을 삭제
+ */
+export function deleteMovieFilmPeople({
+  movSeq,
+  mfpSeq,
+}: {
+  movSeq: number;
+  mfpSeq: number;
+}): Promise<{
+  data: ResponseType<never>;
+}> {
+  return axios.delete(`${PREFIX_URL}/${movSeq}/peoples`, { data: { mfpSeq } });
 }
 
 /**
@@ -184,7 +368,7 @@ export function deleteAward({
 }
 
 /**
- * 상영/수상 내역 순서 변경한다..
+ * 상영/수상 내역 순서 변경한다.
  */
 export function updateOrderAward({
   movSeq,

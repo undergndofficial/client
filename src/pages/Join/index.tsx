@@ -27,6 +27,7 @@ import { isEmpty, isNil } from 'lodash';
 import FilmPersonForm from './FilmPersonForm';
 import { IFilmForm, IUserForm } from 'types/form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 /**
  * 회원 가입 페이지
@@ -258,7 +259,7 @@ function Join() {
       .then((data) => {
         if (filmPerson) {
           const { memSeq } = data;
-          const filmPeople: IFilmpeople = {
+          const filmPeople: Omit<IFilmpeople, 'fpSeq'> = {
             fpKoName: userBasicInfo?.memName as string,
             fpEnName: filmPersonInfo.enName,
             fpPhoto: filmPersonInfo.photo as File,
@@ -287,14 +288,14 @@ function Join() {
           }
           requestFilmPeople(formData)
             .then(() => {
-              alert(t('message.message22'));
+              toast.success(t('message.message22'));
               navigate('/');
             })
             .catch((e) => {
               console.error(e.message);
             });
         } else {
-          alert(t('message.message22'));
+          toast.error(t('message.message22'));
           navigate('/');
         }
       })

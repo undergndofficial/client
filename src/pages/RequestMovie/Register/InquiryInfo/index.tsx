@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import useRequest from 'hooks/useRequest';
 import { registerRemark } from 'api/movie';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function InquiryInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ function InquiryInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
         console.error(e.message);
       });
     }
-    alert('영화 등록을 신청하였습니다.');
+    toast.success('영화 등록을 신청하였습니다.');
     navigate(-1);
   };
 

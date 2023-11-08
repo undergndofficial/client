@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { ResponseType } from 'types/common';
 import { CustomError } from 'utils/error';
 
@@ -23,7 +24,7 @@ const useRequest = <T>(
           reject(new CustomError(errorMessage, errorCode));
         }
       } catch (e) {
-        alert('서비스에 오류가 발생하였습니다.');
+        toast.error('서비스에 오류가 발생하였습니다.');
       }
     });
   };

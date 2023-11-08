@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Layout from 'layouts/Layout';
 import PageContent from 'layouts/PageContent';
 import { Container, StepWrapper, StepDiv } from './style';
@@ -19,8 +19,7 @@ function Register() {
   const [movieInfo, setMoviInfo] = useState<IMovieBasicInfo | null>(null);
   const STEP_SIZE = 5;
   const requestMovieInfo = useRequest<IMovieBasicInfo>(getMovieInfo);
-  useEffect(() => {
-    if (!movSeq || curStepIdx > 1) return;
+  const fetchData = useCallback(() => {
     requestMovieInfo(movSeq)
       .then((data) => setMoviInfo(data))
       .catch((e) => {
@@ -31,6 +30,11 @@ function Register() {
         }
       });
   }, [movSeq, curStepIdx]);
+  useEffect(() => {
+    if (!movSeq || curStepIdx > 1) return;
+    fetchData();
+  }, [movSeq, curStepIdx]);
+
   const steps = [
     {
       order: 0,
@@ -43,6 +47,7 @@ function Register() {
           movSeq={movSeq}
           setMovSeq={setMovSeq}
           movieInfo={movieInfo}
+          loadData={fetchData}
         />
       ),
     },
@@ -56,6 +61,7 @@ function Register() {
           stepSize={STEP_SIZE}
           movSeq={movSeq}
           movieInfo={movieInfo}
+          loadData={fetchData}
         />
       ),
     },
