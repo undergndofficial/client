@@ -22,7 +22,7 @@ import {
 } from 'api/movie';
 import useRequest from 'hooks/useRequest';
 import { IMovieFilmPeople } from 'types/db';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import InputTagList from 'components/InputTagList';
 import { toast } from 'react-toastify';
 import useInput from 'hooks/useInput';
@@ -111,6 +111,10 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
           setFilmoRole('');
         })
         .catch((e) => {
+          if (e.code === 'err_svr_001') {
+            toast.error('중복된 정보가 존재하거나 서비스에 오류가 있습니다.');
+            return;
+          }
           console.error(e);
         });
     },
@@ -130,6 +134,14 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     },
     [movSeq],
   );
+  // 필수값 유효성 검사
+  const vaildateForm = () => {
+    if (isEmpty(formList[0].values)) {
+      toast.error('감독 정보를 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
 
   return (
     <>
@@ -188,6 +200,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
         {step < stepSize - 1 ? (
           <Button
             onClick={() => {
+              if (!vaildateForm()) return;
               setCurStep(step + 1);
             }}
           >

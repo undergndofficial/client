@@ -10,7 +10,6 @@ import { isEmpty } from 'lodash';
 import useRequest from 'hooks/useRequest';
 import { signout } from 'api/member';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 interface HeaderPropsType {
   scrollTop: boolean;
@@ -52,7 +51,7 @@ function Header({ scrollTop }: HeaderPropsType) {
     requestLogout()
       .then(() => {
         window.location.href = '/';
-        toast.success(t('message.message1'));
+        alert(t('message.message1'));
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
       })

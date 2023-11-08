@@ -62,6 +62,11 @@ const baseStyle = css`
     text-decoration: none;
     color: black;
   }
+  .Toastify__toast {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    word-break: keep-all;
+  }
 `;
 
 const GlobalStyle = () => <Global styles={baseStyle} />;

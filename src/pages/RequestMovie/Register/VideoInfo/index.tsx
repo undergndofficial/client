@@ -49,6 +49,7 @@ function VideoInfo({
   loadData,
 }: IRegisterProp) {
   const { t } = useTranslation();
+  const UPLOAD_MSG = '업로드 중 입니다...';
   const [screenRatio, setScreenRatio] = useState(0); // 화면비
   const [coloration, setColoration] = useState(0); // 색채
   const [subtitleList, setSubTitleList] = useState<
@@ -181,7 +182,7 @@ function VideoInfo({
     if (!videoFile) return;
     const movieFormdata = new FormData();
     movieFormdata.append('movfile', videoFile as File);
-    setVideoFileName('업로드 중 입니다...');
+    setVideoFileName(UPLOAD_MSG);
     requestMovfile({
       movSeq,
       formData: movieFormdata,
@@ -229,8 +230,21 @@ function VideoInfo({
     });
     setCurStep(step + 1);
   };
+  // 필수값 유효성 검사
+  const vaildateForm = () => {
+    if (
+      (!videoFileName && videoFileName !== UPLOAD_MSG) ||
+      !screenRatio ||
+      !coloration
+    ) {
+      toast.error('필수 값을 모두 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
   // 다음 버튼을 클릭한다.
   const onClickNextButtton = () => {
+    if (!vaildateForm()) return;
     saveProc();
   };
 

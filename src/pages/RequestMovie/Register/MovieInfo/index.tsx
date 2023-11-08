@@ -55,6 +55,8 @@ import {
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { SelectOptionType } from 'types/common';
+import { toast } from 'react-toastify';
+import { isEmpty } from 'lodash';
 
 /**
  * 영화 등록 > 작품 정보
@@ -245,7 +247,7 @@ function MovieInfo({
       langCode: lang?.value as string,
       nationalitySeq: nationality?.value as string,
       productionYear: parseInt(productionYear?.value as string),
-      releasedAt: dayjs(releasedAt).format('YYYY-MM-DD'),
+      releasedAt: releasedAt && dayjs(releasedAt).format('YYYY-MM-DD'),
       distributors,
       onlinePublish: onlinePublishFlag ? onlinePublish : null,
       movPlot,
@@ -286,7 +288,7 @@ function MovieInfo({
       langCode: lang?.value as string,
       nationalitySeq: nationality?.value as string,
       productionYear: parseInt(productionYear?.value as string),
-      releasedAt: dayjs(releasedAt).format('YYYY-MM-DD'),
+      releasedAt: releasedAt && dayjs(releasedAt).format('YYYY-MM-DD'),
       onlinePublish: onlinePublishFlag ? onlinePublish : null,
       movPlot,
       directorNote,
@@ -298,8 +300,31 @@ function MovieInfo({
     setCurStep(step + 1);
   };
 
+  const vaildateForm = () => {
+    const gernes = gerneList
+      .filter((item) => selectedGerneList[item.gernSeq])
+      .map((gerne) => gerne.gernSeq);
+    if (
+      !movTitleEn ||
+      isEmpty(gernes) ||
+      !rating ||
+      !lang ||
+      !nationality ||
+      !productionYear ||
+      !movPlot ||
+      (onlinePublishFlag && !onlinePublish)
+    ) {
+      toast.error('필수 값을 모두 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
+
   // 다음 버튼을 클릭한다.
   const onClickNextButtton = () => {
+    if (!vaildateForm()) {
+      return;
+    }
     // movSeq가 있으면 수정
     if (movSeq) {
       updateProc();

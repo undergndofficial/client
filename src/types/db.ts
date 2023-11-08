@@ -61,7 +61,7 @@ export interface IMovieInfo {
   langCode: string;
   nationalitySeq: string;
   productionYear: number;
-  releasedAt?: string;
+  releasedAt?: string | null;
   distributors?: string[];
   onlinePublish: string | null;
   movPlot: string;
