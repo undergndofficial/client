@@ -58,7 +58,7 @@ function Comment() {
         )}
       </StarWrapper>
       <CommentInput>
-        <Input placeholder={t('message.message8')} width="100%" />
+        <Input placeholder={t('message.message52')} width="100%" />
         <Button width="6.5rem">{t('publish')}</Button>
       </CommentInput>
       <CommentListDiv>
