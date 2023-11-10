@@ -1,6 +1,6 @@
 import axios from './config';
 import { ResponseType } from 'types/common';
-import { IUser } from 'types/db';
+import { IUser, IUserSession } from 'types/db';
 
 const PREFIX_URL = '/member';
 
@@ -59,8 +59,8 @@ export function dupCheck(params: {
 }
 
 /**
- * 로그인한 사용자의 정보를 불러온다
+ * 현재 로그인한 사용자의 세션 정보를 불러온다
  */
-// export function getMemberInfo(): Promise<{ data: ResponseType<IUser> }> {
-//   return axios.patch(`${PREFIX_URL}`);
-// }
+export function getUserInfo(): Promise<{ data: ResponseType<IUserSession> }> {
+  return axios.get(`${PREFIX_URL}`);
+}

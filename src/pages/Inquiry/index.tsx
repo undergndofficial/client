@@ -15,9 +15,10 @@ import Pagination from 'components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useRequest from 'hooks/useRequest';
-import { IQna } from 'types/db';
+import { IQna, IUserSession } from 'types/db';
 import { getQnaList } from 'api/customer';
 import { IPagingData } from 'types/common';
+import { getUserInfo } from 'api/member';
 
 function Inquiry() {
   const { t } = useTranslation();
@@ -31,6 +32,19 @@ function Inquiry() {
     processing: '#FFC700',
     hold: '#FF0000',
   };
+
+  // 로그인한 사용자 정보. 내가 쓴 글인지 판별할 때 사용
+  const [loginUser, setLoginUser] = useState<IUserSession | null>(null);
+  const requsetUserInfo = useRequest<IUserSession>(getUserInfo);
+  useEffect(() => {
+    requsetUserInfo()
+      .then((data) => {
+        setLoginUser(data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   // 반응형 쿼리. 화면 크기에 따라 다른 페이지 수 제공
   const [isMobile, setIsMobile] = useState(false);
@@ -69,12 +83,19 @@ function Inquiry() {
   }, [page]);
 
   // 1대1문의 행 클릭
-  const clickPost = useCallback((qna: IQna) => {
-    // 내가 쓴 글이 아닌 경우
-    navigate(`/inquiry/${qna.seq}`);
-    // 내가 쓴 글인 경우
-    // navigate(`/inquiry/write/${qna.seq}`);
-  }, []);
+  const clickPost = useCallback(
+    (qna: IQna) => {
+      console.log(loginUser, qna);
+      if (loginUser?.memSeq === qna.memSeq) {
+        // 내가 쓴 글인 경우
+        navigate(`/inquiry/write/${qna.seq}`);
+      } else {
+        // 내가 쓴 글이 아닌 경우
+        navigate(`/inquiry/${qna.seq}`);
+      }
+    },
+    [loginUser],
+  );
 
   return (
     <Layout>

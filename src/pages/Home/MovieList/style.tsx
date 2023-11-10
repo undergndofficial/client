@@ -19,7 +19,6 @@ export const MovieContainer = styled.div`
 
 export const TagDiv = styled.div<VisibleProp>`
   visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
-  width: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,6 +26,10 @@ export const TagDiv = styled.div<VisibleProp>`
   gap: 0.8rem;
   font-size: 1.25rem;
   font-weight: 600;
+  text-align: center;
+  > div {
+    width: 7rem;
+  }
 `;
 
 export const MovieListWrapper = styled.div`

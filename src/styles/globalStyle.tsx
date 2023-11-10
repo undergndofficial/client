@@ -33,7 +33,7 @@ const baseStyle = css`
       font-size: 16px;
     }
     @media ${theme.device.desktop} {
-      font-size: 17px;
+      font-size: 16px;
     }
   }
   body {

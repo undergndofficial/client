@@ -67,7 +67,9 @@ function MovieList({ tag }: MovieListProps) {
       </TitleWrapper>
       <MovieContainer ref={horizontalScrollRef} onScroll={onScrollMovieList}>
         <TagDiv visible={isScrollLeft}>
-          <img src={`${process.env.PUBLIC_URL}${tag.iconUrl}`} />
+          <div>
+            <img src={`${process.env.PUBLIC_URL}${tag.iconUrl}`} />
+          </div>
           <div>{tag.label}</div>
         </TagDiv>
         <MovieListWrapper>

@@ -212,3 +212,11 @@ export interface ICategory {
   catName: string;
   usedCount: number;
 }
+
+export interface IUserSession {
+  memSeq: number;
+  memId: string;
+  createdAt: string;
+  iat: number;
+  exp: number;
+}
