@@ -139,7 +139,7 @@ export const TermsButton = styled.div`
   font-weight: 700;
 `;
 
-export const FormTitle = styled.div`
+export const FormTitle = styled.div<{ disabled?: boolean }>`
   width: 100%;
   padding: 1rem;
   justify-content: center;
@@ -149,6 +149,10 @@ export const FormTitle = styled.div`
   text-align: center;
   font-size: 1.25rem;
   font-weight: 700;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  ${(props) => props.disabled && 'color:#545457;'}
 `;
 
 export const Textarea = styled.textarea`
@@ -173,4 +177,42 @@ export const PhoneInput = styled(Input)`
   [type='number'] {
     -moz-appearance: textfield;
   }
+`;
+
+export const StepWrapper = styled.div`
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+`;
+
+export const StepDiv = styled.div<{ selected?: boolean }>`
+  font-weight: 700;
+  border-radius: 50%;
+  border: 2px solid ${(props) => (props.selected ? '#fff' : '#545457')};
+  color: ${(props) => (props.selected ? '#fff' : '#545457')};
+  width: 7rem;
+  height: 7rem;
+  padding: 1rem;
+  display: flex;
+  font-size: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+  text-align: center;
+`;
+
+export const AddIconDiv = styled.div`
+  width: 1.875rem;
+  height: 1.875rem;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b6b6b6;
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding-bottom: 0.2rem;
+  box-sizing: border-box;
+  cursor: pointer;
 `;

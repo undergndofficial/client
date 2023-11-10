@@ -13,6 +13,8 @@ import {
   AuthForm,
   FormTitle,
   WarningMessageDiv,
+  StepWrapper,
+  StepDiv,
 } from './style';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -295,7 +297,7 @@ function Join() {
               console.error(e.message);
             });
         } else {
-          toast.error(t('message.message22'));
+          toast.success(t('message.message22'));
           navigate('/');
         }
       })
@@ -309,6 +311,12 @@ function Join() {
       <PageContent>
         <Container>
           <TitleDiv>{t('register')}</TitleDiv>
+          <StepWrapper>
+            <StepDiv selected={!filmPersonStep}>
+              {t('basicInfoRegister')}
+            </StepDiv>
+            <StepDiv selected={filmPersonStep}>{t('filmInfoRegister')}</StepDiv>
+          </StepWrapper>
           {/* 기본 정보  */}
           {!filmPersonStep ? (
             <JoinForm>

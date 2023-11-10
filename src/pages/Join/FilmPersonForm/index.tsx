@@ -8,6 +8,7 @@ import {
   PreviewImageWrapper,
   Textarea,
   WarningMessageDiv,
+  AddIconDiv,
 } from '../style';
 import IconButton from 'components/IconButton';
 import Input from 'components/Input';
@@ -97,15 +98,16 @@ function FilmPersonForm({
   return (
     <>
       <JoinForm>
-        <FormTitle>{t('filmPersonRegister')}</FormTitle>
-        <FlexWrapper
-          onClick={() => {
-            setFilmPerson((prev) => !prev);
-          }}
-        >
-          <Checkbox checked={filmPerson} />
-          {t('message.message37')}
-        </FlexWrapper>
+        <FormTitle disabled={!filmPerson}>
+          {t('filmPersonRegister')}
+          <AddIconDiv
+            onClick={() => {
+              setFilmPerson((prev) => !prev);
+            }}
+          >
+            {filmPerson ? 'ㅡ' : '+'}
+          </AddIconDiv>
+        </FormTitle>
         {filmPerson && (
           <>
             <FormItemDiv>

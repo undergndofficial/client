@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Layout from 'layouts/Layout';
 import PageContent from 'layouts/PageContent';
-import { Container, StepWrapper, StepDiv } from './style';
+import { Container, StepWrapper, StepDiv, TitleDiv } from './style';
 import VideoInfo from './VideoInfo';
 import ProducerInfo from './ProducerInfo';
 import CareerInfo from './CareerInfo';
@@ -107,6 +107,7 @@ function Register() {
     <Layout>
       <PageContent>
         <Container>
+          <TitleDiv>{t('reigsterMovie')}</TitleDiv>
           <StepWrapper>
             {steps.map((step) => (
               <StepDiv

@@ -140,6 +140,8 @@
   "directorNote": "기획 의도",
   "registerRequest": "등록 신청",
   "updateoneToOneInquiry": "1대1 문의 수정",
+  "basicInfoRegister": "기본 정보 등록",
+  "filmInfoRegister": "영화인 정보 등록",
 
   "message": {
     "message1": "로그아웃 되었습니다.",

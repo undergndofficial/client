@@ -34,7 +34,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   // 경고 문구
   const [isWarning, setIsWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
-  // 아이디, 비밀번호, 비밀번호 기억
+  // 아이디, 비밀번호, 아이디 기억
   const [id, onChangeId, setId] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [checkedRemember, setCheckedRemember] = useState(false);

@@ -147,14 +147,17 @@ export const StepWrapper = styled.div`
 `;
 
 export const StepDiv = styled.div<{ selected?: boolean }>`
-  font-weight: ${(props) => (props.selected ? '700' : '500')};
+  font-weight: 700;
   border-radius: 50%;
-  border: ${(props) => (props.selected ? '5px' : '1px')} solid #fff;
-  width: 5rem;
-  height: 5rem;
+  border: 2px solid ${(props) => (props.selected ? '#fff' : '#545457')};
+  color: ${(props) => (props.selected ? '#fff' : '#545457')};
+  width: 7rem;
+  height: 7rem;
   padding: 1rem;
   display: flex;
+  font-size: 1.25rem;
   align-items: center;
   justify-content: center;
   word-break: keep-all;
+  text-align: center;
 `;
