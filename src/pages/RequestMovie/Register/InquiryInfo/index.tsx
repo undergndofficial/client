@@ -31,13 +31,13 @@ function InquiryInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
         console.error(e.message);
       });
     }
-    toast.success('영화 등록을 신청하였습니다.');
+    toast.success(t('message.message59'));
     navigate(-1);
   };
 
   return (
     <>
-      <FormTitle>문의/요청</FormTitle>
+      <FormTitle>{t('inquiryRequest')}</FormTitle>
       <Form>
         <FormItemDiv>
           <Textarea value={remark} onChange={onChangeRemark} />

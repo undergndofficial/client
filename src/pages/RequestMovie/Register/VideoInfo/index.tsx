@@ -56,7 +56,7 @@ function VideoInfo({
   loadData,
 }: IRegisterProp) {
   const { t } = useTranslation();
-  const UPLOAD_MSG = '업로드 중 입니다...';
+  const UPLOAD_MSG = t('message.message54');
   const [screenRatio, setScreenRatio] = useState(0); // 화면비
   const [coloration, setColoration] = useState(0); // 색채
   const [subtitleList, setSubTitleList] = useState<ISubtitles[]>([]); // 자막 목록
@@ -156,9 +156,7 @@ function VideoInfo({
           (item) => item.langCode === lang.value,
         );
         if (langItemIdx > -1) {
-          toast.success(
-            '중복된 언어의 자막이 업로드되어 파일을 교체 하였습니다',
-          );
+          toast.success(t('message.message55'));
         }
         loadSubtitles();
       }
@@ -242,7 +240,7 @@ function VideoInfo({
       !screenRatio ||
       !coloration
     ) {
-      toast.error('필수 값을 모두 입력해주세요.');
+      toast.error(t('message.message56'));
       return false;
     }
     return true;
@@ -255,10 +253,10 @@ function VideoInfo({
 
   return (
     <>
-      <FormTitle>영상 정보</FormTitle>
+      <FormTitle>{t('videoInfo')}</FormTitle>
       <Form>
         <FormItemDiv>
-          <Label required>동영상</Label>
+          <Label required>{t('video')}</Label>
           <input
             type="file"
             id="video"
@@ -271,7 +269,7 @@ function VideoInfo({
               if (video?.type == 'video/mp4' || video?.type == 'video/mov') {
                 setVideoFile(video);
               } else {
-                toast.error('mp4, mov 파일만 업로드할 수 있습니다.');
+                toast.error(t('message.message57'));
               }
             }}
           />
@@ -286,7 +284,7 @@ function VideoInfo({
           </FlexWrapper>
         </FormItemDiv>
         <FormItemDiv>
-          <Label>썸네일</Label>
+          <Label>{t('thumbnail')}</Label>
           <input
             type="file"
             id="image"
@@ -318,12 +316,12 @@ function VideoInfo({
           </FlexWrapper>
         </FormItemDiv>
         <FormItemDiv>
-          <Label>자막</Label>
+          <Label>{t('subtitle')}</Label>
           <FlexWrapper gap="1.5">
             <Select
               onChange={onChangeLang}
               options={langOptions}
-              placeholder="언어 선택"
+              placeholder={t('selectLanguage')}
             />
             <input
               type="file"
@@ -341,7 +339,7 @@ function VideoInfo({
               <BsCardText />
             </IconButton>
             {subtitlefile && subtitlefile.name}
-            <Button onClick={addSubtitles}>추가</Button>
+            <Button onClick={addSubtitles}>{t('add')}</Button>
           </FlexWrapper>
         </FormItemDiv>
         {!isEmpty(subtitleList) && (
@@ -361,7 +359,7 @@ function VideoInfo({
           </SubtitleListDiv>
         )}
         <FormItemDiv>
-          <Label required>화면비율</Label>
+          <Label required>{t('screenRatio')}</Label>
           <CheckboxWrapper>
             {screenRatioList.map((ratio) => (
               <FlexWrapper
@@ -381,7 +379,7 @@ function VideoInfo({
           </CheckboxWrapper>
         </FormItemDiv>
         <FormItemDiv>
-          <Label required>색채</Label>
+          <Label required>{t('color')}</Label>
           <CheckboxWrapper>
             {colorationList.map((color) => (
               <FlexWrapper

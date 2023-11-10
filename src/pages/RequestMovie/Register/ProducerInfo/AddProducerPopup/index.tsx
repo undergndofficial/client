@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Container } from './style';
-import { useTranslation } from 'react-i18next';
 import useRequest from 'hooks/useRequest';
 import { IRole } from 'types/db';
 import { getRoleList } from 'api/common';
@@ -15,7 +14,6 @@ function AddProducerPopup({
   closeAddPopup: () => void;
   onClickHandler: (label: string, rolesSeq: number) => void;
 }) {
-  const { t } = useTranslation();
   const [roles, setRoles] = useState<IRole[]>([]);
   const requestRoleInfo = useRequest<IRole[]>(getRoleList);
   useEffect(() => {

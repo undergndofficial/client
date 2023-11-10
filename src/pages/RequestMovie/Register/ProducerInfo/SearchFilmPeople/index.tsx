@@ -5,6 +5,7 @@ import { debounce, isEmpty } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { IFilmpeople } from 'types/db';
 import { Container, SearchResultDiv } from './style';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   movSeq: number | null;
@@ -12,6 +13,7 @@ interface IProps {
 }
 
 function SearchFilmPeople({ movSeq, addProducer }: IProps) {
+  const { t } = useTranslation();
   const requestSearchFilm = useRequest<IFilmpeople[]>(searchFilmPeople);
   const [searchResults, setSearchResults] = useState<IFilmpeople[]>([]);
   const [keyword, setKeyword] = useState('');
@@ -53,7 +55,7 @@ function SearchFilmPeople({ movSeq, addProducer }: IProps) {
   return (
     <Container>
       <Input
-        placeholder="영화인 검색"
+        placeholder={t('searchFilmPeople')}
         value={keyword}
         onChange={onChangeKeyword}
       />

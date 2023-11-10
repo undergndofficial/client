@@ -440,7 +440,7 @@ function MovieInfo({
       !movPlot ||
       (onlinePublishFlag && !onlinePublish)
     ) {
-      toast.error('필수 값을 모두 입력해주세요.');
+      toast.error(t('message.message56'));
       return false;
     }
     return true;

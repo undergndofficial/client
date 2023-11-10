@@ -97,11 +97,11 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
 
   return (
     <>
-      <FormTitle>작품 상영/수상 경력</FormTitle>
+      <FormTitle>{t('awardCareer')}</FormTitle>
       <Form>
         <FormItemDiv>
           <Input
-            placeholder="이력을 입력해주세요"
+            placeholder={t('message.message58')}
             value={career}
             onChange={onChangeCareer}
             onKeyDown={(e) => {
@@ -120,7 +120,7 @@ function CareerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
               saveCareer();
             }}
           >
-            추가
+            {t('add')}
           </Button>
         </FormItemDiv>
         {!isEmpty(careers) && (

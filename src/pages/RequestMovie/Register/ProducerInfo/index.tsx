@@ -84,7 +84,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
     (label: string, rolesSeq: number) => {
       const idx = formList.findIndex((item) => item.rolesSeq === rolesSeq);
       if (idx >= 0) {
-        toast.error('이미 추가된 역할입니다.');
+        toast.error(t('message.message60'));
         return;
       }
       const newForm: IForm = {
@@ -112,7 +112,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
         })
         .catch((e) => {
           if (e.code === 'err_svr_001') {
-            toast.error('중복된 정보가 존재하거나 서비스에 오류가 있습니다.');
+            toast.error(t('message.message61'));
             return;
           }
           console.error(e);
@@ -137,7 +137,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
   // 필수값 유효성 검사
   const vaildateForm = () => {
     if (isEmpty(formList[0].values)) {
-      toast.error('감독 정보를 입력해주세요.');
+      toast.error(t('message.message62'));
       return false;
     }
     return true;
@@ -145,7 +145,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
 
   return (
     <>
-      <FormTitle>제작자 정보</FormTitle>
+      <FormTitle>{t('producerInfo')}</FormTitle>
       <Form>
         {formList.map((form, i) => (
           <FormItemDiv key={i}>
@@ -153,7 +153,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
             <InputWrapper>
               {form.rolesSeq === ETC_ROLE_SEQ && (
                 <Input
-                  placeholder="역할을 입력해주세요"
+                  placeholder={t('message.message63')}
                   value={filmoRole}
                   onChange={onChangeFilmoRole}
                 />
@@ -185,7 +185,7 @@ function ProducerInfo({ movSeq, step, setCurStep, stepSize }: IRegisterProp) {
           setShowAddPopup(true);
         }}
       >
-        제작자 정보 추가
+        {t('addProducerInfo')}
       </Button>
       <ButtonWrapper>
         {step > 0 && (

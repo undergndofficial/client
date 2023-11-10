@@ -138,7 +138,7 @@ function Inquiry() {
                       }
                     />
                     <StatusText>
-                      {qna.repAt ? '답변 완료' : '미답변'}
+                      {qna.repAt ? t('answerDone') : t('noAnswer')}
                     </StatusText>
                   </th>
                 </tr>

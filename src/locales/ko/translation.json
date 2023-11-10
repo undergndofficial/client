@@ -142,6 +142,15 @@
   "updateoneToOneInquiry": "1대1 문의 수정",
   "basicInfoRegister": "기본 정보 등록",
   "filmInfoRegister": "영화인 정보 등록",
+  "video": "동영상",
+  "thumbnail": "썸네일",
+  "subtitle": "자막",
+  "screenRatio": "화면비율",
+  "color": "색채",
+  "searchFilmPeople": "영화인 검색",
+  "addProducerInfo": "제작자 정보 추가",
+  "answer": "답변",
+  "noAnswer": "미답변",
 
   "message": {
     "message1": "로그아웃 되었습니다.",
@@ -197,6 +206,16 @@
     "message50": "기획 의도를 입력해주세요.",
     "message51": "태그를 입력해주세요.",
     "message52": "댓글을 입력해주세요.",
-    "message53": "문의 유형을 선택해주세요."
+    "message53": "문의 유형을 선택해주세요.",
+    "message54": "업로드 중 입니다...",
+    "message55": "중복된 언어의 자막이 업로드되어 파일을 교체 하였습니다",
+    "message56": "필수 값을 모두 입력해주세요.",
+    "message57": "mp4, mov 파일만 업로드할 수 있습니다.",
+    "message58": "이력을 입력해주세요",
+    "message59": "영화 등록을 신청하였습니다.",
+    "message60": "이미 추가된 역할입니다.",
+    "message61": "중복된 정보가 존재하거나 서비스에 오류가 있습니다.",
+    "message62": "감독 정보를 입력해주세요.",
+    "message63": "역할을 입력해주세요"
   }
 }
