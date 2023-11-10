@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Container,
   CloseButton,
@@ -24,6 +24,7 @@ import useRequest from 'hooks/useRequest';
 import { signin } from 'api/member';
 import { IUser } from 'types/db';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 
 /**
  * 로그인 팝업 컴포넌트
@@ -34,9 +35,10 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   const [isWarning, setIsWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   // 아이디, 비밀번호, 비밀번호 기억
-  const [id, onChangeId] = useInput('');
+  const [id, onChangeId, setId] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [checkedRemember, setCheckedRemember] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['rememberId']);
   // 비밀번호 찾기 보여주기 여부
   const [showFindPassword, setShowFindPassword] = useState(false);
   // 로그인 요청
@@ -47,6 +49,23 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
   }>(signin);
 
   const navigate = useNavigate();
+
+  // 저장된 아이디 설정
+  useEffect(() => {
+    if (cookies.rememberId !== undefined) {
+      setId(cookies.rememberId);
+      setCheckedRemember(true);
+    }
+  }, []);
+
+  // 아이디 저장 버튼 클릭  핸들러
+  const onClickRememberId = useCallback(() => {
+    const checked = !checkedRemember;
+    setCheckedRemember((prev) => !prev);
+    if (!checked) {
+      removeCookie('rememberId');
+    }
+  }, [checkedRemember, id]);
 
   // 경고문구 설정
   const setWarning = useCallback((message: string) => {
@@ -81,6 +100,10 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
+        }
+        if (checkedRemember) {
+          // 아이디 저장하는 경우 로그인한 아이디 저장
+          setCookie('rememberId', id, { maxAge: 2000 });
         }
         window.location.href = '/';
       })
@@ -158,11 +181,7 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
                 onKeyDown={onKeyDownLoginForm}
               />
             </InputWrapper>
-            <RememberIdDiv
-              onClick={() => {
-                setCheckedRemember((prev) => !prev);
-              }}
-            >
+            <RememberIdDiv onClick={onClickRememberId}>
               <Checkbox checked={checkedRemember} />
               <div>&nbsp; {t('rememberId')}</div>
             </RememberIdDiv>
