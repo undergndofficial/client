@@ -7,3 +7,8 @@ export interface ResponseType<T> {
 }
 
 export type SelectOptionType = { label: string; value: string } | null;
+
+export interface IPagingData<T> {
+  totalcount: number;
+  list: T[];
+}

@@ -9,3 +9,8 @@ export interface IRegisterProp {
   movieInfo?: IMovieBasicInfo | null;
   loadData?: () => void;
 }
+
+export interface IPagingProps {
+  step: number;
+  page: number;
+}

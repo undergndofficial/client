@@ -6,7 +6,7 @@ export const SubtitleListDiv = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-left: 10.5rem;
+  margin-left: 11.5rem;
   @media ${theme.device.phone}, ${theme.device.tablet} {
     margin-left: 0;
   }

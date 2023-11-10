@@ -38,6 +38,7 @@
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+    "react-cookie": "^6.1.1",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",
     "react-draggable-list": "^4.1.0",

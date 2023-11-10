@@ -43,7 +43,7 @@ export const BoardTable = styled.table`
   }
   & th:nth-of-type(2),
   & td:nth-of-type(2) {
-    width: 5rem;
+    width: 10rem;
     @media ${theme.device.tablet}, ${theme.device.phone} {
       display: none;
     }
@@ -57,10 +57,7 @@ export const BoardTable = styled.table`
   }
   & th:nth-of-type(5),
   & td:nth-of-type(5) {
-    width: 5rem;
-    @media ${theme.device.tablet}, ${theme.device.phone} {
-      display: none;
-    }
+    width: 6rem;
   }
 `;
 export const WriteButton = styled(Button)`
@@ -78,4 +75,10 @@ export const StatusDot = styled.div<{ color: string }>`
   width: 10px;
   height: 10px;
   margin: 0 8px 1px 0;
+`;
+
+export const StatusText = styled.span`
+  @media ${theme.device.tablet}, ${theme.device.phone} {
+    display: none;
+  }
 `;

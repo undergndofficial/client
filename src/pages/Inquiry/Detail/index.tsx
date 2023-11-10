@@ -6,23 +6,20 @@ import { PostNumberDiv, PostHeaderDiv, PostContentDiv } from './style';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { getAnnounceDetail } from 'api/customer';
+import { getQnaDetail } from 'api/customer';
 import useRequest from 'hooks/useRequest';
-import { IAnnounce } from 'types/db';
-import { isEmpty } from 'lodash';
+import { IQna } from 'types/db';
 
 function Detail() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const [notice, setNotice] = useState<IAnnounce | null>(null);
-  // 공지사항 상세
-  const requestNotice = useRequest<IAnnounce[]>(getAnnounceDetail);
+  const [qna, setQna] = useState<IQna | null>(null);
+  // 일대일 문의 상세
+  const requestNotice = useRequest<IQna>(getQnaDetail);
   useEffect(() => {
     requestNotice(id)
       .then((data) => {
-        if (!isEmpty(data)) {
-          setNotice(data[0]);
-        }
+        setQna(data);
       })
       .catch((e) => console.error(e));
   }, []);
@@ -30,18 +27,15 @@ function Detail() {
   return (
     <Layout>
       <PageContent>
-        <PostNumberDiv>No.{notice?.seq}</PostNumberDiv>
-        <TitleDiv>{notice?.annTitle}</TitleDiv>
+        <PostNumberDiv>{qna?.inqTxt}</PostNumberDiv>
+        <TitleDiv>{qna?.inqTitle}</TitleDiv>
         <PostHeaderDiv>
           <div>{t('content')}</div>
           <div>
-            {t('registerDate')}: {dayjs(notice?.createdAt).format('YY.MM.DD')}
-          </div>
-          <div>
-            {t('views')}: {notice?.hits}
+            {t('registerDate')}: {dayjs(qna?.inqAt).format('YY.MM.DD')}
           </div>
         </PostHeaderDiv>
-        <PostContentDiv>{notice?.annBody}</PostContentDiv>
+        <PostContentDiv>{qna?.inqBody}</PostContentDiv>
       </PageContent>
     </Layout>
   );

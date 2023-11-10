@@ -1,11 +1,12 @@
 import PageContent from 'layouts/PageContent';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   BoardTable,
   Container,
   TitleDiv,
   WriteButton,
   StatusDot,
+  StatusText,
 } from './style';
 import Layout from 'layouts/Layout';
 import theme from 'styles/theme';
@@ -13,9 +14,15 @@ import dayjs from 'dayjs';
 import Pagination from 'components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import useRequest from 'hooks/useRequest';
+import { IQna } from 'types/db';
+import { getQnaList } from 'api/customer';
+import { IPagingData } from 'types/common';
 
 function Inquiry() {
   const { t } = useTranslation();
+  const [qnaList, setQnaList] = useState<IQna[]>([]);
+  const [total, setTotal] = useState(0);
   const PAGE_SIZE = 10;
   const [page, setPage] = useState(1);
   const [limitPage, setLimitPage] = useState(10);
@@ -50,8 +57,24 @@ function Inquiry() {
 
   const navigate = useNavigate();
 
-  // 임시 데이터
-  const total = 1;
+  // 일대일 문의 글 목록
+  const requestQnaList = useRequest<IPagingData<IQna>>(getQnaList);
+  useEffect(() => {
+    requestQnaList({ step: PAGE_SIZE, page })
+      .then((data) => {
+        setTotal(data.totalcount);
+        setQnaList(data.list);
+      })
+      .catch((e) => console.error(e));
+  }, [page]);
+
+  // 1대1문의 행 클릭
+  const clickPost = useCallback((qna: IQna) => {
+    // 내가 쓴 글이 아닌 경우
+    navigate(`/inquiry/${qna.seq}`);
+    // 내가 쓴 글인 경우
+    // navigate(`/inquiry/write/${qna.seq}`);
+  }, []);
 
   return (
     <Layout>
@@ -76,16 +99,29 @@ function Inquiry() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>223</th>
-                <th>문의 유형</th>
-                <th>문의 제목입니다.</th>
-                <th>{dayjs().format('YY.MM.DD')}</th>
-                <th>
-                  <StatusDot color={statusColor.done} />
-                  접수 완료
-                </th>
-              </tr>
+              {qnaList.map((qna) => (
+                <tr
+                  key={qna.seq}
+                  onClick={() => {
+                    clickPost(qna);
+                  }}
+                >
+                  <th>{qna.seq}</th>
+                  <th>{qna.inqTxt}</th>
+                  <th>{qna.inqTitle}</th>
+                  <th>{dayjs(qna.inqAt).format('YY.MM.DD')}</th>
+                  <th>
+                    <StatusDot
+                      color={
+                        qna.repAt ? statusColor.done : statusColor.processing
+                      }
+                    />
+                    <StatusText>
+                      {qna.repAt ? '답변 완료' : '미답변'}
+                    </StatusText>
+                  </th>
+                </tr>
+              ))}
             </tbody>
           </BoardTable>
           {Math.ceil(total / PAGE_SIZE) > 1 && (

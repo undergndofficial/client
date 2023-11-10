@@ -185,3 +185,30 @@ export interface IRole {
   rolesKoName: string;
   isUse: number;
 }
+
+export interface IQna {
+  seq: number;
+  memSeq: number;
+  inqCat: number;
+  inqTxt: string;
+  inqTitle: string;
+  inqAt: string;
+  inqBody: string;
+  repAt?: string;
+  inqReply?: string;
+}
+
+export interface ISubtitles {
+  msSeq: number;
+  movSeq: number;
+  langCode: string;
+  langName: string;
+  subtitle: string;
+  createdAt: string;
+}
+
+export interface ICategory {
+  catSeq: number;
+  catName: string;
+  usedCount: number;
+}

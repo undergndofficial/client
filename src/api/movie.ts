@@ -10,6 +10,7 @@ import {
   IMovieInfo,
   IMovieTag,
   IRequestMovie,
+  ISubtitles,
   IVideoInfo,
 } from 'types/db';
 
@@ -209,6 +210,15 @@ export function deleteCoverFile(movSeq: number): Promise<{
   data: ResponseType<never>;
 }> {
   return axios.put(`${PREFIX_URL}/${movSeq}`);
+}
+
+/**
+ * 영화 자막 파일 목록을 조회한다.
+ */
+export function getSubtitles(movSeq: number): Promise<{
+  data: ResponseType<ISubtitles[]>;
+}> {
+  return axios.get(`${PREFIX_URL}/${movSeq}/subtitle`);
 }
 
 /**

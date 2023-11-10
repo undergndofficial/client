@@ -11,6 +11,8 @@ import {
   MovieTitleDiv,
   MovieWrapper,
   MovieInfoDiv,
+  CategoryWrapper,
+  CategoryDiv,
 } from './style';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import useScroll from 'hooks/useScroll';
@@ -77,10 +79,13 @@ function MovieList({ tag }: MovieListProps) {
               />
               <MovieTitleDiv>영화 제목</MovieTitleDiv>
               <MovieInfoDiv>
-                <div>
+                <CategoryWrapper>
                   <span>감독</span>
-                  #카테고리 #장르 #장르
-                </div>
+                  <CategoryDiv>
+                    #카테고리 #장르 #장르 #카테고리 #장르 #장르 #카테고리 #장르
+                    #장르 #카테고리 #장르 #장르
+                  </CategoryDiv>
+                </CategoryWrapper>
                 <Rating
                   rating={4.5}
                   starEmptyColor="grey"

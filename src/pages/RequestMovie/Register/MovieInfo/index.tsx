@@ -4,6 +4,7 @@ import Input from 'components/Input';
 import Select from 'components/Select';
 import useRequest from 'hooks/useRequest';
 import {
+  getCategoryList,
   getGerneList,
   getLanguageList,
   getNationList,
@@ -38,6 +39,7 @@ import {
   IMovieGerne,
   IMovieTag,
   IMovieDistributor,
+  ICategory,
 } from 'types/db';
 import {
   addMovieDistributor,
@@ -73,6 +75,7 @@ function MovieInfo({
   const { t } = useTranslation();
   const [movTitle, onChangeMovTitle, setMovTitle] = useInput(''); // 제목
   const [movTitleEn, onChangeMovTitleEn, setMovTitleEn] = useInput(''); // 영문 제목
+  const [category, setCategory] = useState<SelectOptionType>(null);
   const [nationality, setNationality] = useState<SelectOptionType>(null); // 국가
   const [rating, setRating] = useState<SelectOptionType>(null); // 관람 등급
   const [lang, setLang] = useState<SelectOptionType>(null); // 언어
@@ -106,6 +109,8 @@ function MovieInfo({
   ] = useTagInput(setDistributor, isComposingDistributor);
 
   const [gerneList, setGerneList] = useState<IGerne[]>([]); // 장르 목록
+  const [categoryOptions, setCategoryOptions, onChangeCategory] =
+    useSelect(setCategory); // 카테고리 목록
   const [nationOptions, setNationOptions, onChangeNation] =
     useSelect(setNationality); // 국가 목록
   const [ratingOptions, setRatingOptions, onChangeRating] =
@@ -132,6 +137,7 @@ function MovieInfo({
 
   // 기본 데이터 호출
   const requestGerneList = useRequest<IGerne[]>(getGerneList);
+  const requsetCategoryList = useRequest<ICategory[]>(getCategoryList);
   const requestNationList = useRequest<INation[]>(getNationList);
   const requestRatingList = useRequest<IRating[]>(getRatingList);
   const requestLangList = useRequest<ILang[]>(getLanguageList);
@@ -139,6 +145,11 @@ function MovieInfo({
     // 장르 목록
     requestGerneList({}).then((data) => {
       setGerneList(data);
+    });
+    // 카테고리 목록
+    requsetCategoryList({}).then((data) => {
+      const optionData = data as unknown as { [key: string]: string }[];
+      setCategoryOptions(getSelectOptionList(optionData, 'catName', 'catSeq'));
     });
     // 국가 목록
     requestNationList({}).then((data) => {
@@ -210,6 +221,10 @@ function MovieInfo({
     if (!movieInfo) return;
     setMovTitle(movieInfo?.movTitle || '');
     setMovTitleEn(movieInfo?.movTitleEn || '');
+    const catIdx = categoryOptions.findIndex(
+      (item) => item.label === movieInfo.catName,
+    );
+    setCategory(categoryOptions[catIdx]);
     const ratingIdx = ratingOptions.findIndex(
       (item) => item.label === movieInfo.ratingTxt,
     );
@@ -246,7 +261,7 @@ function MovieInfo({
     const movieInfo: IMovieInfo = {
       movTitle,
       movTitleEn,
-      catSeq: 1,
+      catSeq: parseInt(category?.value as string),
       gernes,
       tags,
       ratingSeq: parseInt(rating?.value as string),
@@ -393,7 +408,7 @@ function MovieInfo({
     const movieInfo: Omit<IMovieInfo, 'gernes' | 'tags' | 'distributors'> = {
       movTitle,
       movTitleEn,
-      catSeq: 1,
+      catSeq: parseInt(category?.value as string),
       ratingSeq: parseInt(rating?.value as string),
       langCode: lang?.value as string,
       nationalitySeq: nationality?.value as string,
@@ -416,6 +431,7 @@ function MovieInfo({
       .map((gerne) => gerne.gernSeq);
     if (
       !movTitleEn ||
+      !category ||
       isEmpty(gernes) ||
       !rating ||
       !lang ||
@@ -464,14 +480,15 @@ function MovieInfo({
             onChange={onChangeMovTitleEn}
           />
         </FormItemDiv>
-        {/* <FormItemDiv>
-      <Label required>{t('category')}</Label>
-      <Select
-        onChange={onChangeCategory}
-        options={categoryOptions}
-        placeholder={t('selectCategory')}
-      />
-    </FormItemDiv> */}
+        <FormItemDiv>
+          <Label required>{t('category')}</Label>
+          <Select
+            onChange={onChangeCategory}
+            options={categoryOptions}
+            placeholder={t('selectCategory')}
+            value={category}
+          />
+        </FormItemDiv>
         <FormItemDiv>
           <Label required>{t('detailGerne')}</Label>
           <CheckboxWrapper>

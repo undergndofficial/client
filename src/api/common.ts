@@ -9,6 +9,7 @@ import {
   IColoration,
   IScreenRatio,
   IRole,
+  ICategory,
 } from 'types/db';
 
 const PREFIX_URL = '/common';
@@ -80,4 +81,13 @@ export function getRoleList(): Promise<{
   data: ResponseType<IRole[]>;
 }> {
   return axios.get(`${PREFIX_URL}/roles`);
+}
+
+/**
+ * 카테고리를 조회한다.
+ */
+export function getCategoryList(): Promise<{
+  data: ResponseType<ICategory[]>;
+}> {
+  return axios.get(`${PREFIX_URL}/category`);
 }

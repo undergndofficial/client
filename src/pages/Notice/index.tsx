@@ -7,10 +7,16 @@ import Pagination from 'components/Pagination';
 import theme from 'styles/theme';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { IAnnounce } from 'types/db';
+import { getAnnounceList } from 'api/customer';
+import useRequest from 'hooks/useRequest';
+import { IPagingData } from 'types/common';
 
 function Notice() {
   const { t } = useTranslation();
+  const [noticeList, setNoticeList] = useState<IAnnounce[]>([]);
   const PAGE_SIZE = 10;
+  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [limitPage, setLimitPage] = useState(10);
   const navigate = useNavigate();
@@ -38,8 +44,16 @@ function Notice() {
     }
   }, [isMobile]);
 
-  // 임시 데이터
-  const total = 1;
+  // 공지사항 목록
+  const requestNoticeList = useRequest<IPagingData<IAnnounce>>(getAnnounceList);
+  useEffect(() => {
+    requestNoticeList({ step: PAGE_SIZE, page })
+      .then((data) => {
+        setNoticeList(data.list);
+        setTotal(data.totalcount);
+      })
+      .catch((e) => console.error(e));
+  }, [page]);
 
   return (
     <Layout>
@@ -56,16 +70,19 @@ function Notice() {
               </tr>
             </thead>
             <tbody>
-              <tr
-                onClick={() => {
-                  navigate(`/notice/${1}`);
-                }}
-              >
-                <th>223</th>
-                <th>제 1회 국제 대학 독립영화제 개최 안내</th>
-                <th>{dayjs().format('YY.MM.DD')}</th>
-                <th>439</th>
-              </tr>
+              {noticeList.map((notice) => (
+                <tr
+                  key={notice.seq}
+                  onClick={() => {
+                    navigate(`/notice/${notice.seq}`);
+                  }}
+                >
+                  <th>{notice.seq}</th>
+                  <th>{notice.annTitle}</th>
+                  <th>{dayjs(notice.createdAt).format('YY.MM.DD')}</th>
+                  <th>{notice.hits}</th>
+                </tr>
+              ))}
             </tbody>
           </BoardTable>
           {Math.ceil(total / PAGE_SIZE) > 1 && (

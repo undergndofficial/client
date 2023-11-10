@@ -10,9 +10,10 @@ import RequestMovie from 'pages/RequestMovie';
 import Request from 'pages/RequestMovie/Request';
 import Register from 'pages/RequestMovie/Register';
 import Notice from 'pages/Notice';
-import Detail from 'pages/Notice/Detail';
+import NoticeDetail from 'pages/Notice/Detail';
 import CustomerCenter from 'pages/CustomerCenter';
 import Inquiry from 'pages/Inquiry';
+import InquiryDetail from 'pages/Inquiry/Detail';
 import WriteInquiry from 'pages/Inquiry/Write';
 import PrivateRoute from 'layouts/PrivateRoute';
 import { ToastContainer, Flip } from 'react-toastify';
@@ -28,9 +29,8 @@ function App() {
           <Route path="/player/:id" element={<MoviePlayer />} />
           <Route path="/search/:keyword" element={<SearchResult />} />
           <Route path="/notice" element={<Notice />} />
-          <Route path="/notice/:id" element={<Detail />} />
+          <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/customer" element={<CustomerCenter />} />
-          <Route path="/inquiry" element={<Inquiry />} />
           <Route path="*" element={<Navigate to="/" />} />
           {/* 인증을 안해야지만 접속 가능한 페이지 */}
           <Route element={<PrivateRoute userAuthentication={false} />}>
@@ -43,6 +43,9 @@ function App() {
             <Route path="/request-movie/requset" element={<Request />} />
             <Route path="/request-movie/register" element={<Register />} />
             <Route path="/inquiry/write" element={<WriteInquiry />} />
+            <Route path="/inquiry/write/:id" element={<WriteInquiry />} />
+            <Route path="/inquiry" element={<Inquiry />} />
+            <Route path="/inquiry/:id" element={<InquiryDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

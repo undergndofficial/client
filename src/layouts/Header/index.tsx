@@ -125,6 +125,13 @@ function Header({ scrollTop }: HeaderPropsType) {
           </div>
           <div
             onClick={() => {
+              navigate('/notice');
+            }}
+          >
+            {t('notice')}
+          </div>
+          <div
+            onClick={() => {
               navigate('/request-movie');
             }}
           >

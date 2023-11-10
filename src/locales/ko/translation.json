@@ -139,6 +139,7 @@
   "synopsis": "시놉시스",
   "directorNote": "기획 의도",
   "registerRequest": "등록 신청",
+  "updateoneToOneInquiry": "1대1 문의 수정",
 
   "message": {
     "message1": "로그아웃 되었습니다.",
@@ -193,6 +194,7 @@
     "message49": "시놉시스를 입력해주세요.",
     "message50": "기획 의도를 입력해주세요.",
     "message51": "태그를 입력해주세요.",
-    "message52": "댓글을 입력해주세요."
+    "message52": "댓글을 입력해주세요.",
+    "message53": "문의 유형을 선택해주세요."
   }
 }

@@ -29,13 +29,20 @@ import { SubtitleDiv, SubtitleListDiv } from './style';
 import { IRegisterProp } from 'types/props';
 import {
   deleteSubtitle,
+  getSubtitles,
   getVideoinfo,
   registerCoverFile,
   registerMovieFile,
   registerSubtitleFile,
   registerVideoinfo,
 } from 'api/movie';
-import { IVideoInfo, IColoration, ILang, IScreenRatio } from 'types/db';
+import {
+  IVideoInfo,
+  IColoration,
+  ILang,
+  IScreenRatio,
+  ISubtitles,
+} from 'types/db';
 import { useTranslation } from 'react-i18next';
 import { SelectOptionType } from 'types/common';
 import { toast } from 'react-toastify';
@@ -52,13 +59,7 @@ function VideoInfo({
   const UPLOAD_MSG = '업로드 중 입니다...';
   const [screenRatio, setScreenRatio] = useState(0); // 화면비
   const [coloration, setColoration] = useState(0); // 색채
-  const [subtitleList, setSubTitleList] = useState<
-    {
-      subtitlefile: File;
-      lang: string;
-      langTxt: string;
-    }[]
-  >([]); // 자막 목록
+  const [subtitleList, setSubTitleList] = useState<ISubtitles[]>([]); // 자막 목록
   const [lang, setLang] = useState<SelectOptionType>(null); // 자막 언어
   const [subtitlefile, setSubtitlefile] = useState<File | null>(null); // 자막 파일
   const [coverFile, setCoverFile] = useState<File | null>(null); // 썸네일 이미지
@@ -90,18 +91,34 @@ function VideoInfo({
 
   // 기존 정보 로드
   const requestVideoInfo = useRequest<IVideoInfo[]>(getVideoinfo);
+  const requsetSubtitles = useRequest<ISubtitles[]>(getSubtitles);
+  const loadSubtitles: () => void = useCallback(() => {
+    requsetSubtitles(movSeq)
+      .then((data) => {
+        setSubTitleList(data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, [movSeq]);
   useEffect(() => {
     if (!movSeq) return;
     // 파일 정보
     setCoverFileName(movieInfo?.coverUrl || '');
     setVideoFileName(movieInfo?.movFile || '');
+    // 자막 정보
+    loadSubtitles();
     // 영상 정보
-    requestVideoInfo(movSeq).then((data) => {
-      if (data.length > 0) {
-        setScreenRatio(data[0].screenRatio);
-        setColoration(data[0].coloration);
-      }
-    });
+    requestVideoInfo(movSeq)
+      .then((data) => {
+        if (data.length > 0) {
+          setScreenRatio(data[0].screenRatio);
+          setColoration(data[0].coloration);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, [movSeq]);
   useEffect(() => {
     setCoverFileName(movieInfo?.coverUrl || '');
@@ -136,24 +153,14 @@ function VideoInfo({
         });
         // 이미 추가된 언어일 경우 자막파일 교체
         const langItemIdx = subtitleList.findIndex(
-          (item) => item.lang === lang.value,
+          (item) => item.langCode === lang.value,
         );
-        let newList = [...subtitleList];
         if (langItemIdx > -1) {
-          newList = newList.filter((item) => item.lang !== lang.value);
           toast.success(
             '중복된 언어의 자막이 업로드되어 파일을 교체 하였습니다',
           );
         }
-        const langIdx = langOptions.findIndex(
-          (item) => item.value === lang.value,
-        );
-        const addItem = {
-          subtitlefile,
-          lang: lang.value,
-          langTxt: langOptions[langIdx].label,
-        };
-        setSubTitleList([...newList, addItem]);
+        loadSubtitles();
       }
     },
     [lang, subtitlefile, subtitleList],
@@ -165,9 +172,7 @@ function VideoInfo({
       await requestDeleteSubtitle({ movSeq, lang: targetLang }).catch((e) => {
         console.error(e);
       });
-      setSubTitleList((prev) =>
-        prev.filter((item) => targetLang !== item.lang),
-      );
+      loadSubtitles();
     },
     [subtitleList],
   );
@@ -342,11 +347,11 @@ function VideoInfo({
         {!isEmpty(subtitleList) && (
           <SubtitleListDiv>
             {subtitleList.map((subtitle) => (
-              <SubtitleDiv key={subtitle.lang}>
-                {subtitle.langTxt} - {subtitle.subtitlefile.name}
+              <SubtitleDiv key={subtitle.langCode}>
+                {subtitle.langName} - {subtitle.subtitle}
                 <div
                   onClick={() => {
-                    deleteSubtitleByLang(subtitle.lang);
+                    deleteSubtitleByLang(subtitle.langCode);
                   }}
                 >
                   &times;

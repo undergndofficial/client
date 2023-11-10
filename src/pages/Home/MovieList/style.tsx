@@ -109,6 +109,7 @@ export const MovieInfoDiv = styled.div`
   font-size: 0.625rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 18rem;
   & span {
     font-size: 0.75rem;
     margin-right: 0.75rem;
@@ -120,4 +121,17 @@ export const MovieTitleDiv = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
+`;
+
+export const CategoryWrapper = styled.div`
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+`;
+
+export const CategoryDiv = styled.div`
+  width: 8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
