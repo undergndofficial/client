@@ -38,3 +38,14 @@ export interface IFestivalMovieDetail {
   colorationTxt: string;
   createdAt: string;
 }
+
+export interface IFestival {
+  festivalSeq: number;
+  festivalId: string;
+  festivalName: string;
+  festivalCover: string;
+  festivalState: string;
+  startAt: string;
+  finishAt: string;
+  createdAt: string;
+}

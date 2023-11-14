@@ -13,8 +13,9 @@ import {
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import useRequest from 'hooks/useRequest';
-import { IFestivalMovie } from 'types/festival';
-import { getFestivalMovieList } from 'api/festival';
+import { IFestival, IFestivalMovie } from 'types/festival';
+import { getFestivalInfo, getFestivalMovieList } from 'api/festival';
+import { isEmpty } from 'lodash';
 
 /**
  * 영화제 페이지
@@ -22,11 +23,13 @@ import { getFestivalMovieList } from 'api/festival';
 function Festival() {
   const navigate = useNavigate();
   const [movies, setMovies] = useState<IFestivalMovie[]>([]);
+  const [festival, setFestival] = useState<IFestival | null>(null);
   const festId = 'CSUMB';
   const requestMovieList = useRequest<{
     totalcount: number;
     rs: IFestivalMovie[];
   }>(getFestivalMovieList);
+  const requestFestInfo = useRequest<IFestival[]>(getFestivalInfo);
 
   useEffect(() => {
     requestMovieList(festId)
@@ -36,12 +39,21 @@ function Festival() {
       .catch((e) => {
         console.error(e);
       });
+    requestFestInfo(festId)
+      .then((data) => {
+        if (!isEmpty(data)) {
+          setFestival(data[0]);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   return (
     <Layout>
       <Container>
-        <FestivalTitle>CSUMB Online Film Festival</FestivalTitle>
+        <FestivalTitle>{festival?.festivalName}</FestivalTitle>
         <MovieListWrapper>
           {movies.map((movie, i) => (
             <MovieWrapper
