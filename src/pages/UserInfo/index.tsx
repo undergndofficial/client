@@ -9,7 +9,7 @@ import {
   BottomButton,
 } from './style';
 import { useTranslation } from 'react-i18next';
-// import useRequest from 'hooks/useRequest';
+// import useRequest from 'hooks/';
 // import { getMemberInfo } from 'api/member';
 // import { IUser } from 'types/db';
 

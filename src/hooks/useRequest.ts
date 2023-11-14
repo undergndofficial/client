@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { ResponseType } from 'types/common';
 import { CustomError } from 'utils/error';
@@ -6,6 +7,7 @@ const useRequest = <T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   axiosRequest: (params?: any) => Promise<{ data: ResponseType<T> }>, // axios 함수
 ) => {
+  const { t } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const requestData = (params?: any) => {
     return new Promise(async (resolve: (value: T) => void, reject) => {
@@ -24,13 +26,11 @@ const useRequest = <T>(
           reject(new CustomError(errorMessage, errorCode));
         }
       } catch (e) {
-        toast.error('서비스에 오류가 발생하였습니다.');
+        toast.error(t('message.message64'));
       }
     });
   };
-
   return requestData;
-  // 데이터 요청 Promise
 };
 
 export default useRequest;

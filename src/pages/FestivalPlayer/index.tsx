@@ -13,13 +13,18 @@ import {
   MovieDetailDiv,
   RunningTimeDiv,
   PlayerWrapper,
-  ThumbnailImage,
+  // ThumbnailImage,
 } from './style';
 import ReactPlayer from 'react-player';
 import { Controls } from './PlayerControl';
 import theme from 'styles/theme';
 import { useTranslation } from 'react-i18next';
-// import { useParams } from 'react-router-dom';
+import useRequest from 'hooks/useRequest';
+import { IFestivalMovieDetail } from 'types/festival';
+import { getFestivalMovieDetail, getFestivalMovieUrl } from 'api/festival';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { isEmpty } from 'lodash';
 
 function FestivalPlayer() {
   const { t } = useTranslation();
@@ -34,7 +39,48 @@ function FestivalPlayer() {
   const [isMobile, setIsMobile] = useState(false); // 모바일 화면인지 여부
   const playerRef = useRef() as MutableRefObject<ReactPlayer>;
   const wrapperRef = useRef() as MutableRefObject<HTMLDivElement>;
-  // const { id } = useParams();
+  const { id } = useParams();
+
+  const [movieInfo, setMovieInfo] = useState<IFestivalMovieDetail | null>(null);
+  const [movieUrl, setMovieUrl] = useState('');
+  const festId = 'CSUMB';
+  const requestMovieInfo = useRequest<IFestivalMovieDetail[]>(
+    getFestivalMovieDetail,
+  );
+  useEffect(() => {
+    if (!id) return;
+    requestMovieInfo({ festId, movSeq: id })
+      .then((data) => {
+        if (!isEmpty(data)) {
+          setMovieInfo(data[0]);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  const loadUrl = useCallback(() => {
+    if (!id) return;
+    getFestivalMovieUrl({ movSeq: parseInt(id), festId })
+      .then((res) => {
+        const { data } = res;
+        if (data.st) {
+          setMovieUrl(data.url);
+        } else {
+          toast.error(t('message.message64'));
+        }
+      })
+      .catch(() => {
+        toast.error(t('message.message64'));
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!playing) return;
+    if (movieUrl) return;
+    loadUrl();
+  }, [playing]);
 
   let timer: NodeJS.Timeout | null = null;
 
@@ -115,7 +161,9 @@ function FestivalPlayer() {
     document.addEventListener('fullscreenchange', changeFullScreen);
 
     // 비디오 전체 시간 설정
-    setDuration(playerRef.current.getDuration() || 0);
+    if (playerRef.current) {
+      setDuration(playerRef.current.getDuration() || 0);
+    }
 
     return () => {
       window.removeEventListener('keydown', keyEvent);
@@ -123,6 +171,18 @@ function FestivalPlayer() {
     };
   }, [playing, volume, fullScreen]);
 
+  const getRunningTime = useCallback((times: number) => {
+    if (times < 60) {
+      return `${t('total')} ${times}${t('minute')}`;
+    }
+    const hour = Math.floor(times / 60);
+    const minute = times % 60;
+    return `${t('total')} ${hour}${t('hour')} ${minute}${t('minute')}`;
+  }, []);
+
+  if (!movieInfo) {
+    return <Container />;
+  }
   return (
     <Container>
       <PlayerWrapper
@@ -133,7 +193,7 @@ function FestivalPlayer() {
         onClick={() => setPlaying((prev) => !prev)}
         ref={wrapperRef}
       >
-        {!playing && (
+        {/* {!playing && (
           <ThumbnailImage
             src={
               'https://storage.googleapis.com/movie_additional/cover/101.png'
@@ -141,10 +201,10 @@ function FestivalPlayer() {
             alt="thumbnail"
             height={isMobile || fullScreen ? '100%' : '77vh'}
           />
-        )}
+        )} */}
         <ReactPlayer
           ref={playerRef}
-          url={'tmp'}
+          url={movieUrl}
           width="100%"
           height={isMobile || fullScreen ? '100%' : '77vh'}
           playing={playing}
@@ -181,37 +241,22 @@ function FestivalPlayer() {
 
       <MovieInfo>
         <TitleDiv>
-          <div>파수꾼</div>
+          <div>{movieInfo.movTitleEn}</div>
         </TitleDiv>
         <DescriptionDiv>
-          <div className="description">
-            한 소년이 죽었다. 평소 아들에게 무심했던 소년의 아버지(조성하)는
-            아들의 갑작스런 공백에 매우 혼란스러워하며 뒤늦은 죄책감과 무력함에,
-            아들 기태(이제훈)의 죽음을 뒤쫓기 시작한다. 아들의 책상 서랍 안,
-            소중하게 보관되어 있던 사진 속에는 동윤(서준영)과 희준(박정민)이
-            있다. 하지만 학교를 찾아가 겨우 알아낸 사실은 한 아이는 전학을 갔고
-            한 아이는 장례식장에 오지도 않았다는 것. 뭔가 이상하다. 그러던 중,
-            간신히 찾아낸 희준은 ‘기태와 제일 친했던 것은 동윤’이라고 말하며
-            자세한 대답을 회피한다. 결국 아버지의 부탁으로 동윤을 찾아나선 희준.
-            하지만, 학교를 자퇴하고 떠나버린 친구는 어디에도 없다. 천진하고
-            순수했던 그 시절, 미성숙한 소통의 오해가 불러 일으킨 비극적 파국.
-            독단적 우정이 가져온 폭력과 그 상처의 전염은 우리를 아프고 충격적인
-            결말로 이끌어간다. 서로가 전부였던 이 세 친구들 사이에서 과연 무슨
-            일이 벌어진 걸까?
-          </div>
+          <div className="description">{movieInfo.movPlot}</div>
           <div>
             <RunningTimeDiv>
-              {t('total')} 1{t('hour')} 56{t('minute')}
+              {getRunningTime(movieInfo.runningTime)}
               <br />
-              {t('views')} 8만 {t('count')}
+              {t('views')} {movieInfo.hitCount} {t('count')}
             </RunningTimeDiv>
           </div>
         </DescriptionDiv>
         <MovieDetailDiv>
-          <div>개봉일 : 2011.03.03</div>
-          <div>감독 : 윤성현</div>
-          <div>각본 : 윤성현</div>
-          <div>출연진 : 이제훈, 서준영, 박정민, 조성하</div>
+          <div>
+            {t('director')}: {movieInfo.director}
+          </div>
         </MovieDetailDiv>
       </MovieInfo>
     </Container>

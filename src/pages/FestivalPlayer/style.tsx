@@ -17,6 +17,7 @@ export const Container = styled.div`
 export const MovieInfo = styled.div`
   margin-top: 2.5rem;
   max-width: 90%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
