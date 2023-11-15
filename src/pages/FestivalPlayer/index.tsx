@@ -77,10 +77,8 @@ function FestivalPlayer() {
   }, []);
 
   useEffect(() => {
-    if (!playing) return;
-    if (movieUrl) return;
     loadUrl();
-  }, [playing]);
+  }, []);
 
   let timer: NodeJS.Timeout | null = null;
 
