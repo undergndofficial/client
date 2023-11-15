@@ -64,7 +64,7 @@ function Festival() {
             >
               <MoviePosterDiv
                 key={i}
-                url={`${process.env.PUBLIC_URL}/assets/cover${i % 3}.jpeg`}
+                url="https://storage.googleapis.com/movie_additional/festival/cover/f_1.jpg"
               />
               <MovieTitleDiv>{movie.movTitleEn}</MovieTitleDiv>
               <MovieInfoDiv>
