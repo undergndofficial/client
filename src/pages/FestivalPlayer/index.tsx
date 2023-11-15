@@ -173,10 +173,13 @@ function FestivalPlayer() {
 
   const getRunningTime = useCallback((times: number) => {
     if (times < 60) {
-      return `${t('total')} ${times}${t('minute')}`;
+      return `${t('total')} ${times}${t('second')}`;
     }
     const hour = Math.floor(times / 60);
     const minute = times % 60;
+    if (times === 0) {
+      return `${t('total')} ${minute}${t('minute')}`;
+    }
     return `${t('total')} ${hour}${t('hour')} ${minute}${t('minute')}`;
   }, []);
 

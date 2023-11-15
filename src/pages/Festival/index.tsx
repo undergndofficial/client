@@ -64,7 +64,7 @@ function Festival() {
             >
               <MoviePosterDiv
                 key={i}
-                url="//t1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/14Fa/image/qgRsG1ij_izEsjPW8fEiUpUnAaA.jpg"
+                url={`${process.env.PUBLIC_URL}/assets/cover${i % 3}.jpeg`}
               />
               <MovieTitleDiv>{movie.movTitleEn}</MovieTitleDiv>
               <MovieInfoDiv>
