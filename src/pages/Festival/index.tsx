@@ -7,9 +7,8 @@ import {
   MovieTitleDiv,
   MovieWrapper,
   MovieInfoDiv,
-  CategoryWrapper,
-  // CategoryDiv,
   FestivalTitle,
+  CategoryDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
 import useRequest from 'hooks/useRequest';
@@ -68,13 +67,7 @@ function Festival() {
               />
               <MovieTitleDiv>{movie.movTitleEn}</MovieTitleDiv>
               <MovieInfoDiv>
-                <CategoryWrapper>
-                  <span>{movie.director}</span>
-                  {/* <CategoryDiv>
-                    #카테고리 #장르 #장르 #카테고리 #장르 #장르 #카테고리 #장르
-                    #장르 #카테고리 #장르 #장르
-                  </CategoryDiv> */}
-                </CategoryWrapper>
+                <CategoryDiv>{movie.director}</CategoryDiv>
               </MovieInfoDiv>
             </MovieWrapper>
           ))}

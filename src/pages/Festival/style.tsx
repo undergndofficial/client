@@ -5,10 +5,7 @@ export const MovieListWrapper = styled.div`
   gap: 1.88rem;
   flex-wrap: wrap;
   justify-content: center;
-  grid-template-columns: repeat(4, 1fr);
-  @media (min-width: 910px) and (max-width: 1300px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(3, 1fr);
   @media (min-width: 582px) and (max-width: 910px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -18,8 +15,9 @@ export const MovieListWrapper = styled.div`
 `;
 
 export const MoviePosterDiv = styled.div<{ url: string }>`
-  width: 18.125rem;
-  height: 10.1875rem;
+  width: 25rem;
+  max-width: 90%;
+  height: 15.1875rem;
   border-radius: 1.25rem;
   background-image: url(${(props) => props.url});
   background-repeat: no-repeat;
@@ -42,7 +40,8 @@ export const MovieInfoDiv = styled.div`
   font-size: 0.625rem;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 18rem;
+  width: 25rem;
+  max-width: 90%;
   & span {
     font-size: 0.75rem;
     margin-right: 0.75rem;
@@ -54,16 +53,13 @@ export const MovieTitleDiv = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
-`;
-
-export const CategoryWrapper = styled.div`
-  display: flex;
-  gap: 0.2rem;
-  align-items: center;
+  width: 25rem;
+  max-width: 90%;
 `;
 
 export const CategoryDiv = styled.div`
-  width: 8rem;
+  width: 25rem;
+  max-width: 90%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
