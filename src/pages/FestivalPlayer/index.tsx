@@ -175,12 +175,12 @@ function FestivalPlayer() {
     if (times < 60) {
       return `${t('total')} ${times}${t('second')}`;
     }
-    const hour = Math.floor(times / 60);
-    const minute = times % 60;
-    if (times === 0) {
-      return `${t('total')} ${minute}${t('minute')}`;
-    }
-    return `${t('total')} ${hour}${t('hour')} ${minute}${t('minute')}`;
+    const hour = Math.floor(times / (60 * 60));
+    const minute = Math.floor(hour / 60);
+    const second = times % 60;
+    return `${t('total')} ${hour !== 0 ? `${hour}${t('hour')}` : ''} ${
+      minute !== 0 ? `${minute}${t('minute')}` : ''
+    } ${second !== 0 ? `${second}${t('second')}` : ''}`;
   }, []);
 
   if (!movieInfo) {
