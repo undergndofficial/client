@@ -256,6 +256,24 @@ function FestivalPlayer() {
         </DescriptionDiv>
         <MovieDetailDiv>
           <div>
+            {t('detailGerne')}: {movieInfo.gerne}
+          </div>
+          <div>
+            {t('watchRating')}: {movieInfo.ratingTxt}
+          </div>
+          {/* <div>
+            {t('usedLanguage')}: {movieInfo.director}
+          </div> */}
+          <div>
+            {t('productionYear')}: {movieInfo.productionYear}
+          </div>
+          <div>
+            {t('madeNation')}: {movieInfo.nationEn}
+          </div>
+          <div>
+            {t('directorNote')}: {movieInfo.directorNote}
+          </div>
+          <div>
             {t('director')}: {movieInfo.director}
           </div>
         </MovieDetailDiv>
