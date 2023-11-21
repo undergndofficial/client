@@ -188,13 +188,13 @@ function LoginPopup({ closeLoginPopup }: { closeLoginPopup: () => void }) {
           </LoginForm>
           <ButtonWrapper>
             <LoginButton onClick={loginProc}> {t('login')}</LoginButton>
-            <FindPasswordButton
+            {/* <FindPasswordButton
               onClick={() => {
                 setShowFindPassword(true);
               }}
             >
               {t('findPassword')}
-            </FindPasswordButton>
+            </FindPasswordButton> */}
           </ButtonWrapper>
           <JoinButton>
             {t('message.message4')}&nbsp;
