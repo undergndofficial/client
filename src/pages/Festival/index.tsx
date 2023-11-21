@@ -50,7 +50,7 @@ function Festival() {
   }, []);
 
   return (
-    <Layout>
+    <Layout showFooter={false}>
       <Container>
         {/* <FestivalTitle>{festival?.festivalName}</FestivalTitle> */}
         <MovieListWrapper>
