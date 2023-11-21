@@ -59,9 +59,9 @@ function Join() {
   // 인증 인풋 보여줄 지 여부
   const [showEmailAuthForm, setShowEmailAuthForm] = useState(false);
   const [showPhoneAuthForm, setShowPhoneAuthForm] = useState(false);
-  // 인증 되었는지 여부
-  const [doneEmailAuth, setDoneEmailAuth] = useState(false);
-  const [donePhoneAuth, setDonePhoneAuth] = useState(false);
+  // 인증 되었는지 여부 -> 일단 안쓸거라 True로
+  const [doneEmailAuth, setDoneEmailAuth] = useState(true);
+  const [donePhoneAuth, setDonePhoneAuth] = useState(true);
   // 영화인인지 여부
   const [filmPerson, setFilmPerson] = useState(false);
   // 영화인 정보
@@ -417,12 +417,12 @@ function Join() {
                     })}
                     disabled={showPhoneAuthForm}
                   />
-                  <Button
+                  {/* <Button
                     onClick={onClickSendPhoneAuthcode}
                     disabled={showPhoneAuthForm}
                   >
                     {t('sendAuthCode')}
-                  </Button>
+                  </Button> */}
                 </>
                 {errors.phone && (
                   <WarningMessageDiv>{errors.phone.message}</WarningMessageDiv>
@@ -464,12 +464,12 @@ function Join() {
                     })}
                     disabled={showEmailAuthForm}
                   />
-                  <Button
+                  {/* <Button
                     onClick={onClickSendEmailAuthcode}
                     disabled={showEmailAuthForm}
                   >
                     {t('sendAuthCode')}
-                  </Button>
+                  </Button> */}
                 </>
                 {errors.email && (
                   <WarningMessageDiv>{errors.email.message}</WarningMessageDiv>
@@ -517,7 +517,7 @@ function Join() {
                     <Checkbox checked={emailAgree} />
                     e-mail {t('incomingAgree')}
                   </FlexWrapper>
-                  <TermsButton>{t('termCheck')}</TermsButton>
+                  {/* <TermsButton>{t('termCheck')}</TermsButton> */}
                 </FlexWrapper>
               </FormItemDiv>
             </JoinForm>

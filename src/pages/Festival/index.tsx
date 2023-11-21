@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Layout from 'layouts/FestivalLayout';
+import Layout from 'layouts/Layout';
 import {
   Container,
   MovieListWrapper,
@@ -7,7 +7,7 @@ import {
   MovieTitleDiv,
   MovieWrapper,
   MovieInfoDiv,
-  FestivalTitle,
+  // FestivalTitle,
   CategoryDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ import { isEmpty } from 'lodash';
 function Festival() {
   const navigate = useNavigate();
   const [movies, setMovies] = useState<IFestivalMovie[]>([]);
-  const [festival, setFestival] = useState<IFestival | null>(null);
+  const [, setFestival] = useState<IFestival | null>(null);
   const festId = 'CSUMB';
   const requestMovieList = useRequest<{
     totalcount: number;
@@ -52,7 +52,7 @@ function Festival() {
   return (
     <Layout>
       <Container>
-        <FestivalTitle>{festival?.festivalName}</FestivalTitle>
+        {/* <FestivalTitle>{festival?.festivalName}</FestivalTitle> */}
         <MovieListWrapper>
           {movies.map((movie, i) => (
             <MovieWrapper
@@ -65,7 +65,7 @@ function Festival() {
                 key={i}
                 url="https://storage.googleapis.com/movie_additional/festival/cover/f_1.jpg"
               />
-              <MovieTitleDiv>{movie.movTitleEn}</MovieTitleDiv>
+              <MovieTitleDiv>{movie.movTitle}</MovieTitleDiv>
               <MovieInfoDiv>
                 <CategoryDiv>{movie.director}</CategoryDiv>
               </MovieInfoDiv>

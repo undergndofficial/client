@@ -171,14 +171,13 @@ function FestivalPlayer() {
 
   const getRunningTime = useCallback((times: number) => {
     if (times < 60) {
-      return `${t('total')} ${times}${t('second')}`;
+      return `${t('total')} ${times}${t('minute')}`;
     }
-    const hour = Math.floor(times / (60 * 60));
-    const minute = Math.floor(hour / 60);
-    const second = times % 60;
+    const hour = Math.floor(times / 60);
+    const minute = times % 60;
     return `${t('total')} ${hour !== 0 ? `${hour}${t('hour')}` : ''} ${
       minute !== 0 ? `${minute}${t('minute')}` : ''
-    } ${second !== 0 ? `${second}${t('second')}` : ''}`;
+    }`;
   }, []);
 
   if (!movieInfo) {
@@ -242,7 +241,7 @@ function FestivalPlayer() {
 
       <MovieInfo>
         <TitleDiv>
-          <div>{movieInfo.movTitleEn}</div>
+          <div>{movieInfo.movTitle}</div>
         </TitleDiv>
         <DescriptionDiv>
           <div className="description">{movieInfo.movPlot}</div>

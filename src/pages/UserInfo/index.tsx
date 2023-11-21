@@ -6,7 +6,7 @@ import {
   Container,
   InfoItemDiv,
   InfoItemWrapper,
-  BottomButton,
+  // BottomButton,
 } from './style';
 import { useTranslation } from 'react-i18next';
 // import useRequest from 'hooks/';
@@ -51,7 +51,7 @@ function UserInfo() {
               </InfoItemDiv>
             </InfoItemWrapper>
           </div>
-          <div>
+          {/* <div>
             <Title>{t('viewData')}</Title>
             <InfoItemWrapper>
               <InfoItemDiv>
@@ -76,7 +76,7 @@ function UserInfo() {
               </InfoItemDiv>
               <BottomButton>{t('showViewCountByGerne')}</BottomButton>
             </InfoItemWrapper>
-          </div>
+          </div> */}
         </Container>
       </PageContent>
     </Layout>
