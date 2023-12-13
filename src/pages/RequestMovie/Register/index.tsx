@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from 'layouts/Layout';
 import PageContent from 'layouts/PageContent';
 import { Container, StepWrapper, StepDiv, TitleDiv } from './style';
@@ -11,29 +11,29 @@ import { useTranslation } from 'react-i18next';
 import { IMovieBasicInfo } from 'types/db';
 import useRequest from 'hooks/useRequest';
 import { getMovieInfo } from 'api/movie';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
+import { CustomError } from 'utils/error';
 
 function Register() {
   const { t } = useTranslation();
   const [movSeq, setMovSeq] = useState<number | null>(null);
   const [curStepIdx, setCurStepIdx] = useState<number>(0);
-  const [movieInfo, setMoviInfo] = useState<IMovieBasicInfo | null>(null);
   const STEP_SIZE = 5;
   const requestMovieInfo = useRequest<IMovieBasicInfo>(getMovieInfo);
-  const fetchData = useCallback(() => {
-    requestMovieInfo(movSeq)
-      .then((data) => setMoviInfo(data))
-      .catch((e) => {
-        if (e.code === 'err_content_001') {
-          setMoviInfo(null);
-        } else {
-          console.error(e.message);
-        }
-      });
-  }, [movSeq, curStepIdx]);
+  const { data: movieInfo, refetch } = useQuery({
+    queryKey: ['get-movie-info', { movSeq }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      const [, queryParams] = context.queryKey as [string, { movSeq: string }];
+      return requestMovieInfo(queryParams.movSeq);
+    },
+    onError: (e: CustomError) => {
+      console.error(e.message);
+    },
+  });
   useEffect(() => {
-    if (!movSeq || curStepIdx > 1) return;
-    fetchData();
-  }, [movSeq, curStepIdx]);
+    if (curStepIdx > 1) return;
+    refetch();
+  }, [curStepIdx]);
 
   const steps = [
     {
@@ -47,7 +47,7 @@ function Register() {
           movSeq={movSeq}
           setMovSeq={setMovSeq}
           movieInfo={movieInfo}
-          loadData={fetchData}
+          loadData={refetch}
         />
       ),
     },
@@ -61,7 +61,7 @@ function Register() {
           stepSize={STEP_SIZE}
           movSeq={movSeq}
           movieInfo={movieInfo}
-          loadData={fetchData}
+          loadData={refetch}
         />
       ),
     },

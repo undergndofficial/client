@@ -1,6 +1,6 @@
 import Layout from 'layouts/Layout';
 import PageContent from 'layouts/PageContent';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TitleDiv } from '../style';
 import { PostNumberDiv, PostHeaderDiv, PostContentDiv } from './style';
 import dayjs from 'dayjs';
@@ -9,20 +9,20 @@ import { useParams } from 'react-router-dom';
 import { getQnaDetail } from 'api/customer';
 import useRequest from 'hooks/useRequest';
 import { IQna } from 'types/db';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
 
 function Detail() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const [qna, setQna] = useState<IQna | null>(null);
   // 일대일 문의 상세
   const requestNotice = useRequest<IQna>(getQnaDetail);
-  useEffect(() => {
-    requestNotice(id)
-      .then((data) => {
-        setQna(data);
-      })
-      .catch((e) => console.error(e));
-  }, []);
+  const { data: qna } = useQuery<IQna>({
+    queryKey: ['get-qna', { id }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      const [, queryParams] = context.queryKey as [string, { id: string }];
+      return requestNotice(queryParams.id);
+    },
+  });
 
   return (
     <Layout>

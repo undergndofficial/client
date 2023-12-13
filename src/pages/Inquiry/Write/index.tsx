@@ -25,6 +25,7 @@ import { addQna, getQnaDetail, updateQna } from 'api/customer';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { isEmpty } from 'lodash';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
 
 /**
  * 1대1 문의 작성 페이지
@@ -58,36 +59,35 @@ function WriteInquiry() {
   }, [id]);
   // 수정 모드일 경우 기본 정보 설정
   const requestNotice = useRequest<IQna>(getQnaDetail);
+  const { data: qna } = useQuery<IQna>({
+    queryKey: ['get-qna', { id }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      const [, queryParams] = context.queryKey as [string, { id: string }];
+      return requestNotice(queryParams.id);
+    },
+  });
   useEffect(() => {
-    if (!editMode) return;
-    requestNotice(id)
-      .then((data) => {
-        setValue('title', data.inqTitle);
-        setValue('content', data.inqBody);
-        setCategory({ label: data.inqTxt, value: data.inqCat.toString() });
-      })
-      .catch((e) => console.error(e));
-  }, [id, editMode]);
+    if (!editMode || !qna) return;
+    setValue('title', qna.inqTitle);
+    setValue('content', qna.inqBody);
+    setCategory({ label: qna.inqTxt, value: qna.inqCat.toString() });
+  }, [editMode, qna]);
+
   // 카테고리 리스트를 select option으로 가공
   const requestCategory = useRequest<IFaqCategory[]>(getFaqCategoryList);
+  const { data: faqCategory } = useQuery<IFaqCategory[]>(
+    'get-faq-category',
+    requestCategory,
+  );
   useEffect(() => {
-    requestCategory()
-      .then((data) => {
-        const optionData = data as unknown as { [key: string]: string }[];
-        const categoryOption = getSelectOptionList(
-          optionData,
-          'inqTxt',
-          'inqCat',
-        );
-        setCategories(categoryOption);
-        if (!isEmpty(categoryOption)) {
-          setCategory(categoryOption[0]);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
+    if (!faqCategory) return;
+    const optionData = faqCategory as unknown as { [key: string]: string }[];
+    const categoryOption = getSelectOptionList(optionData, 'inqTxt', 'inqCat');
+    setCategories(categoryOption);
+    if (!isEmpty(categoryOption)) {
+      setCategory(categoryOption[0]);
+    }
+  }, [faqCategory]);
 
   // 일대일 문의 작성
   const requestWrite = useRequest<boolean>(addQna);
