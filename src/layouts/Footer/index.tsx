@@ -1,18 +1,19 @@
 import React from 'react';
 import {
   Container,
-  ButtonWrapper,
+  // ButtonWrapper,
   InfoWrapper,
   FlexWrapper,
-  ButtonListDiv,
-  SnsIconWrapper,
+  // ButtonListDiv,
+  // SnsIconWrapper,
+  Logo,
 } from './style';
-import {
-  IoLogoYoutube,
-  IoLogoInstagram,
-  IoLogoTwitter,
-  IoLogoFacebook,
-} from 'react-icons/io5';
+// import {
+//   IoLogoYoutube,
+//   IoLogoInstagram,
+//   IoLogoTwitter,
+//   IoLogoFacebook,
+// } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
 
@@ -21,11 +22,11 @@ import i18n from 'locales/i18n';
  */
 function Footer() {
   const { t } = useTranslation();
-  const ICON_SIZE = 21;
+  // const ICON_SIZE = 21;
 
   return (
     <Container>
-      <SnsIconWrapper>
+      {/* <SnsIconWrapper>
         <IoLogoYoutube size={ICON_SIZE} />
         <IoLogoInstagram size={ICON_SIZE} />
         <IoLogoTwitter size={ICON_SIZE} />
@@ -43,17 +44,21 @@ function Footer() {
           <div>{t('doInquiry')}</div>
           <div>{t('showUniversity')}</div>
         </ButtonListDiv>
-      </ButtonWrapper>
+      </ButtonWrapper> */}
       <InfoWrapper>
         <FlexWrapper>
-          <div>{t('undergroud')}</div>
-          <div>{t('lawNumber')}: 제 xXX-서울 종로-xxxx호</div>
-          <div>{t('phone')}: xxx-xxxx-xxxx</div>
+          <Logo
+            src={`${process.env.PUBLIC_URL}/assets/icon/logo-icon.svg`}
+            alt="logo"
+          />
+          {/* <div>{t('undergroud')}</div> */}
+          {/* <div>{t('lawNumber')}: 제 xXX-서울 종로-xxxx호</div>
+          <div>{t('phone')}: xxx-xxxx-xxxx</div> */}
         </FlexWrapper>
         <div>{t('ceo')}: 문지욱</div>
-        <div>{t('emailAddress')}: undergndofficial@gmaill.com</div>
+        {/* <div>{t('emailAddress')}: undergndofficial@gmaill.com</div> */}
         <div>{t('address')}: 충북 제천시 한수면 봉화재길 517</div>
-        <div>{t('companyNumber')}: xxx-xx-xxxxx</div>
+        {/* <div>{t('companyNumber')}: xxx-xx-xxxxx</div> */}
         <div>{t('cloudHosting')}: Amazon Web Sevices Inc.</div>
         <div>{t('fairTradeCommissionWebsite')}: https://www.ftc.go.kr/</div>
         <FlexWrapper>

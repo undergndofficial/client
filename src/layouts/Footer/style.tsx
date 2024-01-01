@@ -8,7 +8,7 @@ export const Container = styled.footer`
   align-items: center;
   color: var(--color-font);
   gap: 3rem;
-  padding: 1rem 1rem 8rem 1rem;
+  padding: 5rem 1rem 8rem 1rem;
 `;
 
 export const ButtonWrapper = styled.div`
@@ -68,6 +68,9 @@ export const FlexWrapper = styled.div`
   @media ${theme.device.phone} {
     flex-direction: column;
   }
+  > div {
+    cursor: pointer;
+  }
 `;
 
 export const SnsIconWrapper = styled.div`
@@ -75,4 +78,8 @@ export const SnsIconWrapper = styled.div`
   gap: 1.5rem;
   color: var(--color-font);
   cursor: pointer;
+`;
+
+export const Logo = styled.img`
+  width: 8rem;
 `;

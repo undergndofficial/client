@@ -143,14 +143,14 @@ export const Controls = ({
         >
           <IoArrowBackOutline size={iconSize} />
         </ControlButton>
-        <ControlButton
+        {/* <ControlButton
           onClick={(e) => {
             e.stopPropagation();
             setShowReportPopup((prev) => !prev);
           }}
         >
           <PiFlagPennantFill size={iconSize} />
-        </ControlButton>
+        </ControlButton> */}
       </TopWrapper>
       {/* 가운데 일시정지/재생 버튼 */}
       <CenterButton>
@@ -260,7 +260,7 @@ export const Controls = ({
             >
               <SiSpeedtest size={iconSize} />
             </ControlButton>
-            <ControlButton
+            {/* <ControlButton
               onClick={(e) => {
                 e.stopPropagation();
                 setShowSpeed(false);
@@ -268,7 +268,7 @@ export const Controls = ({
               }}
             >
               <BsCardText size={iconSize} />
-            </ControlButton>
+            </ControlButton> */}
             <ControlButton onClick={openFullscreen}>
               <RiFullscreenLine size={iconSize} />
             </ControlButton>

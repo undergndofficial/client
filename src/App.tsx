@@ -1,8 +1,8 @@
 import React from 'react';
 import GlobalStyle from 'styles/globalStyle';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import MoviePlayer from 'pages/MoviePlayer';
+// import Home from './pages/Home';
+// import MoviePlayer from 'pages/MoviePlayer';
 import SearchResult from 'pages/SearchResult';
 import Join from 'pages/Join';
 import UserInfo from 'pages/UserInfo';
@@ -18,8 +18,8 @@ import WriteInquiry from 'pages/Inquiry/Write';
 import PrivateRoute from 'layouts/PrivateRoute';
 import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Festival from 'pages/Festival';
-// import FestivalPlayer from 'pages/FestivalPlayer';
+import Festival from 'pages/Festival';
+import FestivalPlayer from 'pages/FestivalPlayer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
@@ -32,10 +32,10 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Festival />} />
-          <Route path="/player/:id" element={<FestivalPlayer />} /> */}
-          <Route path="/" element={<Home />} />
-          <Route path="/player/:id" element={<MoviePlayer />} />
+          <Route path="/" element={<Festival />} />
+          <Route path="/player/:id" element={<FestivalPlayer />} />
+          {/* <Route path="/" element={<Home />} />
+          <Route path="/player/:id" element={<MoviePlayer />} /> */}
           <Route path="/search/:keyword" element={<SearchResult />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
@@ -47,7 +47,7 @@ function App() {
           </Route>
           {/* 인증을 해야만 접속 가능한 페이지 */}
           <Route element={<PrivateRoute userAuthentication={true} />}>
-            <Route path="/mypage" element={<UserInfo />} />
+            {/* <Route path="/mypage" element={<UserInfo />} /> */}
             <Route path="/request-movie" element={<RequestMovie />} />
             <Route path="/request-movie/requset" element={<Request />} />
             <Route path="/request-movie/register" element={<Register />} />

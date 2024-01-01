@@ -7,7 +7,8 @@ import {
   MovieTitleDiv,
   MovieWrapper,
   MovieInfoDiv,
-  // FestivalTitle,
+  FestivalTitle,
+  // MainPosterDiv,
   CategoryDiv,
 } from './style';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +23,7 @@ import { isEmpty } from 'lodash';
 function Festival() {
   const navigate = useNavigate();
   const [movies, setMovies] = useState<IFestivalMovie[]>([]);
-  const [, setFestival] = useState<IFestival | null>(null);
+  const [festival, setFestival] = useState<IFestival | null>(null);
   const festId = 'CSUMB';
   const requestMovieList = useRequest<{
     totalcount: number;
@@ -50,9 +51,10 @@ function Festival() {
   }, []);
 
   return (
-    <Layout showFooter={false}>
+    <Layout showFooter={true}>
+      {/* <MainPosterDiv url="https://storage.googleapis.com/movie_additional/festival/cover/f_1.jpg" /> */}
       <Container>
-        {/* <FestivalTitle>{festival?.festivalName}</FestivalTitle> */}
+        <FestivalTitle>{festival?.festivalName}</FestivalTitle>
         <MovieListWrapper>
           {movies.map((movie, i) => (
             <MovieWrapper

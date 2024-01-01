@@ -25,6 +25,7 @@ import { getFestivalMovieDetail, getFestivalMovieUrl } from 'api/festival';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { isEmpty } from 'lodash';
+import Comment from './Comment';
 
 function FestivalPlayer() {
   const { t } = useTranslation();
@@ -276,6 +277,7 @@ function FestivalPlayer() {
             {t('director')}: {movieInfo.director}
           </div>
         </MovieDetailDiv>
+        {/* <Comment /> */}
       </MovieInfo>
     </Container>
   );

@@ -68,14 +68,14 @@ function Header({ scrollTop }: HeaderPropsType) {
         onClick={() => navigate('/')}
       />
       <Toolbar>
-        <FaSearch
+        {/* <FaSearch
           size="21"
           onClick={(e) => {
             e.stopPropagation();
             setShowSearchPopup(true);
           }}
           className="search-icon"
-        />
+        /> */}
         {isLogin && (
           <FaUser
             size="21"
@@ -107,14 +107,14 @@ function Header({ scrollTop }: HeaderPropsType) {
       </Modal>
       <Modal show={showUserPopup} onCloseModal={closeUserPopup}>
         <UserPopupDiv>
-          <div
+          {/* <div
             onClick={() => {
               navigate('/mypage');
               closeUserPopup();
             }}
           >
             {t('accountSetting')}
-          </div>
+          </div> */}
           {/* <div>{t('likeList')}</div> */}
           <div
             onClick={() => {
