@@ -78,3 +78,14 @@ export const FestivalTitle = styled.div`
   text-align: center;
   word-break: keep-all;
 `;
+
+export const MainPosterDiv = styled.div<{ url: string }>`
+  width: 100%;
+  height: 100vh;
+  background-image: url(${(props) => props.url});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  border-radius: 0rem 0rem 6.25rem 6.25rem;
+`;

@@ -20,6 +20,7 @@ import useRequest from 'hooks/useRequest';
 import { getFaqDetail, getFaqList } from 'api/customer';
 import { IFaq } from 'types/db';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 
 // 해당 컴포넌트에서 사용하는 faq 타입
 interface IInq {
@@ -33,36 +34,32 @@ function CustomerCenter() {
   // faq 데이터
   const [inqList, setInqList] = useState<IInq[]>([]);
   const requestFaqs = useRequest(getFaqList);
+  const { data: inqData } = useQuery('get-inq-list', requestFaqs);
   useEffect(() => {
-    requestFaqs()
-      .then((data) => {
-        const newFaqs: IInq[] = data.reduce<IInq[]>(
-          (result: IInq[], item: IFaq) => {
-            const existingCategory = result.find(
-              (category) => category.inqCat === item.inqCat,
-            );
-            if (existingCategory) {
-              existingCategory.faqs.push({
-                faqTitle: item.faqTitle || '',
-                seq: item.seq,
-              });
-            } else {
-              result.push({
-                inqCat: item.inqCat || 0,
-                inqText: item.inqTxt || '',
-                faqs: [{ faqTitle: item.faqTitle || '', seq: item.seq }],
-              });
-            }
-            return result;
-          },
-          [],
+    if (!inqData) return;
+    const newFaqs: IInq[] = inqData.reduce<IInq[]>(
+      (result: IInq[], item: IFaq) => {
+        const existingCategory = result.find(
+          (category) => category.inqCat === item.inqCat,
         );
-        setInqList(newFaqs);
-      })
-      .catch((e) => {
-        console.error(e.message);
-      });
-  }, []);
+        if (existingCategory) {
+          existingCategory.faqs.push({
+            faqTitle: item.faqTitle || '',
+            seq: item.seq,
+          });
+        } else {
+          result.push({
+            inqCat: item.inqCat || 0,
+            inqText: item.inqTxt || '',
+            faqs: [{ faqTitle: item.faqTitle || '', seq: item.seq }],
+          });
+        }
+        return result;
+      },
+      [],
+    );
+    setInqList(newFaqs);
+  }, [inqData]);
 
   // 현재 열린 메뉴들
   const [openMenuIds, setOpenMenuId] = useState<{ [key: string]: boolean }>({});

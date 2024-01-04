@@ -11,6 +11,7 @@ import { IAnnounce } from 'types/db';
 import { getAnnounceList } from 'api/customer';
 import useRequest from 'hooks/useRequest';
 import { IPagingData } from 'types/common';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
 
 function Notice() {
   const { t } = useTranslation();
@@ -46,14 +47,17 @@ function Notice() {
 
   // 공지사항 목록
   const requestNoticeList = useRequest<IPagingData<IAnnounce>>(getAnnounceList);
+  const { data: noticeInfo } = useQuery<IPagingData<IAnnounce>>({
+    queryKey: ['get-notice-list', { page, step: PAGE_SIZE }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      return requestNoticeList(context.queryKey[1]);
+    },
+  });
   useEffect(() => {
-    requestNoticeList({ step: PAGE_SIZE, page })
-      .then((data) => {
-        setNoticeList(data.list);
-        setTotal(data.totalcount);
-      })
-      .catch((e) => console.error(e));
-  }, [page]);
+    if (!noticeInfo) return;
+    setTotal(noticeInfo.totalcount);
+    setNoticeList(noticeInfo.list);
+  }, [noticeInfo]);
 
   return (
     <Layout>

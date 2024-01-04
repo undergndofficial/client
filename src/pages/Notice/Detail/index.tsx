@@ -10,6 +10,7 @@ import { getAnnounceDetail } from 'api/customer';
 import useRequest from 'hooks/useRequest';
 import { IAnnounce } from 'types/db';
 import { isEmpty } from 'lodash';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
 
 function Detail() {
   const { t } = useTranslation();
@@ -17,15 +18,17 @@ function Detail() {
   const [notice, setNotice] = useState<IAnnounce | null>(null);
   // 공지사항 상세
   const requestNotice = useRequest<IAnnounce[]>(getAnnounceDetail);
+  const { data: noticeInfo } = useQuery<IAnnounce[]>({
+    queryKey: ['get-notice', { id }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      const [, queryParams] = context.queryKey as [string, { id: string }];
+      return requestNotice(queryParams.id);
+    },
+  });
   useEffect(() => {
-    requestNotice(id)
-      .then((data) => {
-        if (!isEmpty(data)) {
-          setNotice(data[0]);
-        }
-      })
-      .catch((e) => console.error(e));
-  }, []);
+    if (!noticeInfo || isEmpty(noticeInfo)) return;
+    setNotice(noticeInfo[0]);
+  }, [noticeInfo]);
 
   return (
     <Layout>

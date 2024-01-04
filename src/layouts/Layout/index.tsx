@@ -7,7 +7,7 @@ import { Container, Content } from './style';
  * 레이아웃 컴포넌트
  */
 function Layout({
-  showFooter = true,
+  showFooter = false,
   children,
 }: {
   showFooter?: boolean; //footer 보여줄지 여부 . 기본값은 true고 안보여주고 싶으면 false로 전달

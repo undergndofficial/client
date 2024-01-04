@@ -35,19 +35,29 @@ function UserInfo() {
             <Title>{t('basicInfo')}</Title>
             <InfoItemWrapper>
               <InfoItemDiv>
+                <label>{t('name')}</label>
+                <span>이름</span>
+                {/* <button>{t('modify2')}</button> */}
+              </InfoItemDiv>
+              <InfoItemDiv>
+                <label>{t('id')}</label>
+                <span>아이디</span>
+                {/* <button>{t('modify2')}</button> */}
+              </InfoItemDiv>
+              <InfoItemDiv>
                 <label>{t('email')}</label>
                 <span>sailormoon917@naver.com</span>
-                <button>{t('modify2')}</button>
+                {/* <button>{t('modify2')}</button> */}
               </InfoItemDiv>
               <InfoItemDiv>
                 <label>{t('password')}</label>
                 <span>********</span>
-                <button>{t('modify2')}</button>
+                {/* <button>{t('modify2')}</button> */}
               </InfoItemDiv>
               <InfoItemDiv>
                 <label>{t('phone')}</label>
                 <span>010-2851-2740</span>
-                <button>{t('modify2')}</button>
+                {/* <button>{t('modify2')}</button> */}
               </InfoItemDiv>
             </InfoItemWrapper>
           </div>

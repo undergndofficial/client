@@ -19,6 +19,7 @@ import { IQna, IUserSession } from 'types/db';
 import { getQnaList } from 'api/customer';
 import { IPagingData } from 'types/common';
 import { getUserInfo } from 'api/member';
+import { QueryFunctionContext, QueryKey, useQuery } from 'react-query';
 
 function Inquiry() {
   const { t } = useTranslation();
@@ -34,17 +35,11 @@ function Inquiry() {
   };
 
   // 로그인한 사용자 정보. 내가 쓴 글인지 판별할 때 사용
-  const [loginUser, setLoginUser] = useState<IUserSession | null>(null);
   const requsetUserInfo = useRequest<IUserSession>(getUserInfo);
-  useEffect(() => {
-    requsetUserInfo()
-      .then((data) => {
-        setLoginUser(data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
+  const { data: loginUser } = useQuery<IUserSession | null>(
+    'loginuser',
+    requsetUserInfo,
+  );
 
   // 반응형 쿼리. 화면 크기에 따라 다른 페이지 수 제공
   const [isMobile, setIsMobile] = useState(false);
@@ -73,14 +68,17 @@ function Inquiry() {
 
   // 일대일 문의 글 목록
   const requestQnaList = useRequest<IPagingData<IQna>>(getQnaList);
+  const { data: qnaInfo } = useQuery<IPagingData<IQna>>({
+    queryKey: ['get-qna-list', { page, step: PAGE_SIZE }],
+    queryFn: (context: QueryFunctionContext<QueryKey, unknown>) => {
+      return requestQnaList(context.queryKey[1]);
+    },
+  });
   useEffect(() => {
-    requestQnaList({ step: PAGE_SIZE, page })
-      .then((data) => {
-        setTotal(data.totalcount);
-        setQnaList(data.list);
-      })
-      .catch((e) => console.error(e));
-  }, [page]);
+    if (!qnaInfo) return;
+    setTotal(qnaInfo.totalcount);
+    setQnaList(qnaInfo.list);
+  }, [qnaInfo]);
 
   // 1대1문의 행 클릭
   const clickPost = useCallback(

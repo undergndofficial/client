@@ -293,8 +293,8 @@ function Join() {
               toast.success(t('message.message22'));
               navigate('/');
             })
-            .catch((e) => {
-              console.error(e.message);
+            .catch(() => {
+              toast.error('회원가입에 실패하였습니다.');
             });
         } else {
           toast.success(t('message.message22'));
@@ -302,7 +302,10 @@ function Join() {
         }
       })
       .catch((e) => {
-        console.error(e.message);
+        if (e.code === 'err_mem_009') {
+          toast.error(e.message);
+        }
+        toast.error('회원가입에 실패하였습니다.');
       });
   };
 
